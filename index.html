@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full bg-slate-900 text-slate-100">
+<html lang="fr" class="h-full bg-slate-950 text-slate-100">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ZakariaTV Concours</title>
+  <title>ZakariaTV Concours - Plateforme Officielle</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -11,87 +11,89 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    .glass { background: rgba(30, 41, 59, 0.75); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-card { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
   </style>
 </head>
-<body class="h-full flex flex-col justify-between">
+<body class="min-h-full flex flex-col justify-between bg-slate-950">
 
-  <!-- TOP BAR / HEADER -->
-  <header class="glass sticky top-0 z-50 px-4 py-3 shadow-lg flex items-center justify-between">
+  <!-- HEADER -->
+  <header class="glass sticky top-0 z-40 px-4 py-3 shadow-xl flex items-center justify-between border-b border-slate-800">
     <div class="flex items-center space-x-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center font-black text-xl shadow-lg shadow-amber-500/20">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center font-black text-xl text-white shadow-lg shadow-amber-500/20">
         ZTV
       </div>
-      <h1 class="text-xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
-        ZakariaTV <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Concours</span>
-      </h1>
+      <div>
+        <h1 class="text-lg font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
+          ZakariaTV <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">Concours</span>
+        </h1>
+      </div>
     </div>
 
-    <!-- Right Profile / Nav Controls -->
-    <div id="header-right" class="flex items-center space-x-3">
-      <!-- Admin photo/avis badge (shown dynamically) -->
+    <div id="header-user-info" class="flex items-center space-x-3">
+      <!-- Session badges rendered dynamically -->
     </div>
   </header>
 
   <!-- MAIN CONTAINER -->
-  <main class="flex-grow container mx-auto px-4 py-6 max-w-4xl">
+  <main class="flex-grow container mx-auto px-4 py-6 max-w-5xl">
 
-    <!-- LOGIN SCREEN (Admin & Users) -->
+    <!-- LOGIN SCREEN -->
     <section id="screen-login" class="space-y-6 max-w-md mx-auto">
       <div class="text-center space-y-2">
-        <h2 class="text-3xl font-extrabold text-white">Connexion</h2>
-        <p class="text-slate-400 text-sm">Entrez vos identifiants pour accéder à ZakariaTV Concours</p>
+        <h2 class="text-3xl font-black text-white">Connexion</h2>
+        <p class="text-slate-400 text-xs">Espace de connexion Administrateur & Participants</p>
       </div>
 
-      <form id="login-form" onsubmit="handleLogin(event)" class="glass p-6 rounded-2xl space-y-4 shadow-xl">
+      <form id="login-form" onsubmit="handleLogin(event)" class="glass p-6 rounded-2xl space-y-4 shadow-2xl">
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nom / Identifiant</label>
-          <input type="text" id="login-username" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="Ex: ZakariaTV ou votre Nom">
+          <input type="text" id="login-username" required class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition" placeholder="Ex: ZakariaTV ou votre Nom">
         </div>
 
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Mot de passe</label>
-          <input type="password" id="login-password" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="Mot de passe">
+          <input type="password" id="login-password" required class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500 transition" placeholder="Mot de passe">
         </div>
 
-        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 font-bold rounded-xl text-white shadow-lg shadow-amber-500/25 transition">
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 font-extrabold rounded-xl text-white shadow-lg shadow-amber-500/25 transition text-sm">
           Se connecter
         </button>
 
         <div class="flex items-center justify-between text-xs pt-2 text-slate-400">
-          <button type="button" onclick="showForgotPassword()" class="hover:text-amber-400 underline">Mot de passe oublié ?</button>
-          <button type="button" onclick="showScreen('screen-register')" class="text-amber-400 font-semibold hover:underline">Créer un compte</button>
+          <button type="button" onclick="showForgotPasswordModal()" class="hover:text-amber-400 underline">Mot de passe oublié ?</button>
+          <button type="button" onclick="showScreen('screen-register')" class="text-amber-400 font-bold hover:underline">Créer un compte participant</button>
         </div>
       </form>
     </section>
 
-    <!-- REGISTER SCREEN -->
+    <!-- REGISTER SCREEN (Participants Only) -->
     <section id="screen-register" class="hidden space-y-6 max-w-md mx-auto">
       <div class="text-center space-y-2">
-        <h2 class="text-3xl font-extrabold text-white">Créer un compte</h2>
-        <p class="text-slate-400 text-sm">Remplissez les informations suivantes pour participer</p>
+        <h2 class="text-2xl font-black text-white">Création de compte Participant</h2>
+        <p class="text-slate-400 text-xs">Un seul compte est autorisé par personne</p>
       </div>
 
-      <form id="register-form" onsubmit="handleRegister(event)" class="glass p-6 rounded-2xl space-y-4 shadow-xl">
+      <form id="register-form" onsubmit="handleRegister(event)" class="glass p-6 rounded-2xl space-y-4 shadow-2xl">
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nom</label>
-            <input type="text" id="reg-nom" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Nom</label>
+            <input type="text" id="reg-nom" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500">
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Prénom</label>
-            <input type="text" id="reg-prenom" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Prénom</label>
+            <input type="text" id="reg-prenom" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500">
           </div>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Ville</label>
-            <input type="text" id="reg-ville" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Ville</label>
+            <input type="text" id="reg-ville" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500">
           </div>
           <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Pays</label>
-            <select id="reg-pays" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Pays</label>
+            <select id="reg-pays" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500">
               <option value="Côte d'Ivoire">Côte d'Ivoire</option>
               <option value="Sénégal">Sénégal</option>
               <option value="Cameroun">Cameroun</option>
@@ -103,16 +105,16 @@
         </div>
 
         <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Contact WhatsApp</label>
-          <input type="tel" id="reg-whatsapp" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" placeholder="+225 0102030405">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Contact WhatsApp</label>
+          <input type="tel" id="reg-whatsapp" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500" placeholder="+225 0102030405">
         </div>
 
         <div>
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Mot de passe (4 chiffres)</label>
-          <input type="password" id="reg-pass" pattern="\d{4}" maxlength="4" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" placeholder="1234">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Mot de passe (4 chiffres uniquement)</label>
+          <input type="password" id="reg-pass" pattern="\d{4}" maxlength="4" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500" placeholder="Ex: 1234">
         </div>
 
-        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 font-bold rounded-xl text-white shadow-lg transition">
+        <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-600 font-extrabold rounded-xl text-white shadow-lg text-xs">
           Terminer l'inscription
         </button>
 
@@ -124,92 +126,121 @@
 
     <!-- ADMIN DASHBOARD -->
     <section id="screen-admin-dash" class="hidden space-y-6">
-      <div class="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-            <i class="fa-solid fa-user-shield text-amber-500"></i> Espace Administrateur
-          </h2>
-          <p class="text-xs text-slate-400">Gestion globale des concours, membres et paiements</p>
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-xl">
+            <i class="fa-solid fa-user-shield"></i>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-white">Espace Administrateur - ZakariaTV</h2>
+            <p class="text-xs text-slate-400">Cliquez sur n'importe quel compteur pour consulter la liste détaillée</p>
+          </div>
         </div>
-        <div class="flex gap-2">
-          <button onclick="toggleReviewsModal()" class="glass px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 text-amber-400 hover:bg-slate-800">
-            <i class="fa-solid fa-star text-amber-400"></i> Avis (4.9 ★)
+
+        <div class="flex items-center gap-2">
+          <button onclick="openModal('reviews-modal')" class="glass px-3 py-2 rounded-xl text-xs font-bold text-amber-400 flex items-center gap-1.5 hover:bg-slate-800">
+            <i class="fa-solid fa-star text-amber-400"></i> Avis Utilisateurs
           </button>
-          <button onclick="showScreen('screen-admin-premium')" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-extrabold px-4 py-2 rounded-xl text-xs shadow-lg shadow-amber-500/20 flex items-center gap-1.5">
-            <i class="fa-solid fa-crown"></i> Espace Premium
+          <button onclick="showScreen('screen-admin-premium')" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs shadow-lg shadow-amber-500/20 flex items-center gap-1.5 hover:brightness-110">
+            <i class="fa-solid fa-crown"></i> Gestion & Création Concours
           </button>
         </div>
       </div>
 
-      <!-- DASHBOARD CARDS GRID -->
+      <!-- CARDS STATISTIQUES (CLIQUABLES) -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="glass p-4 rounded-2xl border-l-4 border-amber-500">
-          <span class="text-xs text-slate-400 block font-medium">Concours créés</span>
-          <span id="stat-created" class="text-2xl font-black text-white">0</span>
+        
+        <div onclick="openDataListModal('concours_crees')" class="glass p-4 rounded-2xl border-l-4 border-amber-500 cursor-pointer hover:bg-slate-800/80 transition">
+          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Concours Créés</span>
+          <span id="stat-created" class="text-2xl font-black text-white mt-1 block">0</span>
+          <span class="text-[10px] text-amber-400 mt-2 block font-medium">Voir tous les concours →</span>
         </div>
-        <div class="glass p-4 rounded-2xl border-l-4 border-emerald-500">
-          <span class="text-xs text-slate-400 block font-medium">Concours effectués</span>
-          <span id="stat-completed" class="text-2xl font-black text-white">0</span>
+
+        <div onclick="openDataListModal('concours_effectues')" class="glass p-4 rounded-2xl border-l-4 border-emerald-500 cursor-pointer hover:bg-slate-800/80 transition">
+          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Concours Effectués</span>
+          <span id="stat-completed" class="text-2xl font-black text-white mt-1 block">0</span>
+          <span class="text-[10px] text-emerald-400 mt-2 block font-medium">Voir l'historique →</span>
         </div>
-        <div class="glass p-4 rounded-2xl border-l-4 border-blue-500">
-          <span class="text-xs text-slate-400 block font-medium">Comptes créés</span>
-          <span id="stat-accounts" class="text-2xl font-black text-white">0</span>
+
+        <div onclick="openDataListModal('comptes_crees')" class="glass p-4 rounded-2xl border-l-4 border-blue-500 cursor-pointer hover:bg-slate-800/80 transition">
+          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Comptes Créés</span>
+          <span id="stat-accounts" class="text-2xl font-black text-white mt-1 block">0</span>
+          <span class="text-[10px] text-blue-400 mt-2 block font-medium">Voir la liste des comptes →</span>
         </div>
-        <div class="glass p-4 rounded-2xl border-l-4 border-purple-500">
-          <span class="text-xs text-slate-400 block font-medium">Participants</span>
-          <span id="stat-participants" class="text-2xl font-black text-white">0</span>
+
+        <div onclick="openDataListModal('participants')" class="glass p-4 rounded-2xl border-l-4 border-purple-500 cursor-pointer hover:bg-slate-800/80 transition">
+          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Participants</span>
+          <span id="stat-participants" class="text-2xl font-black text-white mt-1 block">0</span>
+          <span class="text-[10px] text-purple-400 mt-2 block font-medium">Voir les détails →</span>
         </div>
-        <div class="glass p-4 rounded-2xl border-l-4 border-yellow-500">
-          <span class="text-xs text-slate-400 block font-medium">Gagnants</span>
-          <span id="stat-winners" class="text-2xl font-black text-white">0</span>
+
+        <div onclick="openDataListModal('gagnants')" class="glass p-4 rounded-2xl border-l-4 border-yellow-500 cursor-pointer hover:bg-slate-800/80 transition">
+          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Nombre de Gagnants</span>
+          <span id="stat-winners" class="text-2xl font-black text-white mt-1 block">0</span>
+          <span class="text-[10px] text-yellow-400 mt-2 block font-medium">Voir le top classement →</span>
         </div>
-        <div class="glass p-4 rounded-2xl border-l-4 border-sky-500">
-          <span class="text-xs text-slate-400 block font-medium">En cours</span>
-          <span id="stat-active" class="text-2xl font-black text-white">0</span>
+
+        <div onclick="openDataListModal('concours_en_cours')" class="glass p-4 rounded-2xl border-l-4 border-sky-500 cursor-pointer hover:bg-slate-800/80 transition">
+          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Concours En Cours</span>
+          <span id="stat-active" class="text-2xl font-black text-white mt-1 block">0</span>
+          <span class="text-[10px] text-sky-400 mt-2 block font-medium">Voir les liens actifs →</span>
         </div>
-        <div class="glass p-4 rounded-2xl border-l-4 border-rose-500">
-          <span class="text-xs text-slate-400 block font-medium">Terminés</span>
-          <span id="stat-finished" class="text-2xl font-black text-white">0</span>
+
+        <div onclick="openDataListModal('concours_termines')" class="glass p-4 rounded-2xl border-l-4 border-rose-500 cursor-pointer hover:bg-slate-800/80 transition">
+          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Concours Terminés</span>
+          <span id="stat-finished" class="text-2xl font-black text-white mt-1 block">0</span>
+          <span class="text-[10px] text-rose-400 mt-2 block font-medium">Voir les clôtures →</span>
         </div>
-        <button onclick="showResetRequestsModal()" class="glass p-4 rounded-2xl border-l-4 border-orange-500 text-left hover:bg-slate-800 transition">
-          <span class="text-xs text-slate-400 block font-medium">Mots de passe oubliés</span>
-          <span id="stat-resets" class="text-2xl font-black text-orange-400">0</span>
-        </button>
+
+        <div onclick="openDataListModal('mots_de_passe_oublies')" class="glass p-4 rounded-2xl border-l-4 border-orange-500 cursor-pointer hover:bg-slate-800/80 transition">
+          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Mots de passe oubliés</span>
+          <span id="stat-resets" class="text-2xl font-black text-orange-400 mt-1 block">0</span>
+          <span class="text-[10px] text-orange-400 mt-2 block font-medium">Gérer les demandes →</span>
+        </div>
+
+      </div>
+
+      <!-- SECTION LIENS DE CONCOURS GENERES AUTOMATIQUEMENT -->
+      <div class="glass p-5 rounded-2xl space-y-4">
+        <h3 class="font-bold text-white text-sm flex items-center gap-2">
+          <i class="fa-solid fa-link text-amber-400"></i> Liens Uniques des Concours Générés
+        </h3>
+        <div id="admin-links-container" class="space-y-3 max-h-72 overflow-y-auto text-xs">
+          <!-- Dynamically populated links -->
+        </div>
       </div>
 
       <div class="flex justify-end pt-4">
-        <button onclick="logout()" class="px-4 py-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-xl text-xs font-semibold">
-          <i class="fa-solid fa-right-from-bracket mr-1"></i> Déconnexion Admin
+        <button onclick="logout()" class="px-4 py-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-xl text-xs font-bold hover:bg-red-500/30 transition">
+          <i class="fa-solid fa-right-from-bracket mr-1"></i> Déconnexion Administrateur
         </button>
       </div>
     </section>
 
-    <!-- ADMIN PREMIUM SECTION -->
+    <!-- ADMIN PREMIUM CREATION & MANAGEMENT -->
     <section id="screen-admin-premium" class="hidden space-y-6">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
         <h2 class="text-xl font-bold text-amber-400 flex items-center gap-2">
-          <i class="fa-solid fa-crown"></i> Espace Administrateur Premium
+          <i class="fa-solid fa-crown"></i> Création & Mettre en Ligne un Concours
         </h2>
         <button onclick="showScreen('screen-admin-dash')" class="px-3 py-1.5 glass rounded-xl text-xs font-semibold">
           ← Retour Tableau de bord
         </button>
       </div>
 
-      <!-- Quick Action Tabs -->
-      <div class="glass p-6 rounded-2xl space-y-6">
-        <h3 class="font-bold text-white text-lg border-b border-slate-700 pb-2">1. Créer un nouveau concours</h3>
+      <div class="glass p-6 rounded-2xl space-y-6 shadow-xl">
         <form id="create-quiz-form" onsubmit="handleCreateQuiz(event)" class="space-y-4">
-          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Catégorie</label>
-              <select id="quiz-category" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs">
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Catégorie</label>
+              <select id="quiz-category" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
                 <option value="Primaire">Primaire</option>
                 <option value="Collège">Collège</option>
               </select>
             </div>
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Classe</label>
-              <select id="quiz-class" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs">
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Classe</label>
+              <select id="quiz-class" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
                 <option value="CE2">CE2</option>
                 <option value="CM1">CM1</option>
                 <option value="CM2">CM2</option>
@@ -223,49 +254,32 @@
               </select>
             </div>
             <div>
-              <label class="block text-xs text-slate-400 mb-1">Nom du Concours</label>
-              <input type="text" id="quiz-title" required placeholder="Ex: Grand Quiz Histoire" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs">
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Titre du Concours</label>
+              <input type="text" id="quiz-title" required placeholder="Ex: Grand Concours Histoire & Géographie" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
             </div>
           </div>
 
-          <!-- 5 Questions input setup -->
+          <!-- 5 Questions Generator -->
           <div class="space-y-4 pt-2">
-            <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Configuration des 5 Questions</h4>
+            <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Formulaire des 5 Questions obligatoires</h4>
             <div id="questions-inputs-container" class="space-y-4">
-              <!-- Dynamically built via JS for 5 questions -->
+              <!-- Built automatically by JS -->
             </div>
           </div>
 
-          <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-600 font-bold text-slate-950 rounded-xl transition">
-            Enregistrer & Mettre en Ligne le Concours
+          <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 font-black text-slate-950 rounded-xl transition shadow-lg text-xs uppercase tracking-wider">
+            Enregistrer & Générer le lien du concours
           </button>
         </form>
       </div>
-
-      <!-- Accounts & Results Control -->
-      <div class="grid md:grid-cols-2 gap-4">
-        <div class="glass p-5 rounded-2xl space-y-3">
-          <h3 class="font-bold text-white border-b border-slate-700 pb-2">Comptes Utilisateurs Créés</h3>
-          <div id="admin-accounts-list" class="space-y-2 max-h-60 overflow-y-auto text-xs">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-
-        <div class="glass p-5 rounded-2xl space-y-3">
-          <h3 class="font-bold text-white border-b border-slate-700 pb-2">Gestion des Récompenses & Paiements</h3>
-          <div id="admin-payments-list" class="space-y-2 max-h-60 overflow-y-auto text-xs">
-            <!-- Rendered by JS -->
-          </div>
-        </div>
-      </div>
     </section>
 
-    <!-- USER HUB / HOME -->
+    <!-- PARTICIPANT HOME -->
     <section id="screen-user-home" class="hidden space-y-6">
-      <div class="flex items-center justify-between">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
         <div>
           <h2 id="user-welcome" class="text-xl font-bold text-white">Bienvenue !</h2>
-          <p class="text-xs text-slate-400">Sélectionnez votre niveau pour participer aux concours</p>
+          <p class="text-xs text-slate-400">Sélectionnez un concours pour démarrer</p>
         </div>
         <div class="flex gap-2">
           <button onclick="showScreen('screen-user-profile')" class="glass px-3 py-2 rounded-xl text-xs font-semibold text-amber-400">
@@ -277,25 +291,19 @@
         </div>
       </div>
 
-      <!-- Category Filter Tabs -->
-      <div class="flex gap-2 border-b border-slate-800 pb-3">
+      <!-- Filters -->
+      <div class="flex gap-2">
         <button onclick="filterCategory('Tous')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950">Tous</button>
         <button onclick="filterCategory('Primaire')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold glass text-slate-300">Primaire</button>
         <button onclick="filterCategory('Collège')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold glass text-slate-300">Collège</button>
       </div>
 
-      <!-- Sub-classes grid -->
-      <div id="class-subfilters" class="flex flex-wrap gap-2">
-        <!-- Rendered by JS -->
-      </div>
-
-      <!-- Available Quizzes List -->
       <div id="user-quizzes-list" class="space-y-3">
-        <!-- Rendered by JS -->
+        <!-- Rendered dynamically -->
       </div>
     </section>
 
-    <!-- QUIZ / CONCOURS INTERFACE (10s Timer + TTS + Anti-Cheat) -->
+    <!-- QUIZ INTERFACE (10s Timer + TTS + Anti-Cheat) -->
     <section id="screen-quiz" class="hidden max-w-xl mx-auto space-y-6">
       <div class="flex items-center justify-between glass p-4 rounded-2xl">
         <span id="quiz-progress" class="text-xs font-bold text-slate-400">Question 1 / 5</span>
@@ -310,12 +318,12 @@
       </div>
 
       <div class="glass p-6 rounded-2xl space-y-6">
-        <h3 id="question-text" class="text-lg font-bold text-white text-center min-h-[60px] flex items-center justify-center">
+        <h3 id="question-text" class="text-base font-bold text-white text-center min-h-[60px] flex items-center justify-center">
           Chargement de la question...
         </h3>
 
         <div id="options-container" class="grid grid-cols-1 gap-3">
-          <!-- Options A, B, C, D generated dynamically -->
+          <!-- Dynamic options -->
         </div>
       </div>
     </section>
@@ -323,14 +331,14 @@
     <!-- USER PROFILE -->
     <section id="screen-user-profile" class="hidden max-w-md mx-auto space-y-6">
       <div class="flex items-center justify-between">
-        <h2 class="text-xl font-bold text-white">Mon Profil</h2>
+        <h2 class="text-xl font-bold text-white">Mon Profil Participant</h2>
         <button onclick="showScreen('screen-user-home')" class="glass px-3 py-1.5 rounded-xl text-xs">
-          ← Retour aux concours
+          ← Retour
         </button>
       </div>
 
       <div class="glass p-6 rounded-2xl space-y-4">
-        <div class="space-y-2 text-sm border-b border-slate-700 pb-4">
+        <div class="space-y-2 text-xs border-b border-slate-700 pb-4">
           <p><span class="text-slate-400">Nom :</span> <strong id="prof-nom" class="text-white"></strong></p>
           <p><span class="text-slate-400">Prénom :</span> <strong id="prof-prenom" class="text-white"></strong></p>
           <p><span class="text-slate-400">Ville :</span> <strong id="prof-ville" class="text-white"></strong></p>
@@ -340,10 +348,10 @@
 
         <form onsubmit="handlePasswordChange(event)" class="space-y-3 pt-2">
           <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Modifier mon mot de passe</h3>
-          <input type="password" id="change-pass-old" placeholder="Mot de passe actuel" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-          <input type="password" id="change-pass-new" pattern="\d{4}" maxlength="4" placeholder="Nouveau mot de passe (4 chiffres)" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          <input type="password" id="change-pass-old" placeholder="Mot de passe actuel" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          <input type="password" id="change-pass-new" pattern="\d{4}" maxlength="4" placeholder="Nouveau mot de passe (4 chiffres)" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
           <button type="submit" class="w-full py-2.5 bg-amber-500 font-bold text-slate-950 text-xs rounded-xl">
-            Enregistrer le nouveau mot de passe
+            Enregistrer les modifications
           </button>
         </form>
       </div>
@@ -351,32 +359,59 @@
 
   </main>
 
-  <!-- REVIEWS MODAL -->
-  <div id="reviews-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <!-- MODAL LISTES DE DONNEES DETAILLES -->
+  <div id="data-list-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass max-w-2xl w-full p-6 rounded-2xl space-y-4 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 id="data-modal-title" class="font-bold text-white text-base">Détails des données</h3>
+        <button onclick="closeModal('data-list-modal')" class="text-slate-400 hover:text-white font-bold">✕</button>
+      </div>
+      <div id="data-modal-content" class="overflow-y-auto flex-grow space-y-2 text-xs pr-1">
+        <!-- Dynamic content loaded on click -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FORGOT PASSWORD (ADMIN CONTROL) -->
+  <div id="forgot-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass max-w-md w-full p-6 rounded-2xl space-y-4">
+      <h3 class="font-bold text-white text-base border-b border-slate-700 pb-2">Récupération de mot de passe</h3>
+      <p class="text-xs text-slate-400">Entrez votre numéro WhatsApp pour soumettre une demande à l'administrateur.</p>
+      <input type="tel" id="forgot-wa-input" placeholder="+225 00000000" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white">
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="closeModal('forgot-modal')" class="px-3 py-2 text-xs text-slate-400">Annuler</button>
+        <button onclick="submitForgotPasswordRequest()" class="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl">Envoyer la demande</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL AVIS -->
+  <div id="reviews-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass max-w-md w-full p-6 rounded-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-700 pb-3">
-        <h3 class="font-bold text-white flex items-center gap-2">
-          <i class="fa-solid fa-star text-amber-400"></i> Avis des utilisateurs
+        <h3 class="font-bold text-white flex items-center gap-2 text-sm">
+          <i class="fa-solid fa-star text-amber-400"></i> Avis des Utilisateurs
         </h3>
-        <button onclick="toggleReviewsModal()" class="text-slate-400 hover:text-white">✕</button>
+        <button onclick="closeModal('reviews-modal')" class="text-slate-400 hover:text-white font-bold">✕</button>
       </div>
       <div class="space-y-3 max-h-60 overflow-y-auto text-xs">
-        <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
-          <div class="flex justify-between font-bold text-amber-400"><span>Kouassi A.</span> <span>★★★★★</span></div>
-          <p class="text-slate-300 mt-1">Superbe application pour réviser nos cours de 3e !</p>
+        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+          <div class="flex justify-between font-bold text-amber-400"><span>Kouassi Jean</span> <span>★★★★★</span></div>
+          <p class="text-slate-300 mt-1">Plateforme très fluide pour les révisions de BEPC !</p>
         </div>
-        <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
-          <div class="flex justify-between font-bold text-amber-400"><span>Fatou S.</span> <span>★★★★★</span></div>
-          <p class="text-slate-300 mt-1">J'ai reçu mon paiement WhatsApp en moins de 10 minutes ! Merci ZakariaTV.</p>
+        <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+          <div class="flex justify-between font-bold text-amber-400"><span>Awa Diop</span> <span>★★★★★</span></div>
+          <p class="text-slate-300 mt-1">Paiement reçu rapidement sur WhatsApp. Merci ZakariaTV Concours !</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT APP LOGIC -->
+  <!-- CORE JAVASCRIPT SYSTEM -->
   <script>
-    // INITIAL DATABASE / STATE
-    const DB_KEY = 'zakariatv_db_v1';
+    const DB_KEY = 'zakariatv_official_db';
+    
+    // Initial persistent state
     let state = JSON.parse(localStorage.getItem(DB_KEY)) || {
       users: [],
       quizzes: [],
@@ -389,18 +424,20 @@
       localStorage.setItem(DB_KEY, JSON.stringify(state));
     }
 
-    // STATE CONTROLLERS & NAVIGATION
     function showScreen(screenId) {
-      const screens = ['screen-login', 'screen-register', 'screen-admin-dash', 'screen-admin-premium', 'screen-user-home', 'screen-quiz', 'screen-user-profile'];
-      screens.forEach(id => {
+      ['screen-login', 'screen-register', 'screen-admin-dash', 'screen-admin-premium', 'screen-user-home', 'screen-quiz', 'screen-user-profile'].forEach(id => {
         document.getElementById(id)?.classList.add('hidden');
       });
       document.getElementById(screenId)?.classList.remove('hidden');
 
       if (screenId === 'screen-admin-dash') renderAdminDashboard();
-      if (screenId === 'screen-user-home') renderUserHome();
       if (screenId === 'screen-admin-premium') renderAdminPremium();
+      if (screenId === 'screen-user-home') renderUserHome();
+      if (screenId === 'screen-user-profile') renderUserProfile();
     }
+
+    function openModal(id) { document.getElementById(id)?.classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id)?.classList.add('hidden'); }
 
     // AUTHENTICATION LOGIC
     function handleLogin(e) {
@@ -408,7 +445,7 @@
       const userVal = document.getElementById('login-username').value.trim();
       const passVal = document.getElementById('login-password').value.trim();
 
-      // Check Admin
+      // STRICT ADMIN CHECK ONLY
       if (userVal === 'ZakariaTV' && passVal === '55250031') {
         state.currentUser = { role: 'admin', name: 'ZakariaTV' };
         saveState();
@@ -416,24 +453,23 @@
         return;
       }
 
-      // Check User
-      const foundUser = state.users.find(u => (u.nom + ' ' + u.prenom).toLowerCase() === userVal.toLowerCase() && u.pass === passVal);
+      // PARTICIPANT CHECK
+      const foundUser = state.users.find(u => `${u.nom} ${u.prenom}`.toLowerCase() === userVal.toLowerCase() && u.pass === passVal);
       if (foundUser) {
         state.currentUser = { role: 'user', ...foundUser };
         saveState();
         showScreen('screen-user-home');
       } else {
-        alert('Informations incorrectes. Veuillez vérifier votre nom ou mot de passe.');
+        alert('Identifiants incorrects. Veuillez réessayer.');
       }
     }
 
     function handleRegister(e) {
       e.preventDefault();
-      const whatsapp = document.getElementById('reg-whatsapp').value.trim();
-      
-      // Check single registration rule
-      if (state.users.some(u => u.whatsapp === whatsapp)) {
-        alert('Ce numéro WhatsApp est déjà inscrit !');
+      const wa = document.getElementById('reg-whatsapp').value.trim();
+
+      if (state.users.some(u => u.whatsapp === wa)) {
+        alert('Ce numéro WhatsApp est déjà inscrit ! Une seule inscription par personne est autorisée.');
         return;
       }
 
@@ -442,8 +478,9 @@
         prenom: document.getElementById('reg-prenom').value.trim(),
         ville: document.getElementById('reg-ville').value.trim(),
         pays: document.getElementById('reg-pays').value,
-        whatsapp: whatsapp,
-        pass: document.getElementById('reg-pass').value.trim()
+        whatsapp: wa,
+        pass: document.getElementById('reg-pass').value.trim(),
+        joinedDate: new Date().toLocaleDateString('fr-FR')
       };
 
       state.users.push(newUser);
@@ -459,23 +496,7 @@
       showScreen('screen-login');
     }
 
-    // FORGOT PASSWORD LOGIC
-    function showForgotPassword() {
-      const wa = prompt('Veuillez saisir votre numéro WhatsApp registered :');
-      if (!wa) return;
-      const user = state.users.find(u => u.whatsapp === wa);
-      if (user) {
-        if (confirm(`Confirmez-vous vos informations ?\n\nNom: ${user.nom}\nPrénom: ${user.prenom}\nVille: ${user.ville}\nPays: ${user.pays}\n\nCliquez sur OK pour envoyer la demande.`)) {
-          state.resetRequests.push(user);
-          saveState();
-          alert('Demande transmise à l\'administrateur.');
-        }
-      } else {
-        alert('Numéro introuvable.');
-      }
-    }
-
-    // ADMIN DASHBOARD RENDER
+    // ADMIN DASHBOARD & DYNAMIC STATS
     function renderAdminDashboard() {
       document.getElementById('stat-created').innerText = state.quizzes.length;
       document.getElementById('stat-completed').innerText = state.results.length;
@@ -485,79 +506,181 @@
       document.getElementById('stat-active').innerText = state.quizzes.filter(q => q.status === 'active').length;
       document.getElementById('stat-finished').innerText = state.quizzes.filter(q => q.status === 'finished').length;
       document.getElementById('stat-resets').innerText = state.resetRequests.length;
+
+      renderAdminLinks();
     }
 
-    function showResetRequestsModal() {
-      if (state.resetRequests.length === 0) {
-        alert('Aucune demande de réinitialisation en attente.');
+    function renderAdminLinks() {
+      const container = document.getElementById('admin-links-container');
+      if (state.quizzes.length === 0) {
+        container.innerHTML = '<p class="text-slate-500">Aucun concours disponible pour le moment.</p>';
         return;
       }
-      const req = state.resetRequests[0];
-      if (confirm(`Demande de ${req.nom} ${req.prenom} (${req.whatsapp}). Réinitialiser le mot de passe à 5555 ?`)) {
-        const u = state.users.find(usr => usr.whatsapp === req.whatsapp);
-        if (u) u.pass = '5555';
-        state.resetRequests.shift();
+
+      container.innerHTML = state.quizzes.map(q => `
+        <div class="glass-card p-3 rounded-xl flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <strong class="text-white">${q.title}</strong> (${q.category} - ${q.class})
+            <p class="text-[10px] text-amber-400 select-all font-mono mt-0.5">${q.link}</p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <button onclick="copyToClipboard('${q.link}')" class="px-2.5 py-1 bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg hover:bg-amber-500/30">
+              <i class="fa-solid fa-copy"></i> Copier
+            </button>
+            <button onclick="toggleQuizStatus(${q.id})" class="px-2.5 py-1 ${q.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'} rounded-lg">
+              ${q.status === 'active' ? 'En ligne' : 'Hors ligne'}
+            </button>
+            <button onclick="deleteQuiz(${q.id})" class="px-2 py-1 bg-red-600/30 text-red-400 rounded-lg">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+      alert('Lien copié dans le presse-papier !');
+    }
+
+    function toggleQuizStatus(quizId) {
+      const q = state.quizzes.find(item => item.id === quizId);
+      if (q) {
+        q.status = q.status === 'active' ? 'finished' : 'active';
         saveState();
-        alert(`Message WhatsApp simulé envoyé à ${req.whatsapp} :\n"Votre demande de réinitialisation a été acceptée. Votre nouveau mot de passe provisoire est 5555."`);
         renderAdminDashboard();
       }
     }
 
-    // ADMIN PREMIUM - CREATE QUIZ BUILDER
+    function deleteQuiz(quizId) {
+      if (confirm('Êtes-vous sûr de vouloir supprimer définitivement ce concours ?')) {
+        state.quizzes = state.quizzes.filter(q => q.id !== quizId);
+        saveState();
+        renderAdminDashboard();
+      }
+    }
+
+    // MODAL AUTOMATIQUE - COMPTEURS DE STATISTIQUES
+    function openDataListModal(type) {
+      const title = document.getElementById('data-modal-title');
+      const content = document.getElementById('data-modal-content');
+      
+      let html = '';
+
+      if (type === 'comptes_crees') {
+        title.innerText = 'Tous les comptes créés';
+        html = state.users.map(u => `
+          <div class="glass-card p-3 rounded-xl flex justify-between items-center">
+            <div>
+              <strong class="text-white">${u.nom} ${u.prenom}</strong>
+              <p class="text-[10px] text-slate-400">${u.ville}, ${u.pays} | Inscrit le: ${u.joinedDate || 'N/A'}</p>
+            </div>
+            <div class="text-amber-400 font-mono">${u.whatsapp}</div>
+          </div>
+        `).join('') || '<p class="text-slate-500">Aucun compte trouvé.</p>';
+      } 
+      else if (type === 'participants') {
+        title.innerText = 'Liste complète des participants aux concours';
+        html = state.results.map(r => `
+          <div class="glass-card p-3 rounded-xl flex justify-between items-center">
+            <div>
+              <strong class="text-white">${r.nom} ${r.prenom}</strong> (${r.ville}, ${r.pays})
+              <p class="text-[10px] text-slate-400">Score: ${r.score}/5 | WhatsApp: ${r.whatsapp}</p>
+            </div>
+            <span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded">${r.quizTitle}</span>
+          </div>
+        `).join('') || '<p class="text-slate-500">Aucun participant répertorié.</p>';
+      }
+      else if (type === 'gagnants') {
+        title.innerText = 'Liste des gagnants (Top Scores)';
+        const winners = state.results.filter(r => r.score >= 3);
+        html = winners.map(r => `
+          <div class="glass-card p-3 rounded-xl flex justify-between items-center border-l-4 border-yellow-500">
+            <div>
+              <strong class="text-white">${r.nom} ${r.prenom}</strong> - <span class="text-yellow-400">${r.score}/5 Pts</span>
+              <p class="text-[10px] text-slate-400">Contact WhatsApp: ${r.whatsapp}</p>
+            </div>
+            <span class="px-2 py-1 bg-emerald-500/20 text-emerald-400 rounded text-[10px] font-bold">${r.badge || 'En cours de paiement'}</span>
+          </div>
+        `).join('') || '<p class="text-slate-500">Aucun gagnant pour le moment.</p>';
+      }
+      else if (type === 'mots_de_passe_oublies') {
+        title.innerText = 'Demandes de réinitialisation de mot de passe';
+        html = state.resetRequests.map((req, idx) => `
+          <div class="glass-card p-3 rounded-xl flex justify-between items-center border-l-4 border-orange-500">
+            <div>
+              <strong class="text-white">${req.nom} ${req.prenom}</strong> (${req.ville}, ${req.pays})
+              <p class="text-[10px] text-amber-400 font-mono">WhatsApp: ${req.whatsapp}</p>
+            </div>
+            <button onclick="approvePasswordReset(${idx})" class="px-3 py-1.5 bg-amber-500 text-slate-950 font-bold rounded-lg text-[10px]">
+              Réinitialiser à 5555
+            </button>
+          </div>
+        `).join('') || '<p class="text-slate-500">Aucune demande en attente.</p>';
+      }
+      else {
+        title.innerText = 'Liste des concours';
+        html = state.quizzes.map(q => `
+          <div class="glass-card p-3 rounded-xl flex justify-between items-center">
+            <div>
+              <strong class="text-white">${q.title}</strong>
+              <p class="text-[10px] text-slate-400">${q.category} - ${q.class} | Statut: ${q.status}</p>
+            </div>
+            <span class="text-amber-400 font-mono text-[10px]">${q.createdDate}</span>
+          </div>
+        `).join('') || '<p class="text-slate-500">Aucun concours trouvé.</p>';
+      }
+
+      content.innerHTML = html;
+      openModal('data-list-modal');
+    }
+
+    function approvePasswordReset(index) {
+      const req = state.resetRequests[index];
+      const user = state.users.find(u => u.whatsapp === req.whatsapp);
+      if (user) {
+        user.pass = '5555';
+        alert(`Message WhatsApp transmis à ${req.whatsapp} :\n"Votre demande de réinitialisation a été acceptée. Votre nouveau mot de passe provisoire est 5555."`);
+      }
+      state.resetRequests.splice(index, 1);
+      saveState();
+      closeModal('data-list-modal');
+      renderAdminDashboard();
+    }
+
+    // CREATE QUIZ BUILDER & AUTOMATIC LINK GENERATOR
     function renderAdminPremium() {
       const container = document.getElementById('questions-inputs-container');
       if (container.children.length === 0) {
         let html = '';
         for (let i = 1; i <= 5; i++) {
           html += `
-            <div class="bg-slate-800/40 p-3 rounded-xl border border-slate-700/50 space-y-2">
-              <input type="text" id="q${i}-text" required placeholder="Question ${i}" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs">
+            <div class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 space-y-2">
+              <input type="text" id="q${i}-text" required placeholder="Saisir le texte de la Question ${i}" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-xs text-white">
               <div class="grid grid-cols-2 gap-2">
-                <input type="text" id="q${i}-optA" required placeholder="Réponse A" class="bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs">
-                <input type="text" id="q${i}-optB" required placeholder="Réponse B" class="bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs">
-                <input type="text" id="q${i}-optC" required placeholder="Réponse C" class="bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs">
-                <input type="text" id="q${i}-optD" required placeholder="Réponse D" class="bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs">
+                <input type="text" id="q${i}-optA" required placeholder="Option A" class="bg-slate-950 border border-slate-700 rounded-lg p-1.5 text-xs text-white">
+                <input type="text" id="q${i}-optB" required placeholder="Option B" class="bg-slate-950 border border-slate-700 rounded-lg p-1.5 text-xs text-white">
+                <input type="text" id="q${i}-optC" required placeholder="Option C" class="bg-slate-950 border border-slate-700 rounded-lg p-1.5 text-xs text-white">
+                <input type="text" id="q${i}-optD" required placeholder="Option D" class="bg-slate-950 border border-slate-700 rounded-lg p-1.5 text-xs text-white">
               </div>
-              <select id="q${i}-correct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs font-bold text-amber-400">
-                <option value="A">Bonne réponse : A</option>
-                <option value="B">Bonne réponse : B</option>
-                <option value="C">Bonne réponse : C</option>
-                <option value="D">Bonne réponse : D</option>
+              <select id="q${i}-correct" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-1.5 text-xs font-bold text-amber-400">
+                <option value="A">Bonne réponse attribuée : Option A</option>
+                <option value="B">Bonne réponse attribuée : Option B</option>
+                <option value="C">Bonne réponse attribuée : Option C</option>
+                <option value="D">Bonne réponse attribuée : Option D</option>
               </select>
             </div>
           `;
         }
         container.innerHTML = html;
       }
-
-      // Accounts List
-      const accList = document.getElementById('admin-accounts-list');
-      accList.innerHTML = state.users.map(u => `
-        <div class="bg-slate-800 p-2.5 rounded-xl flex justify-between items-center">
-          <div><strong>${u.nom} ${u.prenom}</strong> (${u.ville}, ${u.pays})</div>
-          <div class="text-amber-400">${u.whatsapp}</div>
-        </div>
-      `).join('') || '<p class="text-slate-500">Aucun compte créé.</p>';
-
-      // Payments List
-      const payList = document.getElementById('admin-payments-list');
-      const top3Results = state.results.sort((a,b) => b.score - a.score);
-      payList.innerHTML = top3Results.map((r, idx) => `
-        <div class="bg-slate-800 p-2.5 rounded-xl flex justify-between items-center">
-          <div>
-            <strong>${r.nom} ${r.prenom}</strong> - ${r.score}/5 pts
-            <span class="block text-[10px] text-slate-400">${r.badge || 'En cours de paiement'}</span>
-          </div>
-          <button onclick="validatePayment(${idx})" class="px-2 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded text-[10px]">
-            Valider Paiement
-          </button>
-        </div>
-      `).join('') || '<p class="text-slate-500">Aucun résultat enregisté.</p>';
     }
 
     function handleCreateQuiz(e) {
       e.preventDefault();
+      const quizId = Date.now();
       const questions = [];
+
       for (let i = 1; i <= 5; i++) {
         questions.push({
           q: document.getElementById(`q${i}-text`).value,
@@ -571,30 +694,43 @@
         });
       }
 
+      // AUTOMATIC LINK GENERATION
+      const generatedLink = `${window.location.origin}${window.location.pathname}?quizId=${quizId}`;
+
       const newQuiz = {
-        id: Date.now(),
+        id: quizId,
         title: document.getElementById('quiz-title').value,
         category: document.getElementById('quiz-category').value,
         class: document.getElementById('quiz-class').value,
         questions: questions,
+        link: generatedLink,
         status: 'active',
-        createdDate: new Date().toLocaleDateString()
+        createdDate: new Date().toLocaleDateString('fr-FR')
       };
 
       state.quizzes.push(newQuiz);
       saveState();
-      alert('Concours créé et mis en ligne avec succès !');
+      alert(`Concours créé avec succès !\nLien généré automatiquement : ${generatedLink}`);
       showScreen('screen-admin-dash');
     }
 
-    function validatePayment(resultIndex) {
-      state.results[resultIndex].badge = 'Déjà payé';
-      saveState();
-      renderAdminPremium();
-      alert('Statut du paiement mis à jour !');
+    // FORGOT PASSWORD REQUEST (PARTICIPANT)
+    function showForgotPasswordModal() { openModal('forgot-modal'); }
+    
+    function submitForgotPasswordRequest() {
+      const wa = document.getElementById('forgot-wa-input').value.trim();
+      const user = state.users.find(u => u.whatsapp === wa);
+      if (user) {
+        state.resetRequests.push(user);
+        saveState();
+        alert('Votre demande a été transmise à l\'administrateur.');
+        closeModal('forgot-modal');
+      } else {
+        alert('Numéro WhatsApp introuvable.');
+      }
     }
 
-    // USER HOME & QUIZ ENGINE
+    // PARTICIPANT HOME & QUIZ ENGINE
     let selectedCat = 'Tous';
     let activeQuiz = null;
     let currentQIdx = 0;
@@ -609,23 +745,14 @@
 
     function renderUserHome() {
       if (state.currentUser && state.currentUser.nom) {
-        document.getElementById('user-welcome').innerText = `Salut, ${state.currentUser.prenom} !`;
+        document.getElementById('user-welcome').innerText = `Bonjour, ${state.currentUser.prenom} ${state.currentUser.nom} !`;
       }
 
-      const subContainer = document.getElementById('class-subfilters');
-      if (selectedCat === 'Primaire') {
-        subContainer.innerHTML = ['CE2', 'CM1', 'CM2'].map(c => `<span class="px-3 py-1 bg-slate-800 rounded-lg text-xs font-semibold text-amber-400 border border-slate-700">${c}</span>`).join('');
-      } else if (selectedCat === 'Collège') {
-        subContainer.innerHTML = ['6e', '5e', '4e', '3e', 'Seconde', 'Première', 'Terminale'].map(c => `<span class="px-3 py-1 bg-slate-800 rounded-lg text-xs font-semibold text-amber-400 border border-slate-700">${c}</span>`).join('');
-      } else {
-        subContainer.innerHTML = '';
-      }
-
-      const listContainer = document.getElementById('user-quizzes-list');
-      const filtered = state.quizzes.filter(q => selectedCat === 'Tous' || q.category === selectedCat);
+      const container = document.getElementById('user-quizzes-list');
+      const filtered = state.quizzes.filter(q => (selectedCat === 'Tous' || q.category === selectedCat) && q.status === 'active');
 
       if (filtered.length === 0) {
-        listContainer.innerHTML = `
+        container.innerHTML = `
           <div class="glass p-6 rounded-2xl text-center text-slate-400 text-xs leading-relaxed">
             Veuillez nous excuser, aucun concours n'est disponible pour le moment dans ce niveau. Merci de choisir un autre niveau ou de revenir plus tard.
           </div>
@@ -633,13 +760,13 @@
         return;
       }
 
-      listContainer.innerHTML = filtered.map(q => `
+      container.innerHTML = filtered.map(q => `
         <div class="glass p-4 rounded-2xl flex items-center justify-between">
           <div>
             <h4 class="font-bold text-white text-sm">${q.title}</h4>
             <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">${q.category} - ${q.class}</span>
           </div>
-          <button onclick="startQuiz(${q.id})" class="px-4 py-2 bg-amber-500 font-bold text-slate-950 rounded-xl text-xs">
+          <button onclick="startQuiz(${q.id})" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 font-bold text-slate-950 rounded-xl text-xs shadow-lg">
             Participer
           </button>
         </div>
@@ -678,7 +805,7 @@
 
       const optsContainer = document.getElementById('options-container');
       optsContainer.innerHTML = ['A', 'B', 'C', 'D'].map(key => `
-        <button onclick="submitAnswer('${key}')" class="w-full text-left p-3.5 bg-slate-800/80 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-500/50 rounded-xl text-xs font-semibold text-white transition flex items-center gap-3">
+        <button onclick="submitAnswer('${key}')" class="w-full text-left p-3.5 bg-slate-900 hover:bg-amber-500/20 border border-slate-800 hover:border-amber-500/50 rounded-xl text-xs font-semibold text-white transition flex items-center gap-3">
           <span class="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">${key}</span>
           ${q.opts[key]}
         </button>
@@ -691,15 +818,14 @@
         document.getElementById('quiz-timer').innerText = `${timeLeft}s`;
         if (timeLeft <= 0) {
           clearInterval(quizTimer);
-          submitAnswer(null); // Timeout
+          submitAnswer(null);
         }
       }, 1000);
     }
 
     function submitAnswer(selectedKey) {
       clearInterval(quizTimer);
-      const q = activeQuiz.questions[currentQIdx];
-      if (selectedKey === q.correct) {
+      if (selectedKey === activeQuiz.questions[currentQIdx].correct) {
         quizScore++;
       }
       currentQIdx++;
@@ -715,11 +841,11 @@
     }
 
     function finishQuiz() {
-      const isTop3 = quizScore >= 3;
-      recordQuizResult(isTop3 ? 'En cours de paiement' : 'Terminé', quizScore);
+      const isWinner = quizScore >= 3;
+      recordQuizResult(isWinner ? 'En cours de paiement' : 'Terminé', quizScore);
 
-      if (isTop3) {
-        alert(`Félicitations ! Vous faites partie des trois premiers avec ${quizScore}/5 points. Your reward is processing.\n\nVous recevrez un message WhatsApp dans un délai de 15 minutes pour votre paiement. Si vous ne recevez aucun message après ce délai, veuillez contacter le : 0799591024 ou 0585971941.`);
+      if (isWinner) {
+        alert(`Félicitations ! Vous faites partie des trois premiers avec ${quizScore}/5 points.\n\nVous recevrez un message WhatsApp dans un délai de 15 minutes pour votre paiement. Si vous ne recevez aucun message après ce délai, veuillez contacter le : 0799591024 ou 0585971941.`);
       } else {
         alert(`Merci d'avoir participé à ce concours. Votre score : ${quizScore}/5. Veuillez retourner à l'accueil.`);
       }
@@ -734,6 +860,7 @@
         nom: state.currentUser.nom,
         prenom: state.currentUser.prenom,
         ville: state.currentUser.ville,
+        pays: state.currentUser.pays,
         whatsapp: state.currentUser.whatsapp,
         score: score,
         badge: badgeStatus,
@@ -767,16 +894,11 @@
       if (u) u.pass = newP;
 
       saveState();
-      alert('Mot de passe mis à jour avec succès !');
-    }
-
-    function toggleReviewsModal() {
-      document.getElementById('reviews-modal').classList.toggle('hidden');
+      alert('Votre mot de passe a été modifié avec succès !');
     }
 
     // INITIALIZATION
     window.onload = () => {
-      // Direct Admin access logic check
       showScreen('screen-login');
     };
   </script>
