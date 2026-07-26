@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="fr" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZakariaTV Concours</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+  </style>
+</head>
+<body class="h-full flex flex-col justify-between">
+
+  <!-- TOP BAR / HEADER -->
+  <header class="glass sticky top-0 z-50 px-4 py-3 shadow-lg flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center font-black text-xl shadow-lg shadow-amber-500/20">
+        ZTV
+      </div>
+      <h1 class="text-xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-500">
+        ZakariaTV <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">Concours</span>
+      </h1>
+    </div>
+
+    <!-- Right Profile / Nav Controls -->
+    <div id="header-right" class="flex items-center space-x-3">
+      <!-- Admin photo/avis badge (shown dynamically) -->
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow container mx-auto px-4 py-6 max-w-4xl">
+
+    <!-- LOGIN SCREEN (Admin & Users) -->
+    <section id="screen-login" class="space-y-6 max-w-md mx-auto">
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-extrabold text-white">Connexion</h2>
+        <p class="text-slate-400 text-sm">Entrez vos identifiants pour accéder à ZakariaTV Concours</p>
+      </div>
+
+      <form id="login-form" onsubmit="handleLogin(event)" class="glass p-6 rounded-2xl space-y-4 shadow-xl">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nom / Identifiant</label>
+          <input type="text" id="login-username" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="Ex: ZakariaTV ou votre Nom">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Mot de passe</label>
+          <input type="password" id="login-password" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500 transition" placeholder="Mot de passe">
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 font-bold rounded-xl text-white shadow-lg shadow-amber-500/25 transition">
+          Se connecter
+        </button>
+
+        <div class="flex items-center justify-between text-xs pt-2 text-slate-400">
+          <button type="button" onclick="showForgotPassword()" class="hover:text-amber-400 underline">Mot de passe oublié ?</button>
+          <button type="button" onclick="showScreen('screen-register')" class="text-amber-400 font-semibold hover:underline">Créer un compte</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- REGISTER SCREEN -->
+    <section id="screen-register" class="hidden space-y-6 max-w-md mx-auto">
+      <div class="text-center space-y-2">
+        <h2 class="text-3xl font-extrabold text-white">Créer un compte</h2>
+        <p class="text-slate-400 text-sm">Remplissez les informations suivantes pour participer</p>
+      </div>
+
+      <form id="register-form" onsubmit="handleRegister(event)" class="glass p-6 rounded-2xl space-y-4 shadow-xl">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Nom</label>
+            <input type="text" id="reg-nom" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Prénom</label>
+            <input type="text" id="reg-prenom" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Ville</label>
+            <input type="text" id="reg-ville" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Pays</label>
+            <select id="reg-pays" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500">
+              <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+              <option value="Sénégal">Sénégal</option>
+              <option value="Cameroun">Cameroun</option>
+              <option value="Mali">Mali</option>
+              <option value="Burkina Faso">Burkina Faso</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Contact WhatsApp</label>
+          <input type="tel" id="reg-whatsapp" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" placeholder="+225 0102030405">
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Mot de passe (4 chiffres)</label>
+          <input type="password" id="reg-pass" pattern="\d{4}" maxlength="4" required class="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500" placeholder="1234">
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 font-bold rounded-xl text-white shadow-lg transition">
+          Terminer l'inscription
+        </button>
+
+        <button type="button" onclick="showScreen('screen-login')" class="w-full text-center text-xs text-slate-400 hover:underline">
+          Déjà un compte ? Se connecter
+        </button>
+      </form>
+    </section>
+
+    <!-- ADMIN DASHBOARD -->
+    <section id="screen-admin-dash" class="hidden space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-user-shield text-amber-500"></i> Espace Administrateur
+          </h2>
+          <p class="text-xs text-slate-400">Gestion globale des concours, membres et paiements</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="toggleReviewsModal()" class="glass px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 text-amber-400 hover:bg-slate-800">
+            <i class="fa-solid fa-star text-amber-400"></i> Avis (4.9 ★)
+          </button>
+          <button onclick="showScreen('screen-admin-premium')" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-extrabold px-4 py-2 rounded-xl text-xs shadow-lg shadow-amber-500/20 flex items-center gap-1.5">
+            <i class="fa-solid fa-crown"></i> Espace Premium
+          </button>
+        </div>
+      </div>
+
+      <!-- DASHBOARD CARDS GRID -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="glass p-4 rounded-2xl border-l-4 border-amber-500">
+          <span class="text-xs text-slate-400 block font-medium">Concours créés</span>
+          <span id="stat-created" class="text-2xl font-black text-white">0</span>
+        </div>
+        <div class="glass p-4 rounded-2xl border-l-4 border-emerald-500">
+          <span class="text-xs text-slate-400 block font-medium">Concours effectués</span>
+          <span id="stat-completed" class="text-2xl font-black text-white">0</span>
+        </div>
+        <div class="glass p-4 rounded-2xl border-l-4 border-blue-500">
+          <span class="text-xs text-slate-400 block font-medium">Comptes créés</span>
+          <span id="stat-accounts" class="text-2xl font-black text-white">0</span>
+        </div>
+        <div class="glass p-4 rounded-2xl border-l-4 border-purple-500">
+          <span class="text-xs text-slate-400 block font-medium">Participants</span>
+          <span id="stat-participants" class="text-2xl font-black text-white">0</span>
+        </div>
+        <div class="glass p-4 rounded-2xl border-l-4 border-yellow-500">
+          <span class="text-xs text-slate-400 block font-medium">Gagnants</span>
+          <span id="stat-winners" class="text-2xl font-black text-white">0</span>
+        </div>
+        <div class="glass p-4 rounded-2xl border-l-4 border-sky-500">
+          <span class="text-xs text-slate-400 block font-medium">En cours</span>
+          <span id="stat-active" class="text-2xl font-black text-white">0</span>
+        </div>
+        <div class="glass p-4 rounded-2xl border-l-4 border-rose-500">
+          <span class="text-xs text-slate-400 block font-medium">Terminés</span>
+          <span id="stat-finished" class="text-2xl font-black text-white">0</span>
+        </div>
+        <button onclick="showResetRequestsModal()" class="glass p-4 rounded-2xl border-l-4 border-orange-500 text-left hover:bg-slate-800 transition">
+          <span class="text-xs text-slate-400 block font-medium">Mots de passe oubliés</span>
+          <span id="stat-resets" class="text-2xl font-black text-orange-400">0</span>
+        </button>
+      </div>
+
+      <div class="flex justify-end pt-4">
+        <button onclick="logout()" class="px-4 py-2 bg-red-500/20 text-red-400 border border-red-500/30 rounded-xl text-xs font-semibold">
+          <i class="fa-solid fa-right-from-bracket mr-1"></i> Déconnexion Admin
+        </button>
+      </div>
+    </section>
+
+    <!-- ADMIN PREMIUM SECTION -->
+    <section id="screen-admin-premium" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold text-amber-400 flex items-center gap-2">
+          <i class="fa-solid fa-crown"></i> Espace Administrateur Premium
+        </h2>
+        <button onclick="showScreen('screen-admin-dash')" class="px-3 py-1.5 glass rounded-xl text-xs font-semibold">
+          ← Retour Tableau de bord
+        </button>
+      </div>
+
+      <!-- Quick Action Tabs -->
+      <div class="glass p-6 rounded-2xl space-y-6">
+        <h3 class="font-bold text-white text-lg border-b border-slate-700 pb-2">1. Créer un nouveau concours</h3>
+        <form id="create-quiz-form" onsubmit="handleCreateQuiz(event)" class="space-y-4">
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Catégorie</label>
+              <select id="quiz-category" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs">
+                <option value="Primaire">Primaire</option>
+                <option value="Collège">Collège</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Classe</label>
+              <select id="quiz-class" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs">
+                <option value="CE2">CE2</option>
+                <option value="CM1">CM1</option>
+                <option value="CM2">CM2</option>
+                <option value="6e">6e</option>
+                <option value="5e">5e</option>
+                <option value="4e">4e</option>
+                <option value="3e">3e</option>
+                <option value="Seconde">Seconde</option>
+                <option value="Première">Première</option>
+                <option value="Terminale">Terminale</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-slate-400 mb-1">Nom du Concours</label>
+              <input type="text" id="quiz-title" required placeholder="Ex: Grand Quiz Histoire" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-2.5 text-xs">
+            </div>
+          </div>
+
+          <!-- 5 Questions input setup -->
+          <div class="space-y-4 pt-2">
+            <h4 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Configuration des 5 Questions</h4>
+            <div id="questions-inputs-container" class="space-y-4">
+              <!-- Dynamically built via JS for 5 questions -->
+            </div>
+          </div>
+
+          <button type="submit" class="w-full py-3 bg-amber-500 hover:bg-amber-600 font-bold text-slate-950 rounded-xl transition">
+            Enregistrer & Mettre en Ligne le Concours
+          </button>
+        </form>
+      </div>
+
+      <!-- Accounts & Results Control -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="glass p-5 rounded-2xl space-y-3">
+          <h3 class="font-bold text-white border-b border-slate-700 pb-2">Comptes Utilisateurs Créés</h3>
+          <div id="admin-accounts-list" class="space-y-2 max-h-60 overflow-y-auto text-xs">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="glass p-5 rounded-2xl space-y-3">
+          <h3 class="font-bold text-white border-b border-slate-700 pb-2">Gestion des Récompenses & Paiements</h3>
+          <div id="admin-payments-list" class="space-y-2 max-h-60 overflow-y-auto text-xs">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- USER HUB / HOME -->
+    <section id="screen-user-home" class="hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 id="user-welcome" class="text-xl font-bold text-white">Bienvenue !</h2>
+          <p class="text-xs text-slate-400">Sélectionnez votre niveau pour participer aux concours</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="showScreen('screen-user-profile')" class="glass px-3 py-2 rounded-xl text-xs font-semibold text-amber-400">
+            <i class="fa-solid fa-user mr-1"></i> Mon Profil
+          </button>
+          <button onclick="logout()" class="glass px-3 py-2 rounded-xl text-xs font-semibold text-red-400">
+            <i class="fa-solid fa-power-off"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="flex gap-2 border-b border-slate-800 pb-3">
+        <button onclick="filterCategory('Tous')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950">Tous</button>
+        <button onclick="filterCategory('Primaire')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold glass text-slate-300">Primaire</button>
+        <button onclick="filterCategory('Collège')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold glass text-slate-300">Collège</button>
+      </div>
+
+      <!-- Sub-classes grid -->
+      <div id="class-subfilters" class="flex flex-wrap gap-2">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Available Quizzes List -->
+      <div id="user-quizzes-list" class="space-y-3">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- QUIZ / CONCOURS INTERFACE (10s Timer + TTS + Anti-Cheat) -->
+    <section id="screen-quiz" class="hidden max-w-xl mx-auto space-y-6">
+      <div class="flex items-center justify-between glass p-4 rounded-2xl">
+        <span id="quiz-progress" class="text-xs font-bold text-slate-400">Question 1 / 5</span>
+        <div class="flex items-center gap-3">
+          <button onclick="speakCurrentQuestion()" class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center hover:bg-amber-500/30">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+          <div id="quiz-timer" class="text-xl font-black text-red-500 bg-red-500/10 px-3 py-1 rounded-xl border border-red-500/30 animate-pulse">
+            10s
+          </div>
+        </div>
+      </div>
+
+      <div class="glass p-6 rounded-2xl space-y-6">
+        <h3 id="question-text" class="text-lg font-bold text-white text-center min-h-[60px] flex items-center justify-center">
+          Chargement de la question...
+        </h3>
+
+        <div id="options-container" class="grid grid-cols-1 gap-3">
+          <!-- Options A, B, C, D generated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- USER PROFILE -->
+    <section id="screen-user-profile" class="hidden max-w-md mx-auto space-y-6">
+      <div class="flex items-center justify-between">
+        <h2 class="text-xl font-bold text-white">Mon Profil</h2>
+        <button onclick="showScreen('screen-user-home')" class="glass px-3 py-1.5 rounded-xl text-xs">
+          ← Retour aux concours
+        </button>
+      </div>
+
+      <div class="glass p-6 rounded-2xl space-y-4">
+        <div class="space-y-2 text-sm border-b border-slate-700 pb-4">
+          <p><span class="text-slate-400">Nom :</span> <strong id="prof-nom" class="text-white"></strong></p>
+          <p><span class="text-slate-400">Prénom :</span> <strong id="prof-prenom" class="text-white"></strong></p>
+          <p><span class="text-slate-400">Ville :</span> <strong id="prof-ville" class="text-white"></strong></p>
+          <p><span class="text-slate-400">Pays :</span> <strong id="prof-pays" class="text-white"></strong></p>
+          <p><span class="text-slate-400">WhatsApp :</span> <strong id="prof-whatsapp" class="text-white"></strong></p>
+        </div>
+
+        <form onsubmit="handlePasswordChange(event)" class="space-y-3 pt-2">
+          <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Modifier mon mot de passe</h3>
+          <input type="password" id="change-pass-old" placeholder="Mot de passe actuel" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          <input type="password" id="change-pass-new" pattern="\d{4}" maxlength="4" placeholder="Nouveau mot de passe (4 chiffres)" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          <button type="submit" class="w-full py-2.5 bg-amber-500 font-bold text-slate-950 text-xs rounded-xl">
+            Enregistrer le nouveau mot de passe
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- REVIEWS MODAL -->
+  <div id="reviews-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="glass max-w-md w-full p-6 rounded-2xl space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-3">
+        <h3 class="font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-star text-amber-400"></i> Avis des utilisateurs
+        </h3>
+        <button onclick="toggleReviewsModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+      <div class="space-y-3 max-h-60 overflow-y-auto text-xs">
+        <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
+          <div class="flex justify-between font-bold text-amber-400"><span>Kouassi A.</span> <span>★★★★★</span></div>
+          <p class="text-slate-300 mt-1">Superbe application pour réviser nos cours de 3e !</p>
+        </div>
+        <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
+          <div class="flex justify-between font-bold text-amber-400"><span>Fatou S.</span> <span>★★★★★</span></div>
+          <p class="text-slate-300 mt-1">J'ai reçu mon paiement WhatsApp en moins de 10 minutes ! Merci ZakariaTV.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APP LOGIC -->
+  <script>
+    // INITIAL DATABASE / STATE
+    const DB_KEY = 'zakariatv_db_v1';
+    let state = JSON.parse(localStorage.getItem(DB_KEY)) || {
+      users: [],
+      quizzes: [],
+      results: [],
+      resetRequests: [],
+      currentUser: null
+    };
+
+    function saveState() {
+      localStorage.setItem(DB_KEY, JSON.stringify(state));
+    }
+
+    // STATE CONTROLLERS & NAVIGATION
+    function showScreen(screenId) {
+      const screens = ['screen-login', 'screen-register', 'screen-admin-dash', 'screen-admin-premium', 'screen-user-home', 'screen-quiz', 'screen-user-profile'];
+      screens.forEach(id => {
+        document.getElementById(id)?.classList.add('hidden');
+      });
+      document.getElementById(screenId)?.classList.remove('hidden');
+
+      if (screenId === 'screen-admin-dash') renderAdminDashboard();
+      if (screenId === 'screen-user-home') renderUserHome();
+      if (screenId === 'screen-admin-premium') renderAdminPremium();
+    }
+
+    // AUTHENTICATION LOGIC
+    function handleLogin(e) {
+      e.preventDefault();
+      const userVal = document.getElementById('login-username').value.trim();
+      const passVal = document.getElementById('login-password').value.trim();
+
+      // Check Admin
+      if (userVal === 'ZakariaTV' && passVal === '55250031') {
+        state.currentUser = { role: 'admin', name: 'ZakariaTV' };
+        saveState();
+        showScreen('screen-admin-dash');
+        return;
+      }
+
+      // Check User
+      const foundUser = state.users.find(u => (u.nom + ' ' + u.prenom).toLowerCase() === userVal.toLowerCase() && u.pass === passVal);
+      if (foundUser) {
+        state.currentUser = { role: 'user', ...foundUser };
+        saveState();
+        showScreen('screen-user-home');
+      } else {
+        alert('Informations incorrectes. Veuillez vérifier votre nom ou mot de passe.');
+      }
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const whatsapp = document.getElementById('reg-whatsapp').value.trim();
+      
+      // Check single registration rule
+      if (state.users.some(u => u.whatsapp === whatsapp)) {
+        alert('Ce numéro WhatsApp est déjà inscrit !');
+        return;
+      }
+
+      const newUser = {
+        nom: document.getElementById('reg-nom').value.trim(),
+        prenom: document.getElementById('reg-prenom').value.trim(),
+        ville: document.getElementById('reg-ville').value.trim(),
+        pays: document.getElementById('reg-pays').value,
+        whatsapp: whatsapp,
+        pass: document.getElementById('reg-pass').value.trim()
+      };
+
+      state.users.push(newUser);
+      state.currentUser = { role: 'user', ...newUser };
+      saveState();
+      alert('Inscription réussie !');
+      showScreen('screen-user-home');
+    }
+
+    function logout() {
+      state.currentUser = null;
+      saveState();
+      showScreen('screen-login');
+    }
+
+    // FORGOT PASSWORD LOGIC
+    function showForgotPassword() {
+      const wa = prompt('Veuillez saisir votre numéro WhatsApp registered :');
+      if (!wa) return;
+      const user = state.users.find(u => u.whatsapp === wa);
+      if (user) {
+        if (confirm(`Confirmez-vous vos informations ?\n\nNom: ${user.nom}\nPrénom: ${user.prenom}\nVille: ${user.ville}\nPays: ${user.pays}\n\nCliquez sur OK pour envoyer la demande.`)) {
+          state.resetRequests.push(user);
+          saveState();
+          alert('Demande transmise à l\'administrateur.');
+        }
+      } else {
+        alert('Numéro introuvable.');
+      }
+    }
+
+    // ADMIN DASHBOARD RENDER
+    function renderAdminDashboard() {
+      document.getElementById('stat-created').innerText = state.quizzes.length;
+      document.getElementById('stat-completed').innerText = state.results.length;
+      document.getElementById('stat-accounts').innerText = state.users.length;
+      document.getElementById('stat-participants').innerText = new Set(state.results.map(r => r.whatsapp)).size;
+      document.getElementById('stat-winners').innerText = state.results.filter(r => r.score >= 4).length;
+      document.getElementById('stat-active').innerText = state.quizzes.filter(q => q.status === 'active').length;
+      document.getElementById('stat-finished').innerText = state.quizzes.filter(q => q.status === 'finished').length;
+      document.getElementById('stat-resets').innerText = state.resetRequests.length;
+    }
+
+    function showResetRequestsModal() {
+      if (state.resetRequests.length === 0) {
+        alert('Aucune demande de réinitialisation en attente.');
+        return;
+      }
+      const req = state.resetRequests[0];
+      if (confirm(`Demande de ${req.nom} ${req.prenom} (${req.whatsapp}). Réinitialiser le mot de passe à 5555 ?`)) {
+        const u = state.users.find(usr => usr.whatsapp === req.whatsapp);
+        if (u) u.pass = '5555';
+        state.resetRequests.shift();
+        saveState();
+        alert(`Message WhatsApp simulé envoyé à ${req.whatsapp} :\n"Votre demande de réinitialisation a été acceptée. Votre nouveau mot de passe provisoire est 5555."`);
+        renderAdminDashboard();
+      }
+    }
+
+    // ADMIN PREMIUM - CREATE QUIZ BUILDER
+    function renderAdminPremium() {
+      const container = document.getElementById('questions-inputs-container');
+      if (container.children.length === 0) {
+        let html = '';
+        for (let i = 1; i <= 5; i++) {
+          html += `
+            <div class="bg-slate-800/40 p-3 rounded-xl border border-slate-700/50 space-y-2">
+              <input type="text" id="q${i}-text" required placeholder="Question ${i}" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-xs">
+              <div class="grid grid-cols-2 gap-2">
+                <input type="text" id="q${i}-optA" required placeholder="Réponse A" class="bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs">
+                <input type="text" id="q${i}-optB" required placeholder="Réponse B" class="bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs">
+                <input type="text" id="q${i}-optC" required placeholder="Réponse C" class="bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs">
+                <input type="text" id="q${i}-optD" required placeholder="Réponse D" class="bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs">
+              </div>
+              <select id="q${i}-correct" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-xs font-bold text-amber-400">
+                <option value="A">Bonne réponse : A</option>
+                <option value="B">Bonne réponse : B</option>
+                <option value="C">Bonne réponse : C</option>
+                <option value="D">Bonne réponse : D</option>
+              </select>
+            </div>
+          `;
+        }
+        container.innerHTML = html;
+      }
+
+      // Accounts List
+      const accList = document.getElementById('admin-accounts-list');
+      accList.innerHTML = state.users.map(u => `
+        <div class="bg-slate-800 p-2.5 rounded-xl flex justify-between items-center">
+          <div><strong>${u.nom} ${u.prenom}</strong> (${u.ville}, ${u.pays})</div>
+          <div class="text-amber-400">${u.whatsapp}</div>
+        </div>
+      `).join('') || '<p class="text-slate-500">Aucun compte créé.</p>';
+
+      // Payments List
+      const payList = document.getElementById('admin-payments-list');
+      const top3Results = state.results.sort((a,b) => b.score - a.score);
+      payList.innerHTML = top3Results.map((r, idx) => `
+        <div class="bg-slate-800 p-2.5 rounded-xl flex justify-between items-center">
+          <div>
+            <strong>${r.nom} ${r.prenom}</strong> - ${r.score}/5 pts
+            <span class="block text-[10px] text-slate-400">${r.badge || 'En cours de paiement'}</span>
+          </div>
+          <button onclick="validatePayment(${idx})" class="px-2 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded text-[10px]">
+            Valider Paiement
+          </button>
+        </div>
+      `).join('') || '<p class="text-slate-500">Aucun résultat enregisté.</p>';
+    }
+
+    function handleCreateQuiz(e) {
+      e.preventDefault();
+      const questions = [];
+      for (let i = 1; i <= 5; i++) {
+        questions.push({
+          q: document.getElementById(`q${i}-text`).value,
+          opts: {
+            A: document.getElementById(`q${i}-optA`).value,
+            B: document.getElementById(`q${i}-optB`).value,
+            C: document.getElementById(`q${i}-optC`).value,
+            D: document.getElementById(`q${i}-optD`).value
+          },
+          correct: document.getElementById(`q${i}-correct`).value
+        });
+      }
+
+      const newQuiz = {
+        id: Date.now(),
+        title: document.getElementById('quiz-title').value,
+        category: document.getElementById('quiz-category').value,
+        class: document.getElementById('quiz-class').value,
+        questions: questions,
+        status: 'active',
+        createdDate: new Date().toLocaleDateString()
+      };
+
+      state.quizzes.push(newQuiz);
+      saveState();
+      alert('Concours créé et mis en ligne avec succès !');
+      showScreen('screen-admin-dash');
+    }
+
+    function validatePayment(resultIndex) {
+      state.results[resultIndex].badge = 'Déjà payé';
+      saveState();
+      renderAdminPremium();
+      alert('Statut du paiement mis à jour !');
+    }
+
+    // USER HOME & QUIZ ENGINE
+    let selectedCat = 'Tous';
+    let activeQuiz = null;
+    let currentQIdx = 0;
+    let quizScore = 0;
+    let quizTimer = null;
+    let timeLeft = 10;
+
+    function filterCategory(cat) {
+      selectedCat = cat;
+      renderUserHome();
+    }
+
+    function renderUserHome() {
+      if (state.currentUser && state.currentUser.nom) {
+        document.getElementById('user-welcome').innerText = `Salut, ${state.currentUser.prenom} !`;
+      }
+
+      const subContainer = document.getElementById('class-subfilters');
+      if (selectedCat === 'Primaire') {
+        subContainer.innerHTML = ['CE2', 'CM1', 'CM2'].map(c => `<span class="px-3 py-1 bg-slate-800 rounded-lg text-xs font-semibold text-amber-400 border border-slate-700">${c}</span>`).join('');
+      } else if (selectedCat === 'Collège') {
+        subContainer.innerHTML = ['6e', '5e', '4e', '3e', 'Seconde', 'Première', 'Terminale'].map(c => `<span class="px-3 py-1 bg-slate-800 rounded-lg text-xs font-semibold text-amber-400 border border-slate-700">${c}</span>`).join('');
+      } else {
+        subContainer.innerHTML = '';
+      }
+
+      const listContainer = document.getElementById('user-quizzes-list');
+      const filtered = state.quizzes.filter(q => selectedCat === 'Tous' || q.category === selectedCat);
+
+      if (filtered.length === 0) {
+        listContainer.innerHTML = `
+          <div class="glass p-6 rounded-2xl text-center text-slate-400 text-xs leading-relaxed">
+            Veuillez nous excuser, aucun concours n'est disponible pour le moment dans ce niveau. Merci de choisir un autre niveau ou de revenir plus tard.
+          </div>
+        `;
+        return;
+      }
+
+      listContainer.innerHTML = filtered.map(q => `
+        <div class="glass p-4 rounded-2xl flex items-center justify-between">
+          <div>
+            <h4 class="font-bold text-white text-sm">${q.title}</h4>
+            <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">${q.category} - ${q.class}</span>
+          </div>
+          <button onclick="startQuiz(${q.id})" class="px-4 py-2 bg-amber-500 font-bold text-slate-950 rounded-xl text-xs">
+            Participer
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // ANTI-CHEAT DETECTOR
+    window.addEventListener('blur', () => {
+      if (activeQuiz) {
+        clearInterval(quizTimer);
+        alert('TRICHE DÉTECTÉE : Vous avez quitté l\'application pendant le concours. Votre résultat est annulé.');
+        recordQuizResult('TRICHE', 0);
+        activeQuiz = null;
+        showScreen('screen-user-home');
+      }
+    });
+
+    function startQuiz(quizId) {
+      activeQuiz = state.quizzes.find(q => q.id === quizId);
+      currentQIdx = 0;
+      quizScore = 0;
+      showScreen('screen-quiz');
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      clearInterval(quizTimer);
+      if (currentQIdx >= activeQuiz.questions.length) {
+        finishQuiz();
+        return;
+      }
+
+      const q = activeQuiz.questions[currentQIdx];
+      document.getElementById('quiz-progress').innerText = `Question ${currentQIdx + 1} / 5`;
+      document.getElementById('question-text').innerText = q.q;
+
+      const optsContainer = document.getElementById('options-container');
+      optsContainer.innerHTML = ['A', 'B', 'C', 'D'].map(key => `
+        <button onclick="submitAnswer('${key}')" class="w-full text-left p-3.5 bg-slate-800/80 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-500/50 rounded-xl text-xs font-semibold text-white transition flex items-center gap-3">
+          <span class="w-6 h-6 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold">${key}</span>
+          ${q.opts[key]}
+        </button>
+      `).join('');
+
+      timeLeft = 10;
+      document.getElementById('quiz-timer').innerText = `${timeLeft}s`;
+      quizTimer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('quiz-timer').innerText = `${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(quizTimer);
+          submitAnswer(null); // Timeout
+        }
+      }, 1000);
+    }
+
+    function submitAnswer(selectedKey) {
+      clearInterval(quizTimer);
+      const q = activeQuiz.questions[currentQIdx];
+      if (selectedKey === q.correct) {
+        quizScore++;
+      }
+      currentQIdx++;
+      loadQuestion();
+    }
+
+    function speakCurrentQuestion() {
+      if (!activeQuiz) return;
+      const q = activeQuiz.questions[currentQIdx];
+      const speech = new SpeechSynthesisUtterance(`${q.q}. Option A: ${q.opts.A}. Option B: ${q.opts.B}. Option C: ${q.opts.C}. Option D: ${q.opts.D}`);
+      speech.lang = 'fr-FR';
+      window.speechSynthesis.speak(speech);
+    }
+
+    function finishQuiz() {
+      const isTop3 = quizScore >= 3;
+      recordQuizResult(isTop3 ? 'En cours de paiement' : 'Terminé', quizScore);
+
+      if (isTop3) {
+        alert(`Félicitations ! Vous faites partie des trois premiers avec ${quizScore}/5 points. Your reward is processing.\n\nVous recevrez un message WhatsApp dans un délai de 15 minutes pour votre paiement. Si vous ne recevez aucun message après ce délai, veuillez contacter le : 0799591024 ou 0585971941.`);
+      } else {
+        alert(`Merci d'avoir participé à ce concours. Votre score : ${quizScore}/5. Veuillez retourner à l'accueil.`);
+      }
+
+      activeQuiz = null;
+      showScreen('screen-user-home');
+    }
+
+    function recordQuizResult(badgeStatus, score) {
+      if (!state.currentUser) return;
+      state.results.push({
+        nom: state.currentUser.nom,
+        prenom: state.currentUser.prenom,
+        ville: state.currentUser.ville,
+        whatsapp: state.currentUser.whatsapp,
+        score: score,
+        badge: badgeStatus,
+        quizTitle: activeQuiz ? activeQuiz.title : 'Concours'
+      });
+      saveState();
+    }
+
+    // USER PROFILE LOGIC
+    function renderUserProfile() {
+      if (!state.currentUser) return;
+      document.getElementById('prof-nom').innerText = state.currentUser.nom || '';
+      document.getElementById('prof-prenom').innerText = state.currentUser.prenom || '';
+      document.getElementById('prof-ville').innerText = state.currentUser.ville || '';
+      document.getElementById('prof-pays').innerText = state.currentUser.pays || '';
+      document.getElementById('prof-whatsapp').innerText = state.currentUser.whatsapp || '';
+    }
+
+    function handlePasswordChange(e) {
+      e.preventDefault();
+      const oldP = document.getElementById('change-pass-old').value;
+      const newP = document.getElementById('change-pass-new').value;
+
+      if (oldP !== state.currentUser.pass) {
+        alert('Le mot de passe actuel est incorrect.');
+        return;
+      }
+
+      state.currentUser.pass = newP;
+      const u = state.users.find(usr => usr.whatsapp === state.currentUser.whatsapp);
+      if (u) u.pass = newP;
+
+      saveState();
+      alert('Mot de passe mis à jour avec succès !');
+    }
+
+    function toggleReviewsModal() {
+      document.getElementById('reviews-modal').classList.toggle('hidden');
+    }
+
+    // INITIALIZATION
+    window.onload = () => {
+      // Direct Admin access logic check
+      showScreen('screen-login');
+    };
+  </script>
+</body>
+</html>
