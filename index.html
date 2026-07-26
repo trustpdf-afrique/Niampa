@@ -11,11 +11,19 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .glass-card { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    .glass { background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glass-card { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .animate-blink { animation: blink 1.2s infinite; }
   </style>
 </head>
-<body class="min-h-full flex flex-col justify-between bg-slate-950">
+<body class="min-h-full flex flex-col justify-between bg-slate-950 relative">
+
+  <!-- TOAST NOTIFICATION VERTE (5s) -->
+  <div id="toast-success" class="fixed top-5 right-5 z-50 hidden flex items-center gap-3 bg-emerald-600 text-white px-5 py-3.5 rounded-2xl shadow-2xl border border-emerald-400/30 transition-all duration-300">
+    <i class="fa-solid fa-circle-check text-xl"></i>
+    <span class="text-xs font-bold tracking-wide">Opération effectuée avec succès</span>
+  </div>
 
   <!-- HEADER HEADER SYSTEM -->
   <header class="glass sticky top-0 z-40 px-4 py-3 shadow-xl flex items-center justify-between border-b border-slate-800">
@@ -29,16 +37,12 @@
         </h1>
       </div>
     </div>
-
-    <div id="header-controls" class="flex items-center space-x-2">
-      <!-- Dynamic header content -->
-    </div>
   </header>
 
   <!-- MAIN CONTAINER -->
   <main class="flex-grow container mx-auto px-4 py-6 max-w-4xl">
 
-    <!-- 1. CONNEXION ADMINISTRATEUR UNIQUE (APPLICATION PRINCIPALE) -->
+    <!-- 1. CONNEXION ADMINISTRATEUR UNIQUE -->
     <section id="screen-admin-login" class="space-y-6 max-w-md mx-auto">
       <div class="text-center space-y-2">
         <div class="w-16 h-16 bg-amber-500/10 text-amber-400 rounded-2xl border border-amber-500/20 flex items-center justify-center mx-auto text-2xl font-bold">
@@ -59,7 +63,7 @@
           <input type="password" id="admin-pass" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-500">
         </div>
 
-        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 font-extrabold rounded-xl text-white shadow-lg text-sm">
+        <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-orange-600 font-extrabold rounded-xl text-slate-950 text-sm shadow-lg">
           Se connecter à l'administration
         </button>
       </form>
@@ -72,12 +76,18 @@
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
             <i class="fa-solid fa-user-shield text-amber-500"></i> Tableau de Bord Administrateur
           </h2>
-          <p class="text-xs text-slate-400">Gestion complète des révisons, participants et avis</p>
+          <p class="text-xs text-slate-400">Gestion globale : participants, abonnements, concours & réinitialisations</p>
         </div>
 
-        <div class="flex gap-2">
-          <button onclick="openModal('reviews-modal')" class="glass px-3 py-2 rounded-xl text-xs font-bold text-amber-400 flex items-center gap-1.5 hover:bg-slate-800">
-            <i class="fa-solid fa-star"></i> Avis Reçus (<span id="admin-reviews-count">0</span>)
+        <div class="flex flex-wrap gap-2">
+          <button onclick="openModal('pass-reset-modal')" class="glass px-3 py-2 rounded-xl text-xs font-bold text-amber-400 flex items-center gap-1.5 hover:bg-slate-800">
+            <i class="fa-solid fa-key"></i> Mots de passe oubliés (<span id="admin-reset-count">0</span>)
+          </button>
+          <button onclick="openModal('admin-sub-modal')" class="glass px-3 py-2 rounded-xl text-xs font-bold text-sky-400 flex items-center gap-1.5 hover:bg-slate-800">
+            <i class="fa-solid fa-id-card"></i> Demandes Abonnements (<span id="admin-subs-count">0</span>)
+          </button>
+          <button onclick="openModal('reviews-modal')" class="glass px-3 py-2 rounded-xl text-xs font-bold text-yellow-400 flex items-center gap-1.5 hover:bg-slate-800">
+            <i class="fa-solid fa-star"></i> Avis (<span id="admin-reviews-count">0</span>)
           </button>
           <button onclick="showScreen('screen-admin-premium')" class="bg-gradient-to-r from-amber-500 to-yellow-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs shadow-lg flex items-center gap-1.5">
             <i class="fa-solid fa-plus-circle"></i> Créer un Concours
@@ -93,7 +103,6 @@
           </h3>
           <span class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded font-semibold">Lien Réutilisable</span>
         </div>
-        <p class="text-xs text-slate-400">Partagez ce lien unique aux élèves. Tous vos concours y sont mis à jour automatiquement :</p>
         <div class="flex items-center gap-2">
           <input type="text" id="unique-participant-link" readonly class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-amber-400 font-mono">
           <button onclick="copyUniqueLink()" class="px-4 py-2 bg-amber-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-1">
@@ -102,7 +111,7 @@
         </div>
       </div>
 
-      <!-- STATISTIQUES (CLIQUABLES) -->
+      <!-- STATISTIQUES ENTIÈREMENT CLIQUABLES -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div onclick="openDataListModal('concours_crees')" class="glass p-4 rounded-2xl border-l-4 border-amber-500 cursor-pointer hover:bg-slate-800/80 transition">
           <span class="text-[11px] font-semibold text-slate-400 block uppercase">Concours Créés</span>
@@ -117,7 +126,7 @@
           <span id="stat-accounts" class="text-2xl font-black text-white mt-1 block">0</span>
         </div>
         <div onclick="openDataListModal('participants')" class="glass p-4 rounded-2xl border-l-4 border-purple-500 cursor-pointer hover:bg-slate-800/80 transition">
-          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Participants</span>
+          <span class="text-[11px] font-semibold text-slate-400 block uppercase">Participants Distincts</span>
           <span id="stat-participants" class="text-2xl font-black text-white mt-1 block">0</span>
         </div>
       </div>
@@ -125,7 +134,7 @@
       <!-- GESTION ET SUPPRESSION DES CONCOURS -->
       <div class="glass p-5 rounded-2xl space-y-4">
         <h3 class="font-bold text-white text-sm flex items-center justify-between">
-          <span><i class="fa-solid fa-list-check text-amber-400 mr-2"></i>Liste des concours actifs et anciens</span>
+          <span><i class="fa-solid fa-list-check text-amber-400 mr-2"></i>Liste des concours actifs</span>
         </h3>
         <div id="admin-quiz-list" class="space-y-3 max-h-80 overflow-y-auto text-xs">
           <!-- Rendered dynamically -->
@@ -139,24 +148,39 @@
       </div>
     </section>
 
-    <!-- 3. CREATION DE CONCOURS -->
+    <!-- 3. CREATION DE CONCOURS (AVEC GRATUIT/ABONNEMENT ET IMAGE) -->
     <section id="screen-admin-premium" class="hidden space-y-6">
       <div class="flex items-center justify-between border-b border-slate-800 pb-4">
         <h2 class="text-xl font-bold text-amber-400 flex items-center gap-2">
           <i class="fa-solid fa-pen-to-square"></i> Nouveau Concours
         </h2>
         <button onclick="showScreen('screen-admin-dash')" class="px-3 py-1.5 glass rounded-xl text-xs font-semibold hover:bg-slate-800">
-          ← Retour au tableau de bord
+          ← Retour
         </button>
       </div>
 
       <form id="create-quiz-form" onsubmit="handleCreateQuiz(event)" class="glass p-6 rounded-2xl space-y-4 shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Accès du Concours</label>
+            <select id="quiz-access" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-amber-400 font-bold">
+              <option value="free">Concours Gratuit (Accessible à tous)</option>
+              <option value="sub">Concours réservé aux abonnés</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1">Image / Banner URL (Optionnel)</label>
+            <input type="url" id="quiz-image" placeholder="https://exemple.com/image.jpg" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1">Catégorie</label>
             <select id="quiz-category" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white">
               <option value="Primaire">Primaire</option>
               <option value="Collège">Collège</option>
+              <option value="Lycée">Lycée</option>
             </select>
           </div>
           <div>
@@ -192,16 +216,15 @@
             ← Annuler
           </button>
           <button type="submit" class="w-2/3 py-3 bg-gradient-to-r from-amber-500 to-orange-600 font-black text-slate-950 rounded-xl text-xs uppercase tracking-wider shadow-lg">
-            Enregistrer et Publier sur le Lien Unique
+            Enregistrer et Publier
           </button>
         </div>
       </form>
     </section>
 
-    <!-- 4. Espace PARTICIPANTS (ACCESSIBLE UNIQUEMENT VIA LE LIEN UNIQUE) -->
+    <!-- 4. ESPACE PARTICIPANTS (LIEN UNIQUE) -->
     <section id="screen-user-login" class="hidden space-y-6 max-w-md mx-auto">
       <div class="text-center space-y-2">
-        <!-- BANNIÈRE / LOGO -->
         <div class="w-full h-32 rounded-2xl bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-red-500/20 border border-amber-500/30 flex flex-col items-center justify-center p-4">
           <div class="w-12 h-12 rounded-xl bg-amber-500 flex items-center justify-center text-slate-950 font-black text-2xl shadow-lg mb-2">
             ZTV
@@ -218,8 +241,8 @@
           <input type="text" id="user-login-name" required placeholder="Ex: Kouassi Jean" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Mot de passe (4 chiffres)</label>
-          <input type="password" id="user-login-pass" pattern="\d{4}" maxlength="4" required placeholder="Ex: 1234" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Mot de passe</label>
+          <input type="password" id="user-login-pass" required placeholder="Saisissez votre mot de passe" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-white">
         </div>
 
         <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-600 font-extrabold rounded-xl text-slate-950 text-xs shadow-lg">
@@ -233,12 +256,12 @@
       </form>
     </section>
 
-    <!-- INSCRIPTION PARTICIPANT -->
+    <!-- INSCRIPTION PARTICIPANT (LISTE COMPLETE PAYS) -->
     <section id="screen-user-register" class="hidden space-y-6 max-w-md mx-auto">
       <div class="flex items-center justify-between">
         <h2 class="text-lg font-bold text-white">Création de compte Participant</h2>
         <button onclick="showScreen('screen-user-login')" class="glass px-3 py-1.5 rounded-xl text-xs">
-          ← Retour Connexion
+          ← Retour
         </button>
       </div>
 
@@ -262,12 +285,7 @@
           <div>
             <label class="block text-xs font-semibold text-slate-400 mb-1">Pays</label>
             <select id="reg-pays" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-              <option value="Côte d'Ivoire">Côte d'Ivoire</option>
-              <option value="Sénégal">Sénégal</option>
-              <option value="Cameroun">Cameroun</option>
-              <option value="Mali">Mali</option>
-              <option value="Burkina Faso">Burkina Faso</option>
-              <option value="Autre">Autre</option>
+              <!-- All countries list loaded via JS -->
             </select>
           </div>
         </div>
@@ -278,16 +296,12 @@
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Mot de passe (4 chiffres)</label>
-          <input type="password" id="reg-pass" pattern="\d{4}" maxlength="4" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" placeholder="1234">
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Mot de passe</label>
+          <input type="password" id="reg-pass" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" placeholder="Mot de passe">
         </div>
 
         <button type="submit" class="w-full py-3 bg-gradient-to-r from-amber-500 to-orange-600 font-bold text-slate-950 rounded-xl text-xs">
           Terminer l'inscription
-        </button>
-
-        <button type="button" onclick="showScreen('screen-user-login')" class="w-full text-center text-xs text-slate-400 hover:underline">
-          ← Annuler et revenir
         </button>
       </form>
     </section>
@@ -297,12 +311,13 @@
       <div class="glass p-5 rounded-2xl flex flex-wrap items-center justify-between gap-4 border-l-4 border-amber-500">
         <div>
           <h2 id="user-welcome" class="text-lg font-extrabold text-white">Bienvenue !</h2>
-          <p class="text-xs text-slate-400">Choisissez un concours disponible pour tester vos connaissances</p>
+          <!-- SUB STATUS DISPLAY -->
+          <div id="user-sub-badge" class="mt-1 text-xs"></div>
         </div>
 
         <div class="flex flex-wrap gap-2">
           <button onclick="openModal('ranking-modal')" class="glass px-3 py-2 rounded-xl text-xs font-bold text-amber-400 flex items-center gap-1 hover:bg-slate-800">
-            <i class="fa-solid fa-trophy text-amber-400"></i> Classement Général
+            <i class="fa-solid fa-trophy"></i> Classement Général
           </button>
           <button onclick="openModal('add-review-modal')" class="glass px-3 py-2 rounded-xl text-xs font-bold text-sky-400 flex items-center gap-1 hover:bg-slate-800">
             <i class="fa-solid fa-star"></i> Donner mon avis
@@ -321,9 +336,10 @@
         <button onclick="filterCategory('Tous')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 text-slate-950">Tous</button>
         <button onclick="filterCategory('Primaire')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold glass text-slate-300">Primaire</button>
         <button onclick="filterCategory('Collège')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold glass text-slate-300">Collège</button>
+        <button onclick="filterCategory('Lycée')" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold glass text-slate-300">Lycée</button>
       </div>
 
-      <!-- LISTE DES CONCOURS CARTE PREMIUM -->
+      <!-- LISTE DES CONCOURS -->
       <div id="user-quizzes-list" class="space-y-4">
         <!-- Rendered dynamically -->
       </div>
@@ -346,7 +362,7 @@
       </button>
     </section>
 
-    <!-- 6. INTERFACE QUIZ / CONCOURS (15s + AUDIO INSTANTANE) -->
+    <!-- 6. INTERFACE QUIZ (30s + AUDIO INSTANTANE) -->
     <section id="screen-quiz" class="hidden max-w-xl mx-auto space-y-6">
       <div class="flex items-center justify-between glass p-4 rounded-2xl">
         <span id="quiz-progress" class="text-xs font-bold text-slate-400">Question 1 / 5</span>
@@ -355,7 +371,7 @@
             <i class="fa-solid fa-volume-high"></i>
           </button>
           <div id="quiz-timer" class="text-xl font-black text-red-500 bg-red-500/10 px-4 py-1.5 rounded-xl border border-red-500/30 animate-pulse">
-            15s
+            30s
           </div>
         </div>
       </div>
@@ -371,7 +387,7 @@
       </div>
 
       <div class="flex justify-between items-center text-xs text-slate-500 px-2">
-        <span>ZakariaTV Révisons</span>
+        <span>ZakariaTV Révisions</span>
         <button onclick="confirmQuitQuiz()" class="text-red-400 hover:underline">Quitter le concours</button>
       </div>
     </section>
@@ -422,7 +438,7 @@
         <form onsubmit="handlePasswordChange(event)" class="space-y-3 pt-2">
           <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider">Modifier mon mot de passe</h3>
           <input type="password" id="change-pass-old" placeholder="Mot de passe actuel" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
-          <input type="password" id="change-pass-new" pattern="\d{4}" maxlength="4" placeholder="Nouveau mot de passe (4 chiffres)" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          <input type="password" id="change-pass-new" placeholder="Nouveau mot de passe" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
           <button type="submit" class="w-full py-2.5 bg-amber-500 font-bold text-slate-950 text-xs rounded-xl">
             Enregistrer les modifications
           </button>
@@ -434,7 +450,83 @@
 
   <!-- MODALS SYSTEM -->
 
-  <!-- MODAL CLASSEMENT GENERAUX -->
+  <!-- MODAL ACHAT ABONNEMENT -->
+  <div id="buy-sub-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass max-w-md w-full p-6 rounded-2xl space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-white text-base flex items-center gap-2">
+          <i class="fa-solid fa-crown text-amber-400"></i> Acheter un abonnement
+        </h3>
+        <button onclick="closeModal('buy-sub-modal')" class="text-slate-400 hover:text-white font-bold">✕</button>
+      </div>
+
+      <p class="text-xs text-slate-300">Choisissez une formule pour débloquer l'accès complet à tous les concours :</p>
+
+      <div class="space-y-3">
+        <div onclick="requestSubscription('1 mois', 500)" class="glass p-4 rounded-xl border border-amber-500/30 hover:border-amber-500 cursor-pointer transition flex items-center justify-between">
+          <div>
+            <h4 class="font-bold text-white text-sm">Abonnement 1 Mois</h4>
+            <span class="text-xs text-slate-400">Accès illimité à tous les concours</span>
+          </div>
+          <span class="text-lg font-black text-amber-400">500 F</span>
+        </div>
+
+        <div onclick="requestSubscription('5 mois', 2500)" class="glass p-4 rounded-xl border border-amber-500/30 hover:border-amber-500 cursor-pointer transition flex items-center justify-between">
+          <div>
+            <h4 class="font-bold text-white text-sm">Abonnement 5 Mois</h4>
+            <span class="text-xs text-slate-400">Accès illimité (500 F × 5)</span>
+          </div>
+          <span class="text-lg font-black text-amber-400">2 500 F</span>
+        </div>
+      </div>
+
+      <button onclick="closeModal('buy-sub-modal')" class="w-full py-2.5 glass text-xs font-bold text-slate-300 rounded-xl">
+        ← Fermer
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL ADMIN GESTION DES ABONNEMENTS -->
+  <div id="admin-sub-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass max-w-xl w-full p-6 rounded-2xl space-y-4 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-white text-sm flex items-center gap-2">
+          <i class="fa-solid fa-id-card text-sky-400"></i> Demandes d'Abonnement en attente
+        </h3>
+        <button onclick="closeModal('admin-sub-modal')" class="text-slate-400 hover:text-white font-bold">✕</button>
+      </div>
+
+      <div id="admin-subs-list" class="overflow-y-auto flex-grow space-y-2 text-xs pr-1">
+        <!-- Rendered by JS -->
+      </div>
+
+      <button onclick="closeModal('admin-sub-modal')" class="w-full py-2 glass text-xs text-slate-300 rounded-xl">
+        ← Fermer
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL ADMIN MOTS DE PASSE OUBLIES -->
+  <div id="pass-reset-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="glass max-w-xl w-full p-6 rounded-2xl space-y-4 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h3 class="font-bold text-white text-sm flex items-center gap-2">
+          <i class="fa-solid fa-key text-amber-400"></i> Demandes de réinitialisation de Mot de passe
+        </h3>
+        <button onclick="closeModal('pass-reset-modal')" class="text-slate-400 hover:text-white font-bold">✕</button>
+      </div>
+
+      <div id="admin-reset-list" class="overflow-y-auto flex-grow space-y-2 text-xs pr-1">
+        <!-- Rendered by JS -->
+      </div>
+
+      <button onclick="closeModal('pass-reset-modal')" class="w-full py-2 glass text-xs text-slate-300 rounded-xl">
+        ← Fermer
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL CLASSEMENT GENERAL -->
   <div id="ranking-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass max-w-lg w-full p-6 rounded-2xl space-y-4 max-h-[85vh] flex flex-col">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -454,7 +546,7 @@
     </div>
   </div>
 
-  <!-- MODAL AJOUTER UN AVIS (PARTICIPANTS) -->
+  <!-- MODAL AJOUTER UN AVIS -->
   <div id="add-review-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass max-w-md w-full p-6 rounded-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -520,22 +612,22 @@
     </div>
   </div>
 
-  <!-- MODAL MOT DE PASSE OUBLIE -->
+  <!-- MODAL MOT DE PASSE OUBLIE PARTICIPANT -->
   <div id="forgot-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
     <div class="glass max-w-md w-full p-6 rounded-2xl space-y-4">
-      <h3 class="font-bold text-white text-sm border-b border-slate-800 pb-2">Mot de passe oublié</h3>
-      <p class="text-xs text-slate-400">Saisissez votre numéro WhatsApp pour réinitialiser :</p>
+      <h3 class="font-bold text-white text-sm border-b border-slate-800 pb-2">Réinitialisation de mot de passe</h3>
+      <p class="text-xs text-slate-400">Saisissez votre numéro WhatsApp pour transmettre votre demande à l'administrateur :</p>
       <input type="tel" id="forgot-wa-input" placeholder="+225 00000000" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 text-xs text-white">
       <div class="flex justify-end gap-2 pt-2">
         <button onclick="closeModal('forgot-modal')" class="px-3 py-2 text-xs text-slate-400">Annuler</button>
-        <button onclick="submitForgotPasswordRequest()" class="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl">Envoyer</button>
+        <button onclick="submitForgotPasswordRequest()" class="px-4 py-2 bg-amber-500 text-slate-950 font-bold text-xs rounded-xl">Envoyer la demande</button>
       </div>
     </div>
   </div>
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    const DB_KEY = 'zakariatv_v3_clean_db';
+    const DB_KEY = 'zakariatv_v4_sub_db';
 
     let state = JSON.parse(localStorage.getItem(DB_KEY)) || {
       users: [],
@@ -543,6 +635,7 @@
       results: [],
       reviews: [],
       resetRequests: [],
+      subscriptionsRequests: [],
       currentUser: null
     };
 
@@ -550,7 +643,48 @@
       localStorage.setItem(DB_KEY, JSON.stringify(state));
     }
 
-    // MODE SELECTION BASED ON URL (SINGLE LINK SYSTEM)
+    function showSuccessToast() {
+      const toast = document.getElementById('toast-success');
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 5000);
+    }
+
+    // LISTE DES PAYS DE MONDE
+    const ALL_COUNTRIES = [
+      "Côte d'Ivoire", "Sénégal", "Cameroun", "Mali", "Burkina Faso", "Guinée", "Bénin", "Togo", "Niger", 
+      "Gabon", "Congo", "RDC", "Tchad", "France", "Canada", "Belgique", "Suisse", "Afghanistan", "Afrique du Sud", 
+      "Albanie", "Algérie", "Allemagne", "Andorre", "Angola", "Antigua-et-Barbuda", "Arabie Saoudite", "Argentine", 
+      "Arménie", "Australie", "Autriche", "Azerbaïdjan", "Bahamas", "Bahreïn", "Bangladesh", "Barbade", "Bélize", 
+      "Bhoutan", "Biélorussie", "Birmanie", "Bolivie", "Bosnie-Herzégovine", "Botswana", "Brésil", "Brunéi", "Bulgarie", 
+      "Burundi", "Cabo Verde", "Cambodge", "Chili", "Chine", "Chypre", "Colombie", "Comores", "Corée du Nord", 
+      "Corée du Sud", "Costa Rica", "Croatie", "Cuba", "Danemark", "Djibouti", "Dominique", "Égypte", "Émirats Arabes Unis", 
+      "Équateur", "Érythrée", "Espagne", "Estonie", "Eswatini", "États-Unis", "Éthiopie", "Fidji", "Finlande", "Gambie", 
+      "Géorgie", "Ghana", "Grèce", "Grenade", "Guatemala", "Guinée-Bissau", "Guinée équatoriale", "Guyana", "Haïti", 
+      "Honduras", "Hongrie", "Inde", "Indonésie", "Irak", "Iran", "Irlande", "Islande", "Israël", "Italie", "Jamaïque", 
+      "Japon", "Jordanie", "Kazakhstan", "Kenya", "Kirghizistan", "Kiribati", "Koweït", "Laos", "Lesotho", "Lettonie", 
+      "Liban", "Libéria", "Libye", "Liechtenstein", "Lituanie", "Luxembourg", "Macédoine du Nord", "Madagascar", 
+      "Malaisie", "Malawi", "Maldives", "Maroc", "Maurice", "Mauritanie", "Mexique", "Micronésie", "Moldavie", "Monaco", 
+      "Mongolie", "Monténégro", "Mozambique", "Namibie", "Nauru", "Népal", "Nicaragua", "Nigéria", "Norvège", 
+      "Nouvelle-Zélande", "Oman", "Ouganda", "Ouzbékistan", "Pakistan", "Palaos", "Palestine", "Panama", 
+      "Papouasie-Nouvelle-Guinée", "Paraguay", "Pays-Bas", "Pérou", "Philippines", "Pologne", "Portugal", "Qatar", 
+      "République Centrafricaine", "République Dominicaine", "Roumanie", "Royaume-Uni", "Russie", "Rwanda", "Saint-Kitts-et-Nevis", 
+      "Saint-Marin", "Saint-Vincent-et-les-Grenadines", "Sainte-Lucie", "Salomon", "Salvador", "Samoa", "Sao Tomé-et-Principe", 
+      "Serbie", "Seychelles", "Sierra Leone", "Singapour", "Slovaquie", "Slovénie", "Somalie", "Soudan", "Soudan du Sud", 
+      "Sri Lanka", "Suède", "Suriname", "Syrie", "Tadjikistan", "Tanzanie", "Thaïlande", "Timor-Leste", "Tonga", 
+      "Trinité-et-Tobago", "Tunisie", "Turkménistan", "Turquie", "Tuvalu", "Ukraine", "Uruguay", "Vanuatu", "Vatican", 
+      "Vénézuéla", "Viêt Nam", "Yémen", "Zambie", "Zimbabwe"
+    ];
+
+    function populateCountrySelect() {
+      const select = document.getElementById('reg-pays');
+      if (select) {
+        select.innerHTML = ALL_COUNTRIES.map(c => `<option value="${c}">${c}</option>`).join('');
+      }
+    }
+
+    // MODE SELECTION BASED ON URL
     const urlParams = new URLSearchParams(window.location.search);
     const isParticipantMode = urlParams.get('mode') === 'participant';
 
@@ -569,6 +703,8 @@
     function openModal(id) {
       if (id === 'reviews-modal') renderReviewsList();
       if (id === 'ranking-modal') renderRankingModal();
+      if (id === 'pass-reset-modal') renderPassResetModal();
+      if (id === 'admin-sub-modal') renderAdminSubModal();
       document.getElementById(id)?.classList.remove('hidden');
     }
     function closeModal(id) { document.getElementById(id)?.classList.add('hidden'); }
@@ -582,6 +718,7 @@
       if (u === 'ZakariaTV' && p === '55250031') {
         state.currentUser = { role: 'admin' };
         saveState();
+        showSuccessToast();
         showScreen('screen-admin-dash');
       } else {
         alert('Identifiants administrateur incorrects.');
@@ -594,12 +731,12 @@
       document.getElementById('stat-accounts').innerText = state.users.length;
       document.getElementById('stat-participants').innerText = new Set(state.results.map(r => r.whatsapp)).size;
       document.getElementById('admin-reviews-count').innerText = state.reviews.length;
+      document.getElementById('admin-reset-count').innerText = state.resetRequests ? state.resetRequests.length : 0;
+      document.getElementById('admin-subs-count').innerText = state.subscriptionsRequests ? state.subscriptionsRequests.length : 0;
 
-      // Unique Link generator
       const uniqueLink = `${window.location.origin}${window.location.pathname}?mode=participant`;
       document.getElementById('unique-participant-link').value = uniqueLink;
 
-      // Render Admin Quiz Management
       const listContainer = document.getElementById('admin-quiz-list');
       if (state.quizzes.length === 0) {
         listContainer.innerHTML = '<p class="text-slate-500">Aucun concours enregistré.</p>';
@@ -608,9 +745,17 @@
 
       listContainer.innerHTML = state.quizzes.map(q => `
         <div class="glass-card p-3 rounded-xl flex flex-wrap items-center justify-between gap-2">
-          <div>
-            <strong class="text-white">${q.title}</strong>
-            <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 ml-2">${q.category} - ${q.class}</span>
+          <div class="flex items-center gap-3">
+            ${q.image ? `<img src="${q.image}" class="w-10 h-10 rounded-lg object-cover">` : ''}
+            <div>
+              <strong class="text-white">${q.title}</strong>
+              <div class="flex items-center gap-2 mt-0.5">
+                <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">${q.category} - ${q.class}</span>
+                <span class="text-[10px] ${q.access === 'free' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-amber-400 bg-amber-500/10 border-amber-500/20'} px-2 py-0.5 rounded border">
+                  ${q.access === 'free' ? 'Gratuit' : 'Abonnement requis'}
+                </span>
+              </div>
+            </div>
           </div>
           <div class="flex items-center gap-2">
             <button onclick="toggleQuizStatus(${q.id})" class="px-2.5 py-1 ${q.status === 'active' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'} rounded-lg font-bold">
@@ -628,7 +773,7 @@
       const linkInput = document.getElementById('unique-participant-link');
       linkInput.select();
       navigator.clipboard.writeText(linkInput.value);
-      alert('Lien unique des participants copié !');
+      showSuccessToast();
     }
 
     function toggleQuizStatus(id) {
@@ -636,6 +781,7 @@
       if (q) {
         q.status = q.status === 'active' ? 'offline' : 'active';
         saveState();
+        showSuccessToast();
         renderAdminDashboard();
       }
     }
@@ -644,6 +790,7 @@
       if (confirm('Voulez-vous vraiment supprimer définitivement ce concours ?')) {
         state.quizzes = state.quizzes.filter(q => q.id !== id);
         saveState();
+        showSuccessToast();
         renderAdminDashboard();
       }
     }
@@ -697,12 +844,14 @@
         title: document.getElementById('quiz-title').value,
         category: document.getElementById('quiz-category').value,
         class: document.getElementById('quiz-class').value,
+        access: document.getElementById('quiz-access').value,
+        image: document.getElementById('quiz-image').value.trim(),
         questions: questions,
         status: 'active'
       });
 
       saveState();
-      alert('Concours ajouté et mis en ligne automatiquement sur le lien unique !');
+      showSuccessToast();
       showScreen('screen-admin-dash');
     }
 
@@ -716,6 +865,7 @@
       if (user) {
         state.currentUser = { role: 'user', ...user };
         saveState();
+        showSuccessToast();
         showScreen('screen-user-home');
       } else {
         alert('Compte introuvable ou mot de passe incorrect.');
@@ -737,13 +887,14 @@
         ville: document.getElementById('reg-ville').value.trim(),
         pays: document.getElementById('reg-pays').value,
         whatsapp: wa,
-        pass: document.getElementById('reg-pass').value.trim()
+        pass: document.getElementById('reg-pass').value.trim(),
+        subExpire: null
       };
 
       state.users.push(newUser);
       state.currentUser = { role: 'user', ...newUser };
       saveState();
-      alert('Inscription réussie !');
+      showSuccessToast();
       showScreen('screen-user-home');
     }
 
@@ -753,7 +904,136 @@
       showScreen(isParticipantMode ? 'screen-user-login' : 'screen-admin-login');
     }
 
-    // PARTICIPANT HOME & 20s COUNTDOWN
+    // ABONNEMENT LOGIC
+    function checkUserSubActive(user) {
+      if (!user || !user.subExpire) return false;
+      return new Date(user.subExpire) > new Date();
+    }
+
+    function getSubDetails(user) {
+      if (!user || !user.subExpire) return null;
+      const expireDate = new Date(user.subExpire);
+      const now = new Date();
+      if (expireDate <= now) return null;
+
+      const diffTime = expireDate - now;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return {
+        startDate: user.subStart || 'Récemment',
+        expireDate: expireDate.toLocaleDateString('fr-FR'),
+        daysLeft: diffDays
+      };
+    }
+
+    function requestSubscription(type, price) {
+      if (!state.currentUser) return;
+      if (!state.subscriptionsRequests) state.subscriptionsRequests = [];
+
+      state.subscriptionsRequests.push({
+        id: Date.now(),
+        nom: state.currentUser.nom,
+        prenom: state.currentUser.prenom,
+        ville: state.currentUser.ville,
+        pays: state.currentUser.pays,
+        whatsapp: state.currentUser.whatsapp,
+        type: type,
+        price: price,
+        date: new Date().toLocaleDateString('fr-FR')
+      });
+
+      saveState();
+      closeModal('buy-sub-modal');
+      showSuccessToast();
+    }
+
+    // ADMIN ABONNEMENTS MANAGEMENT
+    function renderAdminSubModal() {
+      const container = document.getElementById('admin-subs-list');
+      if (!state.subscriptionsRequests || state.subscriptionsRequests.length === 0) {
+        container.innerHTML = '<p class="text-slate-500">Aucune demande d\'abonnement en attente.</p>';
+        return;
+      }
+
+      container.innerHTML = state.subscriptionsRequests.map(req => `
+        <div class="glass-card p-3 rounded-xl flex items-center justify-between gap-2 border-l-4 border-sky-400">
+          <div>
+            <strong class="text-white">${req.prenom} ${req.nom}</strong> (${req.ville}, ${req.pays})
+            <p class="text-[10px] text-amber-400 font-bold">WhatsApp: ${req.whatsapp} | Formule: ${req.type} (${req.price} F) | Date: ${req.date}</p>
+          </div>
+          <button onclick="activateSubscription('${req.whatsapp}', '${req.type}', ${req.id})" class="px-3 py-1.5 bg-emerald-500 text-slate-950 font-black rounded-lg text-xs hover:bg-emerald-400">
+            Activer l'abonnement
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function activateSubscription(whatsapp, type, reqId) {
+      const user = state.users.find(u => u.whatsapp === whatsapp);
+      if (user) {
+        const now = new Date();
+        const months = type.includes('5') ? 5 : 1;
+        const expire = new Date();
+        expire.setMonth(expire.getMonth() + months);
+
+        user.subStart = now.toLocaleDateString('fr-FR');
+        user.subExpire = expire.toISOString();
+
+        state.subscriptionsRequests = state.subscriptionsRequests.filter(r => r.id !== reqId);
+        saveState();
+        showSuccessToast();
+        renderAdminSubModal();
+        renderAdminDashboard();
+      }
+    }
+
+    // ADMIN FORGOT PASSWORD MANAGEMENT
+    function submitForgotPasswordRequest() {
+      const wa = document.getElementById('forgot-wa-input').value.trim();
+      const user = state.users.find(u => u.whatsapp === wa);
+      if (user) {
+        if (!state.resetRequests) state.resetRequests = [];
+        state.resetRequests.push(user);
+        saveState();
+        closeModal('forgot-modal');
+        showSuccessToast();
+      } else {
+        alert('Numéro WhatsApp introuvable.');
+      }
+    }
+
+    function renderPassResetModal() {
+      const container = document.getElementById('admin-reset-list');
+      if (!state.resetRequests || state.resetRequests.length === 0) {
+        container.innerHTML = '<p class="text-slate-500">Aucune demande de réinitialisation.</p>';
+        return;
+      }
+
+      container.innerHTML = state.resetRequests.map(usr => `
+        <div class="glass-card p-3 rounded-xl flex items-center justify-between gap-2 border-l-4 border-amber-400">
+          <div>
+            <strong class="text-white">${usr.nom} ${usr.prenom}</strong> (${usr.ville}, ${usr.pays})
+            <p class="text-[10px] text-amber-400 font-bold">WhatsApp: ${usr.whatsapp}</p>
+          </div>
+          <button onclick="adminResetUserPassword('${usr.whatsapp}')" class="px-3 py-1.5 bg-amber-500 text-slate-950 font-black rounded-lg text-xs hover:bg-amber-400">
+            Réinitialiser à 5555
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function adminResetUserPassword(whatsapp) {
+      const u = state.users.find(usr => usr.whatsapp === whatsapp);
+      if (u) {
+        u.pass = '5555';
+        state.resetRequests = state.resetRequests.filter(req => req.whatsapp !== whatsapp);
+        saveState();
+        showSuccessToast();
+        renderPassResetModal();
+        renderAdminDashboard();
+      }
+    }
+
+    // PARTICIPANT HOME & CONCOURS
     let selectedCat = 'Tous';
     let activeQuiz = null;
 
@@ -765,6 +1045,23 @@
     function renderUserHome() {
       if (state.currentUser && state.currentUser.nom) {
         document.getElementById('user-welcome').innerText = `Bonjour, ${state.currentUser.prenom} ${state.currentUser.nom} !`;
+
+        const subActive = checkUserSubActive(state.currentUser);
+        const badgeElem = document.getElementById('user-sub-badge');
+        if (subActive) {
+          const subInfo = getSubDetails(state.currentUser);
+          badgeElem.innerHTML = `
+            <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-lg font-bold inline-flex items-center gap-1">
+              <i class="fa-solid fa-crown"></i> Abonnement Actif | Expiration : ${subInfo.expireDate} (${subInfo.daysLeft} jours restants)
+            </span>
+          `;
+        } else {
+          badgeElem.innerHTML = `
+            <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2.5 py-1 rounded-lg font-bold inline-flex items-center gap-1">
+              <i class="fa-solid fa-lock"></i> Aucun abonnement actif
+            </span>
+          `;
+        }
       }
 
       const listContainer = document.getElementById('user-quizzes-list');
@@ -773,23 +1070,46 @@
       if (filtered.length === 0) {
         listContainer.innerHTML = `
           <div class="glass p-6 rounded-2xl text-center text-slate-400 text-xs">
-            Veuillez nous excuser, aucun concours n'est disponible pour le moment dans ce niveau. Merci de choisir un autre niveau ou de revenir plus tard.
+            Aucun concours disponible dans ce niveau pour le moment.
           </div>
         `;
         return;
       }
 
-      listContainer.innerHTML = filtered.map(q => `
-        <div class="glass p-5 rounded-2xl flex items-center justify-between border-l-4 border-amber-500">
-          <div>
-            <h4 class="font-bold text-white text-sm">${q.title}</h4>
-            <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 font-semibold">${q.category} - ${q.class}</span>
+      const userSub = checkUserSubActive(state.currentUser);
+
+      listContainer.innerHTML = filtered.map(q => {
+        const isLocked = q.access === 'sub' && !userSub;
+
+        return `
+          <div class="glass p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 border-l-4 ${q.access === 'free' ? 'border-emerald-500' : 'border-amber-500'}">
+            <div class="flex items-center gap-4 w-full md:w-auto">
+              ${q.image ? `<img src="${q.image}" class="w-16 h-16 rounded-xl object-cover border border-slate-700">` : ''}
+              <div>
+                <h4 class="font-bold text-white text-base">${q.title}</h4>
+                <div class="flex items-center gap-2 mt-1">
+                  <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20 font-semibold">${q.category} - ${q.class}</span>
+                  <span class="text-[10px] font-extrabold ${q.access === 'free' ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' : 'text-amber-400 bg-amber-500/10 border-amber-500/20'} px-2 py-0.5 rounded border">
+                    ${q.access === 'free' ? 'Gratuit' : 'Abonnement requis'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="w-full md:w-auto text-right">
+              ${isLocked ? `
+                <button onclick="openModal('buy-sub-modal')" class="w-full md:w-auto px-5 py-2.5 bg-gradient-to-r from-red-500 to-amber-500 font-extrabold text-white rounded-xl text-xs shadow-lg animate-blink">
+                  <i class="fa-solid fa-lock mr-1"></i> Acheter un abonnement
+                </button>
+              ` : `
+                <button onclick="prepareQuizCountdown(${q.id})" class="w-full md:w-auto px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 font-extrabold text-slate-950 rounded-xl text-xs shadow-lg">
+                  Participer
+                </button>
+              `}
+            </div>
           </div>
-          <button onclick="prepareQuizCountdown(${q.id})" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 font-extrabold text-slate-950 rounded-xl text-xs shadow-lg">
-            Participer
-          </button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     let countdownTimer = null;
@@ -816,11 +1136,11 @@
       showScreen('screen-user-home');
     }
 
-    // 15 SECONDS QUIZ ENGINE & INSTANT TTS
+    // 30 SECONDS QUIZ ENGINE & INSTANT TTS
     let currentQIdx = 0;
     let quizScore = 0;
     let questionTimer = null;
-    let timeLeft = 15;
+    let timeLeft = 30;
 
     function startQuizEngine() {
       currentQIdx = 0;
@@ -848,7 +1168,7 @@
         </button>
       `).join('');
 
-      timeLeft = 15;
+      timeLeft = 30;
       document.getElementById('quiz-timer').innerText = `${timeLeft}s`;
 
       questionTimer = setInterval(() => {
@@ -872,17 +1192,16 @@
 
     function speakCurrentQuestion() {
       if (!activeQuiz) return;
-      window.speechSynthesis.cancel(); // Stop any ongoing audio immediately
+      window.speechSynthesis.cancel();
       const q = activeQuiz.questions[currentQIdx];
       const text = `${q.q}. Option A: ${q.opts.A}. Option B: ${q.opts.B}. Option C: ${q.opts.C}. Option D: ${q.opts.D}`;
       const speech = new SpeechSynthesisUtterance(text);
       speech.lang = 'fr-FR';
-      speech.rate = 1.1; // Fast response speed
+      speech.rate = 1.1;
       window.speechSynthesis.speak(speech);
     }
 
     function finishQuiz() {
-      // Save result
       if (state.currentUser) {
         state.results.push({
           nom: state.currentUser.nom,
@@ -896,6 +1215,7 @@
       }
 
       document.getElementById('res-score-display').innerText = `${quizScore} / 5`;
+      showSuccessToast();
       showScreen('screen-quiz-result');
     }
 
@@ -910,7 +1230,7 @@
     function renderRankingModal() {
       const container = document.getElementById('ranking-modal-content');
       if (state.results.length === 0) {
-        container.innerHTML = '<p class="text-slate-500">Aucun résultat enregisté.</p>';
+        container.innerHTML = '<p class="text-slate-500">Aucun résultat enregistré.</p>';
         return;
       }
 
@@ -937,8 +1257,8 @@
         comment: document.getElementById('review-comment').value.trim()
       });
       saveState();
-      alert('Merci pour votre avis !');
       closeModal('add-review-modal');
+      showSuccessToast();
     }
 
     function renderReviewsList() {
@@ -959,18 +1279,44 @@
       `).join('');
     }
 
-    // FORGOT PASSWORD
-    function submitForgotPasswordRequest() {
-      const wa = document.getElementById('forgot-wa-input').value.trim();
-      const user = state.users.find(u => u.whatsapp === wa);
-      if (user) {
-        state.resetRequests.push(user);
-        saveState();
-        alert('Votre demande a été envoyée à l\'administrateur.');
-        closeModal('forgot-modal');
-      } else {
-        alert('Numéro introuvable.');
+    // MODAL STATISTIQUES CLIQUABLES ADMIN
+    function openDataListModal(type) {
+      const titleElem = document.getElementById('data-modal-title');
+      const contentElem = document.getElementById('data-modal-content');
+
+      if (type === 'concours_crees') {
+        titleElem.innerText = 'Liste des Concours Créés';
+        contentElem.innerHTML = state.quizzes.map(q => `
+          <div class="glass-card p-3 rounded-xl border-l-4 border-amber-500">
+            <strong class="text-white">${q.title}</strong> (${q.category} - ${q.class})
+          </div>
+        `).join('') || '<p class="text-slate-500">Aucun concours.</p>';
+      } else if (type === 'concours_effectues') {
+        titleElem.innerText = 'Historique des Concours Effectués';
+        contentElem.innerHTML = state.results.map(r => `
+          <div class="glass-card p-3 rounded-xl border-l-4 border-emerald-500 flex justify-between">
+            <div><strong class="text-white">${r.nom} ${r.prenom}</strong> - ${r.quizTitle}</div>
+            <span class="font-bold text-amber-400">${r.score}/5 Pts</span>
+          </div>
+        `).join('') || '<p class="text-slate-500">Aucun résultat.</p>';
+      } else if (type === 'comptes_crees') {
+        titleElem.innerText = 'Liste des Comptes Élèves Inscrit';
+        contentElem.innerHTML = state.users.map(u => `
+          <div class="glass-card p-3 rounded-xl border-l-4 border-blue-500">
+            <strong class="text-white">${u.nom} ${u.prenom}</strong> - ${u.ville}, ${u.pays} (WhatsApp: ${u.whatsapp})
+          </div>
+        `).join('') || '<p class="text-slate-500">Aucun compte créé.</p>';
+      } else if (type === 'participants') {
+        titleElem.innerText = 'Liste des Participants Distincts';
+        const set = new Set(state.results.map(r => `${r.nom} ${r.prenom} (${r.whatsapp})`));
+        contentElem.innerHTML = Array.from(set).map(p => `
+          <div class="glass-card p-3 rounded-xl border-l-4 border-purple-500">
+            <strong class="text-white">${p}</strong>
+          </div>
+        `).join('') || '<p class="text-slate-500">Aucun participant.</p>';
       }
+
+      openModal('data-list-modal');
     }
 
     // USER PROFILE
@@ -998,11 +1344,12 @@
       if (u) u.pass = newP;
 
       saveState();
-      alert('Mot de passe mis à jour !');
+      showSuccessToast();
     }
 
     // INITIALIZATION ROUTER
     window.onload = () => {
+      populateCountrySelect();
       if (isParticipantMode) {
         showScreen('screen-user-login');
       } else {
