@@ -85,33 +85,10 @@
             box-shadow: 0 0 10px rgba(255, 130, 0, 0.4);
         }
 
-        /* --- Bouton WhatsApp Flottant Petit & Rond --- */
-        .whatsapp-float {
-            position: fixed;
-            top: 12px;
-            right: 15px;
-            width: 42px;
-            height: 42px;
-            background-color: #25D366;
-            color: #FFF;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            box-shadow: 0 4px 10px rgba(37, 211, 102, 0.5);
-            z-index: 1001;
-            text-decoration: none;
-            transition: transform 0.2s ease;
-        }
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-        }
-
         /* --- Toast Notification Vert Moderne (Haut Droite) --- */
         .toast-container {
             position: fixed;
-            top: 70px;
+            top: 25px;
             right: 25px;
             z-index: 9999;
             display: flex;
@@ -257,7 +234,6 @@
             height: 44px;
             padding: 0;
             font-size: 1.15rem;
-            cursor: pointer;
         }
 
         .btn-block { width: 100%; }
@@ -479,28 +455,40 @@
             flex-wrap: wrap;
         }
 
-        /* --- Style Correction Item --- */
-        .correction-item {
-            background: var(--card-alt);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 12px;
-            margin-bottom: 10px;
-            text-align: left;
+        /* --- Bouton d'Assistance WhatsApp Flottant (Rond) --- */
+        .whatsapp-float {
+            position: fixed;
+            width: 55px;
+            height: 55px;
+            bottom: 25px;
+            right: 25px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.4);
+            z-index: 1500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.2s ease;
         }
-        .correction-item.correct { border-left: 5px solid var(--civ-green); }
-        .correction-item.incorrect { border-left: 5px solid var(--danger); }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Bouton d'Assistance WhatsApp Flottant Petit & Rond -->
-    <a href="https://wa.me/2250799591024" target="_blank" class="whatsapp-float" title="Contactez l'assistance WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
-
     <!-- Container Toast Notifications Vertes -->
     <div class="toast-container" id="toast-container"></div>
+
+    <!-- Bouton d'Assistance WhatsApp (Visible Uniquement pour les Participants / Élèves) -->
+    <a href="https://wa.me/2250799591024" class="whatsapp-float" id="whatsapp-btn" target="_blank" title="Assistance WhatsApp" style="display: none;">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
 
     <!-- Barre supérieure de navigation -->
     <nav class="navbar">
@@ -508,7 +496,7 @@
             <img src="https://i.postimg.cc/3NmBfMMB/1000280085-1024x1024.png" alt="ZTV Logo" class="logo-img">
             <span>ZTV</span>
         </a>
-        <div style="display: flex; gap: 8px; margin-right: 45px;">
+        <div style="display: flex; gap: 8px;">
             <button class="btn btn-secondary" style="padding: 5px 12px; font-size: 0.75rem;" onclick="openCreatorModal()">
                 <i class="fa-solid fa-user-astronaut" style="color:var(--civ-orange);"></i> Créateur de l'application
             </button>
@@ -802,7 +790,7 @@
             <div class="card" style="max-width: 650px; margin: 0 auto; text-align: center;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem;">
                     <span style="color: var(--text-sub); font-weight: 700; font-size: 0.85rem;" id="quiz-progress">Question 1 / 10</span>
-                    <button class="btn btn-audio" onclick="playAudioQuestion()" title="Écouter la question et les options">
+                    <button class="btn btn-audio" onclick="playAudioQuestion()" title="Écouter automatiquement la question puis les réponses A, B, C, D">
                         <i class="fa-solid fa-volume-high"></i>
                     </button>
                 </div>
@@ -820,7 +808,7 @@
             </div>
         </section>
 
-        <!-- Fin de Concours avec Bouton Voir la Correction -->
+        <!-- Fin de Concours avec Bouton Correction -->
         <section id="participant-finish-view" class="view-section">
             <div class="card" style="text-align: center; max-width: 480px; margin: 2rem auto;">
                 <i class="fa-solid fa-circle-check" style="font-size: 3.5rem; color: var(--civ-green); margin-bottom: 1rem;"></i>
@@ -833,15 +821,13 @@
                     <h1 style="color: var(--civ-orange); font-size: 2.5rem; font-weight: 800;" id="finish-score-display">0 / 10</h1>
                     <p style="font-size: 0.78rem; color: var(--civ-green); font-weight: 700; margin-top: 4px;" id="finish-class-display">Classe : CE2</p>
                 </div>
-                
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button class="btn btn-green btn-block" style="padding: 12px; font-size: 0.95rem;" onclick="openCorrectionModal()">
-                        📖 Voir la correction
-                    </button>
-                    <button class="btn btn-orange btn-block" style="padding: 12px; font-size: 0.95rem;" onclick="showView('participant-home-view')">
-                        🏠 Retour au tableau de bord
-                    </button>
-                </div>
+                <!-- Nouveau Bouton Voir la correction -->
+                <button class="btn btn-secondary btn-block" style="margin-bottom: 0.8rem; border-color: var(--civ-orange); color: var(--civ-orange);" onclick="openCorrectionModal()">
+                    📖 Voir la correction
+                </button>
+                <button class="btn btn-orange btn-block" onclick="showView('participant-home-view')">
+                    <i class="fa-solid fa-house"></i> Retour au tableau de bord
+                </button>
             </div>
         </section>
 
@@ -851,17 +837,17 @@
     <!-- MODALES                                                            -->
     <!-- =================================================================== -->
 
-    <!-- Modale Correction du Quiz -->
+    <!-- Modale Correction du Concours -->
     <div class="modal" id="modal-correction">
-        <div class="modal-content" style="max-width: 680px;">
+        <div class="modal-content" style="max-width: 700px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <h3 style="color: var(--civ-orange); font-size: 1.2rem;"><i class="fa-solid fa-book-open"></i> Correction du Concours</h3>
+                <h3 style="color: var(--civ-orange);"><i class="fa-solid fa-book-open"></i> Correction du Concours</h3>
                 <button class="btn btn-secondary" style="padding: 2px 8px;" onclick="closeModal('modal-correction')"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div id="correction-list" style="margin-bottom: 1.2rem;"></div>
+            <div id="correction-list-container" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.2rem;"></div>
 
-            <button class="btn btn-orange btn-block" style="padding: 12px; font-size: 0.95rem;" onclick="closeModal('modal-correction'); showView('participant-home-view');">
+            <button class="btn btn-orange btn-block" onclick="closeModal('modal-correction'); showView('participant-home-view');">
                 🏠 Retour au tableau de bord
             </button>
         </div>
@@ -1500,12 +1486,12 @@ Réponse : B..."></textarea>
         let currentQuiz = null;
         let currentQuestionIdx = 0;
         let selectedOption = null;
+        let userAnswers = []; // Stockage des réponses pour la correction
         let score = 0;
         let timerInterval = null;
         let currentRating = 5;
         let currentUserPhone = null;
         let currentUserData = null;
-        let userAnswers = []; // Stockage des réponses pour la correction
 
         // Fonction utilitaire pour générer une adresse email Firebase à partir du numéro
         function phoneToEmail(phone) {
@@ -1564,6 +1550,14 @@ Réponse : B..."></textarea>
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
             const target = document.getElementById(viewId);
             if (target) target.classList.add('active');
+
+            // Gestion de l'affichage du bouton d'assistance WhatsApp (Élèves uniquement)
+            const waBtn = document.getElementById('whatsapp-btn');
+            if (viewId.startsWith('participant') && viewId !== 'participant-quiz-view') {
+                waBtn.style.display = 'flex';
+            } else {
+                waBtn.style.display = 'none';
+            }
 
             if (viewId === 'admin-dashboard-view') renderAdminDashboard();
             if (viewId === 'participant-home-view') renderParticipantHome();
@@ -2005,6 +1999,9 @@ Réponse : B..."></textarea>
                 `;
             });
 
+            // Lancement automatique de la synthèse vocale
+            setTimeout(() => { playAudioQuestion(); }, 300);
+
             // Chronomètre Rouge de 30 Secondes
             let timeLeft = 30;
             const timerEl = document.getElementById('question-timer');
@@ -2034,10 +2031,11 @@ Réponse : B..."></textarea>
 
             const qData = currentQuiz.questions[currentQuestionIdx];
             
-            // Enregistrement de la réponse de l'élève
-            userAnswers.push(selectedOption);
+            // Stockage de la réponse choisie par l'élève (-1 si aucune option sélectionnée)
+            const chosen = (selectedOption !== null) ? selectedOption : -1;
+            userAnswers.push(chosen);
 
-            if (selectedOption === qData.answer) score++;
+            if (chosen === qData.answer) score++;
 
             currentQuestionIdx++;
             if (currentQuestionIdx < currentQuiz.questions.length) {
@@ -2069,7 +2067,7 @@ Réponse : B..."></textarea>
             }
         }
 
-        // LECTURE VOCALE CONTINU (HAUT-PARLEUR RÉTABLI)
+        // LECTURE VOCALE CONTINU : Question -> Option A -> B -> C -> D
         function playAudioQuestion() {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -2083,42 +2081,44 @@ Réponse : B..."></textarea>
 
                 const utterance = new SpeechSynthesisUtterance(textToRead);
                 utterance.lang = 'fr-FR';
+                utterance.rate = 0.95;
                 window.speechSynthesis.speak(utterance);
-            } else {
-                alert("La lecture vocale n'est pas supportée par votre navigateur.");
             }
         }
 
-        // VOIR LA CORRECTION
+        // --- AFFICHAGE DE LA CORRECTION DU CONCOURS ---
         function openCorrectionModal() {
             if (!currentQuiz || !currentQuiz.questions) return;
-            
-            const correctionList = document.getElementById('correction-list');
-            correctionList.innerHTML = '';
 
+            const container = document.getElementById('correction-list-container');
+            container.innerHTML = '';
             const labels = ['A', 'B', 'C', 'D'];
 
-            currentQuiz.questions.forEach((q, idx) => {
+            currentQuiz.questions.forEach((qData, idx) => {
                 const userChoiceIdx = userAnswers[idx];
-                const isCorrect = userChoiceIdx === q.answer;
+                const isCorrect = (userChoiceIdx === qData.answer);
                 
-                const userChoiceText = userChoiceIdx !== null && userChoiceIdx !== undefined 
-                    ? `${labels[userChoiceIdx]}) ${q.options[userChoiceIdx]}` 
-                    : "Aucune réponse donnée (Temps écoulé)";
+                const userChoiceText = (userChoiceIdx !== -1 && userChoiceIdx !== undefined) 
+                    ? `${labels[userChoiceIdx]}) ${qData.options[userChoiceIdx]}` 
+                    : "Aucune réponse (Temps écoulé)";
                 
-                const correctChoiceText = `${labels[q.answer]}) ${q.options[q.answer]}`;
+                const correctChoiceText = `${labels[qData.answer]}) ${qData.options[qData.answer]}`;
 
-                correctionList.innerHTML += `
-                    <div class="correction-item ${isCorrect ? 'correct' : 'incorrect'}">
-                        <div style="display:flex; justify-content:space-between; margin-bottom: 6px;">
-                            <strong style="color:var(--text-main);">Question ${idx + 1} : ${q.q}</strong>
-                            <span>${isCorrect ? '✅ Correct' : '❌ Incorrect'}</span>
+                container.innerHTML += `
+                    <div style="background: var(--card-alt); border: 1px solid ${isCorrect ? 'var(--civ-green)' : 'var(--danger)'}; border-radius: var(--radius-md); padding: 1rem; text-align: left;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                            <strong style="color: var(--civ-orange);">Question ${idx + 1} / ${currentQuiz.questions.length}</strong>
+                            <span class="badge ${isCorrect ? 'badge-online' : 'badge-offline'}">
+                                ${isCorrect ? '✅ Correct' : '❌ Incorrect'}
+                            </span>
                         </div>
-                        <p style="font-size: 0.82rem; color: var(--text-sub); margin-bottom: 3px;">
-                            Votre réponse : <strong style="color:${isCorrect ? 'var(--civ-green)' : 'var(--danger)'};">${userChoiceText}</strong>
+                        <p style="font-size: 0.95rem; font-weight: 700; color: #FFF; margin-bottom: 0.8rem;">${qData.q}</p>
+                        
+                        <p style="font-size: 0.85rem; color: var(--text-sub); margin-bottom: 0.3rem;">
+                            <strong>Votre réponse :</strong> <span style="color: ${isCorrect ? '#00FF66' : 'var(--danger)'}; font-weight: 700;">${userChoiceText}</span>
                         </p>
-                        <p style="font-size: 0.82rem; color: var(--text-sub);">
-                            Bonne réponse : <strong style="color:var(--civ-green);">${correctChoiceText}</strong>
+                        <p style="font-size: 0.85rem; color: var(--text-sub);">
+                            <strong>Bonne réponse :</strong> <span style="color: var(--civ-green); font-weight: 700;">${correctChoiceText}</span>
                         </p>
                     </div>
                 `;
@@ -2452,39 +2452,30 @@ Réponse : B..."></textarea>
                 `;
             });
 
-            // Render Reviews Admin
+            // Render Reviews Admin (Avec Date & Nom)
             const reviewsBox = document.getElementById('admin-reviews-list');
             reviewsBox.innerHTML = '';
+
             if (reviews.length === 0) {
-                reviewsBox.innerHTML = `<p style="font-size:0.8rem; color:var(--text-sub);">Aucun avis pour le moment.</p>`;
+                reviewsBox.innerHTML = `<p style="font-size:0.8rem; color:var(--text-sub);">Aucun avis posté pour le moment.</p>`;
             } else {
                 reviews.forEach(r => {
-                    let starsHtml = '';
+                    let stars = '';
                     for (let i = 0; i < 5; i++) {
-                        starsHtml += `<i class="fa-solid fa-star" style="color:${i < r.rating ? 'var(--civ-orange)' : 'var(--text-sub)'}; font-size:0.75rem;"></i>`;
+                        stars += `<i class="fa-solid fa-star" style="color:${i < r.rating ? 'var(--civ-orange)' : 'var(--border)'}; font-size:0.75rem;"></i>`;
                     }
                     reviewsBox.innerHTML += `
-                        <div style="background:var(--card-alt); padding:8px 12px; border-radius:8px; margin-bottom:6px; border:1px solid var(--border);">
+                        <div style="background:var(--card-alt); padding:8px 12px; border-radius:8px; border:1px solid var(--border); margin-bottom:6px; font-size:0.8rem;">
                             <div style="display:flex; justify-content:space-between; align-items:center;">
-                                <strong style="font-size:0.82rem; color:var(--text-main);">${r.userName} (${r.userPhone})</strong>
-                                <span style="font-size:0.7rem; color:var(--text-sub);">${r.date}</span>
+                                <strong>${r.userName || 'Élève'} (${r.userPhone || 'N/A'})</strong>
+                                <div>${stars}</div>
                             </div>
-                            <div style="margin:2px 0;">${starsHtml}</div>
-                            <p style="font-size:0.8rem; color:var(--text-sub);">${r.comment}</p>
+                            <p style="color:var(--text-main); margin:4px 0;">« ${r.comment} »</p>
+                            <span style="font-size:0.68rem; color:var(--text-sub);">${r.date || 'Récent'}</span>
                         </div>
                     `;
                 });
             }
-        }
-
-        function openCreatorModal() { document.getElementById('modal-creator').classList.add('active'); }
-        function openCreateContestModal() {
-            document.getElementById('edit-contest-id').value = '';
-            document.getElementById('edit-title').value = '';
-            document.getElementById('edit-image').value = '';
-            document.getElementById('edit-questions-raw').value = '';
-            document.getElementById('parse-feedback').innerHTML = '';
-            document.getElementById('modal-edit-contest').classList.add('active');
         }
 
         async function toggleContestStatus(id) {
@@ -2494,30 +2485,307 @@ Réponse : B..."></textarea>
                 c.online = !c.online;
                 await DB.saveContests(contests);
                 renderAdminDashboard();
+                showToastGreen("Statut du concours mis à jour.");
             }
         }
 
         async function deleteContest(id) {
-            if (confirm("Supprimer ce concours ?")) {
+            if (confirm("Voulez-vous supprimer ce concours ?")) {
                 let contests = await DB.getContests();
-                contests = contests.filter(c => c.id !== id);
+                contests = contests.filter(item => item.id !== id);
                 await DB.saveContests(contests);
                 renderAdminDashboard();
+                showToastGreen("Concours supprimé.");
             }
         }
 
-        async function resetAllData() {
-            if (confirm("ATTENTION : Reinitialiser l'ensemble de la base de donnees ?")) {
-                await database.ref().remove();
-                location.reload();
+        function openCreateContestModal() {
+            document.getElementById('edit-contest-id').value = '';
+            document.getElementById('edit-title').value = '';
+            document.getElementById('edit-category').value = 'Collège';
+            updateLevelOptions();
+            document.getElementById('edit-type').value = 'Gratuit';
+            document.getElementById('edit-image').value = 'https://images.unsplash.com/photo-1447069387593-a5de0862481e?w=500&q=80';
+            document.getElementById('edit-questions-raw').value = '';
+            document.getElementById('parse-feedback').innerHTML = '';
+            
+            document.getElementById('modal-edit-contest').classList.add('active');
+        }
+
+        // --- GESTION DES MODALES ADMIN ---
+        async function openAdminUsersModal() {
+            const users = await DB.getUsers();
+            const tbody = document.getElementById('admin-users-table');
+            tbody.innerHTML = '';
+
+            if (users.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Aucun utilisateur inscrit.</td></tr>`;
+            } else {
+                users.forEach(u => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${u.name}</strong></td>
+                            <td>${u.school || 'N/A'} (${u.class || 'N/A'})</td>
+                            <td>${u.city || 'N/A'}</td>
+                            <td>${u.phone}</td>
+                            <td><button class="btn btn-danger" style="padding:2px 8px; font-size:0.7rem;" onclick="deleteUser('${u.uid}')"><i class="fa-solid fa-trash"></i></button></td>
+                        </tr>
+                    `;
+                });
+            }
+            document.getElementById('modal-admin-users').classList.add('active');
+        }
+
+        async function deleteUser(uid) {
+            if (confirm("Supprimer cet utilisateur ?")) {
+                await database.ref('users/' + uid).remove();
+                openAdminUsersModal();
+                showToastGreen("Utilisateur supprimé.");
+            }
+        }
+
+        async function openAdminResultsModal() {
+            const results = await DB.getResults();
+            const tbody = document.getElementById('admin-results-table');
+            tbody.innerHTML = '';
+
+            if (results.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Aucun résultat disponible.</td></tr>`;
+            } else {
+                results.forEach(r => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${r.userName}</strong> (${r.userSchool})</td>
+                            <td>${r.contestTitle}</td>
+                            <td><span class="badge badge-class">${r.contestClass || 'N/A'}</span></td>
+                            <td>${r.date || 'N/A'}</td>
+                            <td><strong style="color:var(--civ-orange);">${r.score} / 10</strong></td>
+                        </tr>
+                    `;
+                });
+            }
+            document.getElementById('modal-admin-results').classList.add('active');
+        }
+
+        async function openAdminResetsModal() {
+            const resets = await DB.getResets();
+            const box = document.getElementById('admin-resets-list');
+            box.innerHTML = '';
+
+            if (resets.length === 0) {
+                box.innerHTML = `<p style="font-size:0.8rem; color:var(--text-sub);">Aucune demande de réinitialisation.</p>`;
+            } else {
+                resets.forEach((r, idx) => {
+                    box.innerHTML += `
+                        <div style="background:var(--card-alt); padding:10px; border-radius:8px; border:1px solid var(--border); margin-bottom:8px; display:flex; justify-space-between; align-items:center;">
+                            <div>
+                                <strong>${r.name}</strong> (${r.phone})
+                                <div style="font-size:0.7rem; color:var(--text-sub);">Date : ${r.date}</div>
+                            </div>
+                            <button class="btn btn-orange" style="padding:4px 10px; font-size:0.75rem;" onclick="processReset(${idx})">
+                                Réinitialiser à 5555
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('modal-admin-resets').classList.add('active');
+        }
+
+        async function processReset(idx) {
+            const resets = await DB.getResets();
+            const target = resets[idx];
+            
+            if (target) {
+                resets.splice(idx, 1);
+                await DB.saveResets(resets);
+                openAdminResetsModal();
+                showToastGreen(`Mot de passe réinitialisé pour ${target.name}.`);
+            }
+        }
+
+        async function openAdminSubscriptionModal() {
+            const subs = await DB.getSubscriptions();
+            const tbody = document.getElementById('admin-subscriptions-table');
+            tbody.innerHTML = '';
+
+            if (subs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Aucun abonnement enregistré.</td></tr>`;
+            } else {
+                subs.forEach((s, idx) => {
+                    const isPending = s.status === 'En attente';
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${s.name}</strong></td>
+                            <td>${s.phone}</td>
+                            <td><span class="badge badge-class">${s.class}</span></td>
+                            <td><span class="badge ${isPending ? 'badge-paid' : 'badge-online'}">${s.status}</span></td>
+                            <td>
+                                ${isPending ? `<button class="btn btn-green" style="padding:2px 8px; font-size:0.7rem;" onclick="approveSubscription(${idx})">Valider 1 Mois</button>` : 'Actif'}
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+            document.getElementById('modal-admin-subscription').classList.add('active');
+        }
+
+        async function approveSubscription(idx) {
+            const subs = await DB.getSubscriptions();
+            const sub = subs[idx];
+            if (sub) {
+                sub.status = "Actif";
+                await DB.saveSubscriptions(subs);
+
+                // Mise à jour sur la fiche utilisateur
+                const users = await DB.getUsers();
+                const u = users.find(item => item.phone === sub.phone);
+                if (u && u.uid) {
+                    const expiresAt = new Date();
+                    expiresAt.setMonth(expiresAt.getMonth() + 1);
+                    await database.ref('users/' + u.uid + '/subscription').set({
+                        active: true,
+                        expiresAt: expiresAt.toISOString()
+                    });
+                }
+
+                openAdminSubscriptionModal();
+                showToastGreen(`Abonnement validé pour ${sub.name}.`);
+            }
+        }
+
+        // Top 10 & Classement Général Admin
+        async function openTop10ModalAdmin() {
+            const stats = await computeUserAggregatedStats();
+            const sorted = stats.sort((a, b) => b.totalPoints - a.totalPoints).slice(0, 10);
+
+            const tbody = document.getElementById('admin-top10-table-body');
+            tbody.innerHTML = '';
+
+            if (sorted.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;">Aucune donnée disponible.</td></tr>`;
+            } else {
+                sorted.forEach((item, idx) => {
+                    const avg = item.totalContests > 0 ? (item.totalPoints / item.totalContests).toFixed(1) : 0;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong style="color:var(--civ-orange);">#${idx + 1}</strong></td>
+                            <td><strong>${item.lastname}</strong></td>
+                            <td>${item.firstname}</td>
+                            <td>${item.school}</td>
+                            <td>${item.city}</td>
+                            <td><span class="badge badge-class">${item.class}</span></td>
+                            <td>${item.totalContests}</td>
+                            <td><strong style="color:var(--civ-green);">${item.totalPoints} pts</strong></td>
+                            <td>${avg} / 10</td>
+                        </tr>
+                    `;
+                });
+            }
+            document.getElementById('modal-admin-top10').classList.add('active');
+        }
+
+        let currentAdminRankMode = 'level';
+
+        function openGeneralRankingModalAdmin() {
+            switchAdminRankingTab('level');
+            document.getElementById('modal-admin-general-ranking').classList.add('active');
+        }
+
+        function switchAdminRankingTab(mode) {
+            currentAdminRankMode = mode;
+            document.getElementById('btn-admin-rank-mode-level').className = mode === 'level' ? 'btn btn-secondary active' : 'btn btn-secondary';
+            document.getElementById('btn-admin-rank-mode-global').className = mode === 'global' ? 'btn btn-secondary active' : 'btn btn-secondary';
+            
+            document.getElementById('admin-ranking-level-select-box').style.display = mode === 'level' ? 'block' : 'none';
+
+            if (mode === 'level') {
+                renderAdminLevelRanking();
+            } else {
+                renderAdminGlobalRanking();
+            }
+        }
+
+        async function renderAdminLevelRanking() {
+            const selectedClass = document.getElementById('admin-ranking-class-select').value;
+            const stats = await computeUserAggregatedStats();
+            const filtered = stats.filter(s => s.class === selectedClass).sort((a, b) => b.totalPoints - a.totalPoints);
+
+            const tbody = document.getElementById('admin-general-ranking-table-body');
+            tbody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;">Aucun élève trouvé pour la classe de ${selectedClass}.</td></tr>`;
+            } else {
+                filtered.forEach((item, idx) => {
+                    const avg = item.totalContests > 0 ? (item.totalPoints / item.totalContests).toFixed(1) : 0;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong style="color:var(--civ-orange);">#${idx + 1}</strong></td>
+                            <td><strong>${item.lastname}</strong></td>
+                            <td>${item.firstname}</td>
+                            <td>${item.school}</td>
+                            <td>${item.city}</td>
+                            <td><span class="badge badge-class">${item.class}</span></td>
+                            <td>${item.totalContests}</td>
+                            <td><strong style="color:var(--civ-green);">${item.totalPoints} pts</strong></td>
+                            <td>${avg} / 10</td>
+                        </tr>
+                    `;
+                });
+            }
+        }
+
+        async function renderAdminGlobalRanking() {
+            const stats = await computeUserAggregatedStats();
+            const sorted = stats.sort((a, b) => b.totalPoints - a.totalPoints);
+
+            const tbody = document.getElementById('admin-general-ranking-table-body');
+            tbody.innerHTML = '';
+
+            if (sorted.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center;">Aucune donnée.</td></tr>`;
+            } else {
+                sorted.forEach((item, idx) => {
+                    const avg = item.totalContests > 0 ? (item.totalPoints / item.totalContests).toFixed(1) : 0;
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong style="color:var(--civ-orange);">#${idx + 1}</strong></td>
+                            <td><strong>${item.lastname}</strong></td>
+                            <td>${item.firstname}</td>
+                            <td>${item.school}</td>
+                            <td>${item.city}</td>
+                            <td><span class="badge badge-class">${item.class}</span></td>
+                            <td>${item.totalContests}</td>
+                            <td><strong style="color:var(--civ-green);">${item.totalPoints} pts</strong></td>
+                            <td>${avg} / 10</td>
+                        </tr>
+                    `;
+                });
             }
         }
 
         function copyUniqueLink() {
-            const input = document.getElementById('unique-share-link');
-            input.select();
+            const linkInput = document.getElementById('unique-share-link');
+            linkInput.select();
             document.execCommand('copy');
             showToastGreen("Lien copié dans le presse-papier !");
+        }
+
+        async function resetAllData() {
+            if (confirm("⚠️ Êtes-vous sur de vouloir réinitialiser TOUTES les données de l'application ?")) {
+                await database.ref('contests').remove();
+                await database.ref('results').remove();
+                await database.ref('reviews').remove();
+                await database.ref('resets').remove();
+                await database.ref('subscriptions').remove();
+                showToastGreen("Toutes les données ont été réinitialisées.");
+                renderAdminDashboard();
+            }
+        }
+
+        function openCreatorModal() {
+            document.getElementById('modal-creator').classList.add('active');
         }
     </script>
 </body>
