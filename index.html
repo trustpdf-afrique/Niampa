@@ -1,701 +1,1308 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moyennes CI - Application Éducative Premium</title>
-  <!-- Google Fonts & FontAwesome Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ZTV EXCELLENCE SCOLAIRE CÔTE D’IVOIRE</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --primary-orange: #FF8C00;
-      --orange-light: #FFF5EC;
-      --orange-gradient: linear-gradient(135deg, #FF8C00 0%, #E07B00 100%);
-      --primary-green: #009A44;
-      --green-light: #E8F5E9;
-      --green-gradient: linear-gradient(135deg, #009A44 0%, #007A35 100%);
-      --bg-light: #F8FAF9;
-      --surface-white: #FFFFFF;
-      --text-main: #1E293B;
-      --text-muted: #64748B;
-      --border-color: #E2E8F0;
-      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-      --shadow-premium: 0 10px 25px -5px rgba(255, 140, 0, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-      --radius-lg: 20px;
-      --radius-md: 14px;
-      --radius-sm: 8px;
+      --bg-main: #090D1A;
+      --bg-card: #1B2133;
+      --bg-input: #111827;
+      --border-light: #2A344A;
+
+      --orange-ztv: #FF8C00;
+      --green-ztv: #09A63D;
+      --white: #FFFFFF;
+      --text-gray: #9CA3AF;
+      --gold-ztv: #D97706;
+
+      --radius-xl: 24px;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-pill: 9999px;
+
+      --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.5);
+      --glow-orange: 0 0 20px rgba(255, 140, 0, 0.4);
+      --glow-green: 0 0 20px rgba(9, 166, 61, 0.4);
+
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
 
     body {
-      background-color: #0f172a;
-      color: var(--text-main);
+      background-color: #03060D;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      overflow-x: hidden;
+      color: var(--white);
     }
 
-    /* Conteneur Application Mobile / Desktop Frame */
-    .app-container {
+    /* CHÂSSIS APPLICATION MOBILE AVEC ARRIÈRE-PLAN IVOIRIEN FLOUTÉ */
+    .app-frame {
       width: 100%;
-      max-width: 480px;
+      max-width: 430px;
       height: 100vh;
       max-height: 920px;
-      background: var(--bg-light);
+      background-color: var(--bg-main);
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 60px rgba(0,0,0,0.95);
+      border-radius: 0px;
     }
 
-    @media (min-width: 500px) {
-      .app-container {
+    /* IMAGE D'ARRIÈRE-PLAN FLOUTÉE */
+    .app-bg-layer {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url('https://i.postimg.cc/HjDJvjqX/file-00000000685081f4afaf53efdfb26e58.png');
+      background-size: cover;
+      background-position: center;
+      filter: blur(8px) brightness(0.35);
+      transform: scale(1.08);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @media (min-width: 450px) {
+      .app-frame {
         border-radius: 36px;
-        height: 90vh;
+        height: 94vh;
+        border: 2px solid var(--border-light);
       }
     }
 
-    /* ----------------------------------
-       1. ÉCRAN DE DÉMARRAGE (SPLASH)
-    ---------------------------------- */
-    #splash-screen {
-      position: absolute;
-      inset: 0;
-      background: var(--surface-white);
-      z-index: 100;
-      display: flex;
+    /* TRANSITIONS & PAGES */
+    .page-view {
+      display: none;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.6s ease, visibility 0.6s;
-    }
-
-    .splash-logo {
-      width: 100px;
-      height: 100px;
-      background: var(--orange-gradient);
-      border-radius: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 42px;
-      box-shadow: var(--shadow-premium);
-      animation: pulseLogo 2s infinite alternate;
-    }
-
-    @keyframes pulseLogo {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 140, 0, 0.4); }
-      100% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255, 140, 0, 0); }
-    }
-
-    .splash-title {
-      margin-top: 24px;
-      font-size: 24px;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-
-    .splash-subtitle {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .loader-bar {
-      width: 140px;
-      height: 6px;
-      background: #E2E8F0;
-      border-radius: 10px;
-      margin-top: 40px;
-      overflow: hidden;
+      width: 100%;
+      min-height: 100%;
+      padding-bottom: 90px;
+      z-index: 1;
+      animation: fadeIn 0.3s ease-out forwards;
       position: relative;
     }
 
-    .loader-progress {
-      width: 0%;
-      height: 100%;
-      background: var(--green-gradient);
-      border-radius: 10px;
-      animation: loadApp 2.2s ease-in-out forwards;
+    .page-view.active { display: flex; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes loadApp {
-      0% { width: 0%; }
-      100% { width: 100%; }
+    /* LOGO & BRANDING */
+    .ztv-logo-brand {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
     }
 
-    /* ----------------------------------
-       2. ÉCRAN DE CONNEXION
-    ---------------------------------- */
-    #login-screen {
-      position: absolute;
-      inset: 0;
-      background: var(--surface-white);
-      z-index: 90;
-      padding: 32px 24px;
+    /* ÉCRAN DE CONNEXION / CRÉATION */
+    .auth-container {
+      padding: 24px 20px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      transition: transform 0.5s ease;
+      align-items: center;
+      text-align: center;
     }
 
-    .login-header {
-      margin-bottom: 32px;
+    .auth-title-container {
+      margin: 16px 0 24px;
     }
 
-    .login-header h2 {
-      font-size: 28px;
-      font-weight: 800;
-      color: var(--text-main);
-    }
-
-    .login-header p {
-      color: var(--text-muted);
-      margin-top: 6px;
-    }
-
-    .input-group {
-      margin-bottom: 20px;
-    }
-
-    .input-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      text-transform: uppercase;
+    .auth-main-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--white);
       letter-spacing: 0.5px;
     }
 
-    .input-field {
-      width: 100%;
-      padding: 16px 18px;
-      border: 2px solid var(--border-color);
-      border-radius: var(--radius-md);
+    .auth-sub-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--green-ztv);
+      margin-top: 4px;
+    }
+
+    .auth-welcome {
       font-size: 15px;
-      outline: none;
-      transition: all 0.3s;
-      background: #FAFAFA;
+      font-weight: 700;
+      color: var(--orange-ztv);
+      margin-top: 12px;
     }
 
-    .input-field:focus {
-      border-color: var(--primary-orange);
-      background: white;
-      box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
-    }
-
-    .btn-premium {
+    .auth-card {
+      background: rgba(27, 33, 51, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
       width: 100%;
-      padding: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow-card);
+    }
+
+    /* FORMULAIRES */
+    .form-grid-dual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-group { margin-bottom: 14px; text-align: left; }
+
+    .form-input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-input::placeholder { color: var(--text-gray); font-weight: 500; }
+    .form-input:focus { border-color: var(--orange-ztv); box-shadow: 0 0 12px rgba(255, 140, 0, 0.25); }
+    select.form-input { appearance: none; cursor: pointer; }
+
+    /* BOUTONS */
+    .btn-main-orange {
+      background: linear-gradient(135deg, var(--orange-ztv), #D96B00);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 15px;
       border: none;
-      border-radius: var(--radius-md);
-      background: var(--orange-gradient);
-      color: white;
-      font-size: 16px;
+      border-radius: var(--radius-pill);
+      padding: 16px;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: var(--glow-orange);
+      transition: var(--transition);
+      margin-top: 10px;
+    }
+    .btn-main-orange:active { transform: scale(0.97); }
+
+    .btn-main-green {
+      background: linear-gradient(135deg, var(--green-ztv), #00803E);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 15px;
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 16px;
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: var(--glow-green);
+      transition: var(--transition);
+      margin-top: 10px;
+    }
+    .btn-main-green:active { transform: scale(0.97); }
+
+    .btn-photo-gallery {
+      width: 100%;
+      background: linear-gradient(135deg, #1F293D 0%, #111827 100%);
+      border: 1.5px dashed var(--orange-ztv);
+      color: #FFF;
+      padding: 14px;
+      border-radius: var(--radius-lg);
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      box-shadow: var(--shadow-premium);
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: var(--transition);
     }
 
-    .btn-premium:active {
-      transform: scale(0.98);
-    }
-
-    /* ----------------------------------
-       3. APPLICATION / HEADER
-    ---------------------------------- */
-    .app-header {
-      padding: 20px 20px 10px 20px;
-      background: var(--surface-white);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .user-profile {
+    .divider-or {
       display: flex;
       align-items: center;
-      gap: 12px;
-    }
-
-    .avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--green-gradient);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 18px;
-    }
-
-    .user-info h3 {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .user-info p {
+      text-align: center;
+      margin: 20px 0;
+      color: var(--text-gray);
       font-size: 12px;
-      color: var(--primary-green);
       font-weight: 600;
     }
-
-    /* ----------------------------------
-       4. TABLEAU DE BORD (GRID DENSE)
-    ---------------------------------- */
-    .app-body {
+    .divider-or::before, .divider-or::after {
+      content: '';
       flex: 1;
-      overflow-y: auto;
-      padding: 16px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .divider-or span { padding: 0 10px; }
+
+    .forgot-link {
+      display: block; text-align: center; color: var(--orange-ztv);
+      font-size: 13px; font-weight: 700; margin: 14px 0;
+      text-decoration: none; cursor: pointer;
     }
 
-    .page {
-      display: none;
-      animation: fadeIn 0.4s ease forwards;
+    /* DASHBOARD EN-TÊTE */
+    .dash-header {
+      padding: 20px; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(27, 33, 51, 0.6); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .user-profile-info { display: flex; align-items: center; gap: 12px; }
+    .user-avatar-circle {
+      width: 48px; height: 48px; border-radius: 50%;
+      border: 2px solid var(--orange-ztv); object-fit: cover; background: var(--bg-card);
     }
 
-    .page.active {
-      display: block;
+    /* SECTION TRIMESTRES DISPOSITION STRICTE */
+    .trimestres-section { padding: 16px 16px 0; margin-bottom: 16px; }
+    .trimestres-row-top { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .trimestres-row-bottom { display: flex; justify-content: center; }
+    .trimestres-row-bottom .trim-card { width: 100%; max-width: 220px; }
+
+    .trim-card {
+      border-radius: var(--radius-xl); padding: 16px; color: #FFF;
+      cursor: pointer; box-shadow: var(--shadow-card); transition: var(--transition);
+    }
+    .trim-card:active { transform: scale(0.97); }
+    .trim-card-1 { 
+      background: linear-gradient(135deg, #FF8C00, #D96B00); 
+      border: 1.5px solid rgba(255, 215, 0, 0.5);
+    }
+    .trim-card-2 { 
+      background: #FFFDF9; 
+      color: #0F172A; 
+      border: 1.5px solid #E2E8F0;
+    }
+    .trim-card-3 { 
+      background: linear-gradient(135deg, #09A63D, #00803E); 
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .trim-header-flex { display: flex; justify-content: space-between; align-items: center; }
+    .trim-title-box { display: flex; align-items: center; gap: 6px; }
+    .trim-title { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; }
+    .trim-sublbl { font-size: 10px; font-weight: 700; opacity: 0.85; margin-top: 4px; }
+    .trim-val { font-size: 19px; font-weight: 900; margin-top: 4px; }
+    .trim-arrow-circle {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: #FFFFFF; color: #0F172A; display: flex; align-items: center; justify-content: center; 
+      font-size: 12px; font-weight: 900;
+    }
+    .trim-card-2 .trim-arrow-circle { background: #0F172A; color: #FFF; }
+
+    /* CARTES DU TABLEAU DE BORD */
+    .annual-card-ztv {
+      background: rgba(255, 255, 255, 0.95); border-radius: var(--radius-xl);
+      padding: 18px; margin: 0 16px 16px; color: #0F172A; box-shadow: var(--shadow-card);
+    }
+    .annual-top-title {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      color: var(--green-ztv); font-size: 13px; font-weight: 900; text-transform: uppercase; margin-bottom: 14px;
+    }
+    .annual-stats-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      text-align: center; border-top: 1px solid #E2E8F0; padding-top: 12px;
+    }
+    .annual-stat-lbl { font-size: 10px; color: #64748B; font-weight: 700; text-transform: uppercase; }
+    .annual-stat-val { font-size: 17px; font-weight: 900; margin-top: 4px; color: #0F172A; }
+
+    .progression-card-ztv {
+      background: rgba(255, 255, 255, 0.95); border-radius: var(--radius-xl); padding: 16px 20px;
+      margin: 0 16px 16px; color: #0F172A; display: flex; align-items: center; gap: 16px; box-shadow: var(--shadow-card);
+    }
+    .prog-circle {
+      width: 56px; height: 56px; border-radius: 50%; border: 5px solid var(--orange-ztv);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 14px; color: #0F172A; flex-shrink: 0;
+    }
+    .prog-bar-bg { width: 100%; height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden; margin-top: 6px; }
+    .prog-bar-fill { height: 100%; width: 0%; background: var(--green-ztv); border-radius: 4px; transition: width 0.5s ease; }
+
+    .dual-cards-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px; margin-bottom: 16px; }
+    .action-card-orange { background: linear-gradient(135deg, #FF8C00, #E05D00); border-radius: var(--radius-lg); padding: 14px; color: #FFF; cursor: pointer; transition: var(--transition); }
+    .action-card-green { background: linear-gradient(135deg, #09A63D, #00803E); border-radius: var(--radius-lg); padding: 14px; color: #FFF; cursor: pointer; transition: var(--transition); }
+
+    .objective-banner {
+      background: linear-gradient(135deg, #FF8C00, #D95300);
+      border-radius: var(--radius-lg); padding: 14px 18px; margin: 0 16px 16px; color: #FFF;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: var(--transition);
     }
 
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+    .bottom-dual-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px; margin-bottom: 16px; }
+    .btn-pill-premium {
+      background: rgba(36, 26, 8, 0.85); border: 1.5px solid #F59E0B;
+      border-radius: var(--radius-xl); padding: 14px; color: var(--white);
+      display: flex; align-items: center; gap: 10px; cursor: pointer; transition: var(--transition);
     }
+    .btn-pill-premium-green { background: rgba(9, 38, 19, 0.85); border-color: #10B981; }
 
-    /* Cartes Premium */
-    .card-premium {
-      background: var(--surface-white);
-      border-radius: var(--radius-lg);
-      padding: 14px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid rgba(0,0,0,0.03);
-      position: relative;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .card-premium.clickable {
-      cursor: pointer;
-    }
-
-    .card-premium.clickable:active {
-      transform: scale(0.97);
-    }
-
-    .card-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .card-value {
-      font-size: 20px;
-      font-weight: 800;
-      color: var(--text-main);
-      margin-top: 6px;
-    }
-
-    .card-status {
-      font-size: 11px;
-      font-weight: 600;
-      margin-top: 4px;
-    }
-
-    .badge-orange {
-      background: var(--orange-light);
-      color: var(--primary-orange);
-      padding: 3px 8px;
-      border-radius: 20px;
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    .badge-green {
-      background: var(--green-light);
-      color: var(--primary-green);
-      padding: 3px 8px;
-      border-radius: 20px;
-      font-size: 10px;
-      font-weight: 700;
-    }
-
-    /* Cercle de Progression SVG */
-    .progress-circle-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 0;
-    }
-
-    .circle-bg {
-      fill: none;
-      stroke: #E2E8F0;
-      stroke-width: 3.8;
-    }
-
-    .circle-progress {
-      fill: none;
-      stroke: url(#orange-gradient-svg);
-      stroke-width: 3.8;
-      stroke-linecap: round;
-      transition: stroke-dasharray 0.8s ease;
-    }
-
-    .circle-text {
-      font-size: 9px;
-      font-weight: 800;
-      fill: var(--text-main);
-      text-anchor: middle;
-      dominant-baseline: middle;
-    }
-
-    /* ----------------------------------
-       5. PAGES DE TRIMESTRE & MATIÈRES
-    ---------------------------------- */
-    .page-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    .btn-back {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: white;
-      border: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--text-main);
-    }
-
-    .subject-item {
-      background: white;
-      border-radius: var(--radius-md);
-      padding: 12px 14px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .subject-info h4 {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
-    .subject-info p {
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .subject-inputs {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .input-box {
-      width: 58px;
-      text-align: center;
-      padding: 8px;
-      border: 1.5px solid var(--border-color);
-      border-radius: var(--radius-sm);
-      font-weight: 700;
-      font-size: 14px;
-      outline: none;
-    }
-
-    .input-box:focus {
-      border-color: var(--primary-orange);
-    }
-
-    /* ----------------------------------
-       6. BULLETIN PDF MODAL
-    ---------------------------------- */
-    .modal {
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
-      z-index: 120;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .modal-content {
-      background: white;
-      border-radius: var(--radius-lg);
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      padding: 20px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    }
-
-    .bulletin-header {
-      text-align: center;
-      border-bottom: 2px solid var(--primary-orange);
-      padding-bottom: 12px;
-      margin-bottom: 14px;
-    }
-
-    .bulletin-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-      font-size: 12px;
-    }
-
-    .bulletin-table th, .bulletin-table td {
-      border: 1px solid var(--border-color);
-      padding: 6px 8px;
-      text-align: left;
-    }
-
-    .bulletin-table th {
-      background: #F8FAF9;
-      font-weight: 700;
-    }
-
-    /* ----------------------------------
-       7. BARRE DE NAVIGATION INFÉRIEURE
-    ---------------------------------- */
-    .bottom-nav {
-      background: white;
-      border-top: 1px solid var(--border-color);
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
+    /* BARRE DE NAVIGATION EN BAS EN FIXE */
+    .bottom-navbar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 68px; background: rgba(17, 24, 39, 0.95); backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border-light);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      z-index: 100;
     }
 
     .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: var(--text-muted);
-      font-size: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px; color: var(--text-gray); font-size: 10px; font-weight: 700;
+      cursor: pointer; text-decoration: none; transition: var(--transition);
+    }
+    .nav-item.active { color: var(--orange-ztv); }
+    .nav-icon { font-size: 20px; }
+
+    /* BULLETIN DE NOTES */
+    .bulletin-container { padding: 16px; }
+    .bulletin-table {
+      width: 100%; border-collapse: separate; border-spacing: 0;
+      background: rgba(27, 33, 51, 0.9); border-radius: var(--radius-lg);
+      overflow: hidden; border: 1px solid var(--border-light); margin-bottom: 20px;
+    }
+    .bulletin-table th {
+      background: #111827; color: var(--orange-ztv); padding: 12px 8px;
+      font-size: 11px; font-weight: 800; text-transform: uppercase; border-bottom: 1px solid var(--border-light);
+    }
+    .bulletin-table td { padding: 10px 8px; font-size: 12px; border-bottom: 1px solid #222C40; text-align: center; color: #FFF; }
+    .bulletin-table td:first-child { text-align: left; padding-left: 12px; font-weight: 600; }
+    .section-title-row td { background: #0D1322; color: var(--green-ztv); font-weight: 800; font-size: 10px; text-transform: uppercase; }
+
+    .inp-coef, .inp-note {
+      width: 50px; background: var(--bg-input); border: 1px solid var(--border-light);
+      color: #FFF; text-align: center; border-radius: 8px; padding: 6px; font-weight: 800; font-size: 12px;
+    }
+    .inp-note { border-color: var(--orange-ztv); }
+
+    /* TABLEAU D'HONNEUR - FORMAT PAYSAGE DIPLÔME */
+    .certif-selector-bar { display: flex; gap: 8px; overflow-x: auto; padding: 0 16px 16px; scrollbar-width: none; }
+    .certif-tab-btn {
+      background: rgba(27, 33, 51, 0.8); border: 1px solid var(--border-light); color: var(--white);
+      padding: 10px 16px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 800;
+      whitespace: nowrap; cursor: pointer;
+    }
+    .certif-tab-btn.active { background: var(--orange-ztv); color: #000; border-color: #FFF; }
+
+    .landscape-cert-wrapper { padding: 0 12px; width: 100%; }
+    .certificate-landscape-frame {
+      background: #FFFDF8; border: 8px double #92400E; outline: 2px solid #D97706; outline-offset: -5px;
+      border-radius: 12px; padding: 18px 14px; color: #1E293B; text-align: center; position: relative;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.7); background-image: radial-gradient(#F59E0B 0.5px, transparent 0.5px);
+      background-size: 16px 16px;
+    }
+    .cert-inner-border { border: 1px solid rgba(180, 83, 9, 0.3); padding: 14px 10px; border-radius: 6px; background: rgba(255, 255, 255, 0.95); }
+    .cert-header-flex { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #D97706; padding-bottom: 8px; margin-bottom: 10px; }
+    .cert-body-grid { display: grid; grid-template-columns: 75px 1fr; gap: 12px; align-items: center; text-align: left; margin: 10px 0; }
+    .cert-student-photo { width: 72px; height: 72px; border-radius: 50%; border: 3px solid #D97706; object-fit: cover; }
+    .cert-student-fullname { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 900; color: #0F172A; text-transform: uppercase; }
+
+    /* MODALE POPUP */
+    .modal-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(3, 6, 13, 0.92); backdrop-filter: blur(8px);
+      z-index: 1050; display: none; align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-card {
+      background: var(--bg-card); border: 1.5px solid var(--border-light);
+      border-radius: var(--radius-xl); padding: 22px; width: 100%; max-width: 360px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8); position: relative;
+    }
+    .modal-close-btn {
+      position: absolute; top: 16px; right: 16px;
+      background: var(--bg-input); border: 1px solid var(--border-light);
+      color: var(--text-gray); width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-weight: 800; cursor: pointer;
     }
 
-    .nav-item.active {
-      color: var(--primary-orange);
+    /* MODALE CRÉATEUR */
+    .creator-photo {
+      width: 90px; height: 90px; border-radius: 50%;
+      border: 3px solid var(--orange-ztv); object-fit: cover;
+      box-shadow: 0 0 20px rgba(255, 140, 0, 0.5); margin: 0 auto 12px; display: block;
     }
 
-    .nav-item i {
-      font-size: 18px;
+    /* IMPRESSION */
+    @media print {
+      @page { size: landscape; margin: 0; }
+      body { background: #FFF !important; }
+      .app-frame { max-width: 100% !important; height: auto !important; box-shadow: none !important; border: none !important; }
+      .page-view, .bottom-navbar, .btn-print-cert { display: none !important; }
+      #view-certif { display: block !important; padding: 0 !important; }
+      .landscape-cert-wrapper { width: 100vw !important; height: 100vh !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+      .certificate-landscape-frame { width: 95% !important; }
     }
   </style>
 </head>
 <body>
 
-  <div class="app-container">
+  <!-- CHÂSSIS APPLICATION -->
+  <div class="app-frame">
+    
+    <!-- COUCHE D'ARRIÈRE-PLAN FLOUTÉ -->
+    <div class="app-bg-layer"></div>
 
-    <!-- 1. ÉCRAN DE DÉMARRAGE -->
-    <div id="splash-screen">
-      <div class="splash-logo">
-        <i class="fa-solid fa-graduation-cap"></i>
-      </div>
-      <div class="splash-title">Moyennes CI</div>
-      <div class="splash-subtitle">Excellence & Succès Scolaire</div>
-      <div class="loader-bar">
-        <div class="loader-progress"></div>
+    <!-- ================= 1. ÉCRAN DE CONNEXION / CRÉATION ================= -->
+    <div id="view-auth" class="page-view active">
+      <div class="auth-container">
+        
+        <img src="https://i.postimg.cc/fy9QP68q/file-00000000dd5081f48d39ca7eb9ecf91d.png" alt="Logo ZTV" class="ztv-logo-brand" />
+
+        <div class="auth-title-container">
+          <div class="auth-main-title">EXCELLENCE SCOLAIRE</div>
+          <div class="auth-sub-title">CÔTE D’IVOIRE 🇨🇮</div>
+          <div class="auth-welcome" id="auth-welcome-text">Bienvenue !<br><small style="color:var(--text-gray); font-weight:500;">Connectez-vous pour continuer</small></div>
+        </div>
+
+        <!-- FORMULAIRE SE CONNECTER -->
+        <div id="form-login-content" class="auth-card">
+          <div class="form-group">
+            <input type="text" class="form-input" id="login-fullname" placeholder="👤 Nom complet" />
+          </div>
+
+          <div class="form-group">
+            <input type="password" maxlength="4" class="form-input" id="login-pass" placeholder="🔒 Mot de passe (4 chiffres)" />
+          </div>
+
+          <a class="forgot-link" onclick="demanderMotDePasseOublie()">Mot de passe oublié ?</a>
+
+          <button class="btn-main-orange" onclick="actionLogin()">
+            <span>SE CONNECTER</span>
+            <span>➔</span>
+          </button>
+
+          <div class="divider-or"><span>ou</span></div>
+
+          <button class="btn-main-green" onclick="switchAuthTab('register')">
+            <span>🟢 CRÉER UN COMPTE</span>
+          </button>
+        </div>
+
+        <!-- FORMULAIRE CRÉER UN COMPTE -->
+        <div id="form-register-content" class="auth-card" style="display:none;">
+          <div class="form-grid-dual">
+            <div class="form-group"><input type="text" class="form-input" id="reg-nom" placeholder="👤 Nom" /></div>
+            <div class="form-group"><input type="text" class="form-input" id="reg-prenom" placeholder="👤 Prénom" /></div>
+          </div>
+
+          <div class="form-grid-dual">
+            <div class="form-group"><input type="text" class="form-input" id="reg-ville" placeholder="📍 Ville" /></div>
+            <div class="form-group">
+              <select class="form-input" id="reg-pays">
+                <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <input type="tel" class="form-input" id="reg-whatsapp" placeholder="📱 Numéro WhatsApp" />
+          </div>
+
+          <div class="form-group">
+            <input type="text" class="form-input" id="reg-etablissement" placeholder="🏫 Établissement" />
+          </div>
+
+          <div class="form-group">
+            <select class="form-input" id="reg-classe" onchange="checkClasse3emeUI()">
+              <option value="">🎓 Choisir la classe...</option>
+              <option value="6ème">6ème</option>
+              <option value="5ème">5ème</option>
+              <option value="4ème">4ème</option>
+              <option value="3ème">3ème</option>
+              <option value="Seconde">Seconde</option>
+              <option value="Première">Première</option>
+              <option value="Terminale">Terminale</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <input type="password" maxlength="4" class="form-input" id="reg-pass" placeholder="🔒 Mot de passe (4 chiffres)" />
+          </div>
+
+          <!-- PHOTO DEPUIS LA GALERIE -->
+          <div class="form-group">
+            <label for="reg-photo-file" class="btn-photo-gallery">
+              <span>📷 Ajouter une photo</span>
+            </label>
+            <input type="file" id="reg-photo-file" accept="image/*" style="display:none;" onchange="handlePhotoSelect(event)" />
+            <div id="photo-preview-msg" style="font-size:11px; color:var(--green-ztv); margin-top:6px; text-align:center; font-weight:700;"></div>
+          </div>
+
+          <button class="btn-main-green" onclick="actionRegister()">
+            <span>ENREGISTRER MON COMPTE</span>
+          </button>
+
+          <div class="divider-or"><span>ou</span></div>
+
+          <a class="forgot-link" onclick="switchAuthTab('login')">Déjà un compte ? Se connecter</a>
+        </div>
+
+        <p style="font-size:11px; color:var(--text-gray); margin-top:20px;">🔒 Vos données sont sécurisées</p>
+        <button onclick="openModalCreator()" style="background:none; border:none; color:var(--orange-ztv); font-size:11px; font-weight:700; margin-top:10px; cursor:pointer;">👨‍💻 Présentation du Créateur</button>
+
       </div>
     </div>
 
-    <!-- 2. ÉCRAN DE CONNEXION -->
-    <div id="login-screen">
-      <div class="login-header">
-        <h2>Bienvenue 👋</h2>
-        <p>Connectez-vous pour accéder à vos moyennes scolaires.</p>
+    <!-- ================= 2. PAGE D’ACCUEIL (DASHBOARD) ================= -->
+    <div id="view-dashboard" class="page-view">
+      
+      <!-- EN-TÊTE -->
+      <div class="dash-header">
+        <div class="user-profile-info">
+          <img src="https://i.postimg.cc/Z5t6ctQQ/file-000000008a6081f9a7552dfe57d5c70d.png" class="user-avatar-circle" id="dash-avatar-img" />
+          <div>
+            <div style="font-size: 11px; color: var(--text-gray);">Bonjour,</div>
+            <div style="font-size: 15px; font-weight: 800;" id="dash-user-name">Niampa Zakaria 👋</div>
+          </div>
+        </div>
+        <img src="https://i.postimg.cc/fy9QP68q/file-00000000dd5081f48d39ca7eb9ecf91d.png" alt="Logo ZTV" style="height: 36px;" />
       </div>
-      <form id="login-form" onsubmit="handleLogin(event)">
-        <div class="input-group">
-          <label>Nom d'utilisateur</label>
-          <input type="text" class="input-field" placeholder="Ex: Kouassi Jean" value="Kouassi Jean" required>
+
+      <!-- 1er + 2e TRIMESTRE (Première ligne) -->
+      <div class="trimestres-section">
+        <div class="trimestres-row-top">
+          
+          <div class="trim-card trim-card-1" onclick="openTrimPage(1)">
+            <div class="trim-header-flex">
+              <div class="trim-title-box">
+                <span style="font-size:15px;">📄</span>
+                <span class="trim-title">1er TRIMESTRE</span>
+              </div>
+              <div class="trim-arrow-circle">→</div>
+            </div>
+            <div class="trim-sublbl">Moyenne</div>
+            <div class="trim-val" id="val-t1">-- /20</div>
+          </div>
+
+          <div class="trim-card trim-card-2" onclick="openTrimPage(2)">
+            <div class="trim-header-flex">
+              <div class="trim-title-box">
+                <span style="font-size:15px;">📄</span>
+                <span class="trim-title">2e TRIMESTRE</span>
+              </div>
+              <div class="trim-arrow-circle">→</div>
+            </div>
+            <div class="trim-sublbl">Moyenne</div>
+            <div class="trim-val" id="val-t2">-- /20</div>
+          </div>
+
         </div>
-        <div class="input-group">
-          <label>Mot de passe</label>
-          <input type="password" class="input-field" value="••••••••" required>
+
+        <!-- 3e TRIMESTRE CENTRÉ -->
+        <div class="trimestres-row-bottom">
+          <div class="trim-card trim-card-3" onclick="openTrimPage(3)">
+            <div class="trim-header-flex">
+              <div class="trim-title-box">
+                <span style="font-size:15px;">📄</span>
+                <span class="trim-title">3e TRIMESTRE</span>
+              </div>
+              <div class="trim-arrow-circle">→</div>
+            </div>
+            <div class="trim-sublbl">Moyenne</div>
+            <div class="trim-val" id="val-t3">-- /20</div>
+          </div>
         </div>
-        <button type="submit" class="btn-premium">
-          Se Connecter <i class="fa-solid fa-arrow-right"></i>
-        </button>
-      </form>
+      </div>
+
+      <!-- CARTE ORIENTATION (VISIBLE UNIQUEMENT POUR 3e) -->
+      <div id="card-orientation-3eme-wrapper" style="display:none; padding:0 16px; margin-bottom:16px;">
+        <div style="background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%); border: 1.5px solid #818CF8; border-radius: var(--radius-xl); padding: 16px 20px; color: #FFF; display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="switchPage('view-orientation')">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:26px;">🎯</span>
+            <div>
+              <div style="font-size:13px; font-weight:900;">MOYENNE D’ORIENTATION</div>
+              <div style="font-size:10px; color:#A5B4FC;">Calculer ma moyenne d’orientation (3e)</div>
+            </div>
+          </div>
+          <div>➔</div>
+        </div>
+      </div>
+
+      <!-- MOYENNE ANNUELLE -->
+      <div class="annual-card-ztv">
+        <div class="annual-top-title">🎓 MOYENNE ANNUELLE</div>
+        <div class="annual-stats-grid">
+          <div>
+            <div class="annual-stat-lbl">Moyenne</div>
+            <div class="annual-stat-val" id="val-annual" style="color:var(--orange-ztv);">-- /20</div>
+          </div>
+          <div>
+            <div class="annual-stat-lbl">Mention</div>
+            <div class="annual-stat-val" id="val-mention" style="color:var(--text-gray); font-size:12px; margin-top:4px;">--</div>
+          </div>
+          <div>
+            <div class="annual-stat-lbl">Décision</div>
+            <div class="annual-stat-val" id="val-decision" style="color:var(--text-gray); font-size:11px; margin-top:6px;">--</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROGRESSION GÉNÉRALE -->
+      <div class="progression-card-ztv">
+        <div class="prog-circle" id="circle-pct">0%</div>
+        <div style="flex:1;">
+          <div style="font-size: 12px; font-weight: 800; text-transform: uppercase;">PROGRESSION GÉNÉRALE</div>
+          <div style="font-size: 11px; color: #64748B; margin-top:2px;" id="prog-desc">Veuillez renseigner vos notes.</div>
+          <div class="prog-bar-bg"><div class="prog-bar-fill" id="bar-fill"></div></div>
+        </div>
+      </div>
+
+      <!-- MATIÈRES À REVOIR + POINTS FORTS (SUR LA MÊME LIGNE) -->
+      <div class="dual-cards-grid">
+        <div class="action-card-orange" onclick="openModalMatieresAvoir()">
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase;">🟠 MATIÈRES À REVOIR</div>
+          <div style="font-size:9px; opacity:0.9; margin-top:4px;">Consulter les matières nécessitant des efforts</div>
+        </div>
+        <div class="action-card-green" onclick="openModalPointsForts()">
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase;">🟢 POINTS FORTS</div>
+          <div style="font-size:9px; opacity:0.9; margin-top:4px;">Consulter vos compétences solides</div>
+        </div>
+      </div>
+
+      <!-- OBJECTIF -->
+      <div class="objective-banner" onclick="openModalObjectif()">
+        <div>
+          <div style="font-size: 11px; font-weight: 800; text-transform: uppercase;">🎯 OBJECTIF : PASSER EN CLASSE SUPÉRIEURE</div>
+          <div style="font-size: 9px; opacity: 0.95;">Voir les détails et conseils personnalisés</div>
+        </div>
+        <div style="font-size:14px;">➔</div>
+      </div>
+
+      <!-- TABLEAU D’HONNEUR + MON PROFIL -->
+      <div class="bottom-dual-btns">
+        <div class="btn-pill-premium" onclick="ouvrirTableauHonneurAccueil()">
+          <span style="font-size:20px;">🏆</span>
+          <div>
+            <div style="font-size:11px; font-weight:900; color:#F59E0B;">TABLEAU D’HONNEUR</div>
+            <div style="font-size:9px; color:var(--text-gray);">Voir mon tableau d’honneur</div>
+          </div>
+        </div>
+
+        <div class="btn-pill-premium btn-pill-premium-green" onclick="switchPage('view-profile')">
+          <span style="font-size:20px;">🟢</span>
+          <div>
+            <div style="font-size:11px; font-weight:900; color:#10B981;">MON PROFIL</div>
+            <div style="font-size:9px; color:var(--text-gray);">Voir et gérer mon compte</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- HEADER PERMANENT -->
-    <div class="app-header">
-      <div class="user-profile">
-        <div class="avatar">KJ</div>
-        <div class="user-info">
-          <h3 id="user-display-name">Kouassi Jean</h3>
-          <p><i class="fa-solid fa-shield-halved"></i> Élève - Terminale A</p>
+    <!-- ================= 3. SAISIE D'UN TRIMESTRE ================= -->
+    <div id="view-trim-entry" class="page-view">
+      <div class="bulletin-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <button style="background:var(--bg-card); border:1px solid var(--border-light); color:#FFF; padding:8px 14px; border-radius:20px; font-size:12px; cursor:pointer;" onclick="switchPage('view-dashboard')">⬅️ Retour</button>
+          <h3 id="trim-entry-title" style="font-size:14px; color:var(--orange-ztv);">1er TRIMESTRE</h3>
         </div>
-      </div>
-      <div class="badge-green">
-        <i class="fa-solid fa-circle" style="font-size:8px;"></i> En ligne
+
+        <table class="bulletin-table" id="bulletin">
+          <thead>
+            <tr>
+              <th>Matière</th>
+              <th>Coef</th>
+              <th>Note</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-title-row"><td colspan="4">--- LITTÉRAIRE & HUMANITÉS ---</td></tr>
+            <tr data-subject="Français">
+              <td>Français</td>
+              <td><input type="number" class="inp-coef" value="2" oninput="calculerBulletin()" /></td>
+              <td><input type="number" min="0" max="20" step="0.25" class="inp-note" oninput="calculerBulletin()" /></td>
+              <td class="tot-cell">-</td>
+            </tr>
+            <tr data-subject="Anglais">
+              <td>Anglais</td>
+              <td><input type="number" class="inp-coef" value="1" oninput="calculerBulletin()" /></td>
+              <td><input type="number" min="0" max="20" step="0.25" class="inp-note" oninput="calculerBulletin()" /></td>
+              <td class="tot-cell">-</td>
+            </tr>
+            <tr data-subject="Histoire-Géo">
+              <td>Histoire-Géo</td>
+              <td><input type="number" class="inp-coef" value="2" oninput="calculerBulletin()" /></td>
+              <td><input type="number" min="0" max="20" step="0.25" class="inp-note" oninput="calculerBulletin()" /></td>
+              <td class="tot-cell">-</td>
+            </tr>
+
+            <tr class="section-title-row"><td colspan="4">--- SCIENCES & TECHNOLOGIE ---</td></tr>
+            <tr data-subject="Mathématiques">
+              <td>Mathématiques</td>
+              <td><input type="number" class="inp-coef" value="2" oninput="calculerBulletin()" /></td>
+              <td><input type="number" min="0" max="20" step="0.25" class="inp-note" oninput="calculerBulletin()" /></td>
+              <td class="tot-cell">-</td>
+            </tr>
+            <tr data-subject="Physique-Chimie">
+              <td>Physique-Chimie</td>
+              <td><input type="number" class="inp-coef" value="1" oninput="calculerBulletin()" /></td>
+              <td><input type="number" min="0" max="20" step="0.25" class="inp-note" oninput="calculerBulletin()" /></td>
+              <td class="tot-cell">-</td>
+            </tr>
+            <tr data-subject="SVT">
+              <td>SVT</td>
+              <td><input type="number" class="inp-coef" value="1" oninput="calculerBulletin()" /></td>
+              <td><input type="number" min="0" max="20" step="0.25" class="inp-note" oninput="calculerBulletin()" /></td>
+              <td class="tot-cell">-</td>
+            </tr>
+
+            <tr class="section-title-row"><td colspan="4">--- AUTRES DISCIPLINES ---</td></tr>
+            <tr data-subject="EDHC">
+              <td>EDHC</td>
+              <td><input type="number" class="inp-coef" value="1" oninput="calculerBulletin()" /></td>
+              <td><input type="number" min="0" max="20" step="0.25" class="inp-note" oninput="calculerBulletin()" /></td>
+              <td class="tot-cell">-</td>
+            </tr>
+            <tr data-subject="EPS">
+              <td>EPS</td>
+              <td><input type="number" class="inp-coef" value="1" oninput="calculerBulletin()" /></td>
+              <td><input type="number" min="0" max="20" step="0.25" class="inp-note" oninput="calculerBulletin()" /></td>
+              <td class="tot-cell">-</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button class="btn-main-green" onclick="enregistrerPageTrimestre()">💾 ENREGISTRER</button>
       </div>
     </div>
 
-    <!-- CORPS DE L'APPLICATION (PAGES) -->
-    <div class="app-body">
-
-      <!-- PAGE TABLEAU DE BORD -->
-      <div id="page-dashboard" class="page active">
-        <div class="dashboard-grid">
-
-          <!-- Carte T1 -->
-          <div class="card-premium clickable" onclick="navigateTo('t1')">
-            <div class="card-title">
-              1er Trimestre <i class="fa-solid fa-chevron-right" style="color:var(--primary-orange);"></i>
-            </div>
-            <div class="card-value" id="dash-t1">-- / 20</div>
-            <div class="card-status"><span class="badge-orange">Modifier notes</span></div>
-          </div>
-
-          <!-- Carte T2 -->
-          <div class="card-premium clickable" onclick="navigateTo('t2')">
-            <div class="card-title">
-              2e Trimestre <i class="fa-solid fa-chevron-right" style="color:var(--primary-orange);"></i>
-            </div>
-            <div class="card-value" id="dash-t2">-- / 20</div>
-            <div class="card-status"><span class="badge-orange">Modifier notes</span></div>
-          </div>
-
-          <!-- Carte T3 -->
-          <div class="card-premium clickable" onclick="navigateTo('t3')">
-            <div class="card-title">
-              3e Trimestre <i class="fa-solid fa-chevron-right" style="color:var(--primary-orange);"></i>
-            </div>
-            <div class="card-value" id="dash-t3">-- / 20</div>
-            <div class="card-status"><span class="badge-orange">Modifier notes</span></div>
-          </div>
-
-          <!-- Carte Moyenne Annuelle -->
-          <div class="card-premium" style="background: linear-gradient(135deg, #009A44 0%, #007A35 100%); color: white;">
-            <div class="card-title" style="color: rgba(255,255,255,0.8);">Moy. Annuelle</div>
-            <div class="card-value" id="dash-annual" style="color:white;">-- / 20</div>
-            <div class="card-status" id="dash-mention" style="color: white; font-weight:700;">Mention: --</div>
-          </div>
-
-          <!-- Carte Progression (Cercle Animé) -->
-          <div class="card-premium">
-            <div class="card-title">Progression</div>
-            <div class="progress-circle-container">
-              <svg width="70" height="70" viewBox="0 0 36 36">
-                <defs>
-                  <linearGradient id="orange-gradient-svg" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#FF8C00" />
-                    <stop offset="100%" stop-color="#009A44" />
-                  </linearGradient>
-                </defs>
-                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                <path class="circle-progress" id="circle-progress-bar" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                <text x="18" y="19.5" class="circle-text" id="circle-text-val">0%</text>
-              </svg>
-            </div>
-          </div>
-
-          <!-- Carte Rang & Classement -->
-          <div class="card-premium">
-            <div class="card-title">Classement</div>
-            <div class="card-value" style="color:var(--primary-orange);">3<span style="font-size:12px;">ème</span></div>
-            <div class="card-status" style="color:var(--text-muted);">Top 10 de la classe</div>
-          </div>
-
-          <!-- Carte Points Forts -->
-          <div class="card-premium">
-            <div class="card-title"><i class="fa-solid fa-star" style="color:#FFD700;"></i> Points Forts</div>
-            <div class="card-value" id="dash-strong" style="font-size:14px; margin-top:8px;">--</div>
-            <div class="card-status" style="color:var(--primary-green);">Excellents résultats</div>
-          </div>
-
-          <!-- Carte À Renforcer -->
-          <div class="card-premium">
-            <div class="card-title"><i class="fa-solid fa-triangle-exclamation" style="color:#EF4444;"></i> À Renforcer</div>
-            <div class="card-value" id="dash-weak" style="font-size:14px; margin-top:8px; color:#EF4444;">--</div>
-            <div class="card-status" style="color:#EF4444;">Attention requise</div>
-          </div>
-
-          <!-- Carte Objectif -->
-          <div class="card-premium" style="grid-column: span 2;">
-            <div class="card-title">Objectif Trimestre Prochain</div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
-              <span class="card-value" style="color:var(--primary-orange);">16.00 / 20</span>
-              <span id="dash-target-diff" class="badge-green">Reste +1.50</span>
-            </div>
-          </div>
-
-          <!-- Carte Conseils Personnalisés -->
-          <div class="card-premium" style="grid-column: span 2; background: var(--orange-light); border: 1px solid rgba(255,140,0,0.2);">
-            <div class="card-title" style="color:var(--primary-orange);"><i class="fa-solid fa-lightbulb"></i> Analyse Automatique</div>
-            <p id="dash-advice" style="font-size:12px; font-weight:600; color:var(--text-main); margin-top:6px;">
-              Saisissez vos notes pour générer un conseil personnalisé.
-            </p>
-          </div>
-
-        </div>
-
-        <button class="btn-premium" style="margin-top:16px; background:var(--green-gradient);" onclick="openBulletin()">
-          <i class="fa-solid fa-file-pdf"></i> Générer Bulletin PDF / Imprimer
-        </button>
+    <!-- ================= 4. MON PROFIL ================= -->
+    <div id="view-profile" class="page-view">
+      <div style="padding:16px;">
+        <button style="background:var(--bg-card); border:1px solid var(--border-light); color:#FFF; padding:8px 14px; border-radius:20px; font-size:12px; cursor:pointer;" onclick="switchPage('view-dashboard')">⬅️ Retour</button>
       </div>
 
-      <!-- PAGES TRIMESTRES (DYNAMIQUES : T1, T2, T3) -->
-      <div id="page-quarter" class="page">
-        <div class="page-header">
-          <button class="btn-back" onclick="navigateTo('dashboard')"><i class="fa-solid fa-arrow-left"></i></button>
-          <h3 id="quarter-page-title" style="font-size:18px; font-weight:800;">1er Trimestre</h3>
-          <div style="width:36px;"></div>
+      <div style="text-align:center; padding:0 20px;">
+        <img src="https://i.postimg.cc/Z5t6ctQQ/file-000000008a6081f9a7552dfe57d5c70d.png" id="profile-avatar-img" style="width:90px; height:90px; border-radius:50%; border:3px solid var(--orange-ztv); object-fit:cover;" />
+        <h3 id="prof-disp-fullname" style="margin-top:10px; font-size:18px;">Nom & Prénom</h3>
+
+        <div style="background:var(--bg-card); border-radius:var(--radius-xl); padding:16px; margin-top:20px; text-align:left; border:1px solid var(--border-light);">
+          <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12px;"><span>👤 Nom</span><strong id="prof-nom">--</strong></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12px;"><span>👤 Prénom</span><strong id="prof-prenom">--</strong></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12px;"><span>📍 Ville</span><strong id="prof-ville">--</strong></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12px;"><span>🏫 Établissement</span><strong id="prof-etablissement">--</strong></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12px;"><span>🎓 Classe</span><strong id="prof-classe">--</strong></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-light); font-size:12px;"><span>🇨🇮 Pays</span><strong id="prof-pays">Côte d'Ivoire</strong></div>
+          <div style="display:flex; justify-content:space-between; padding:8px 0; font-size:12px;"><span>📱 WhatsApp</span><strong id="prof-whatsapp">--</strong></div>
         </div>
 
-        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">
-          Note: Mettre un <b>Coefficient à 0</
+        <div style="margin-top:16px; display:flex; flex-direction:column; gap:10px;">
+          <button class="btn-photo-gallery" onclick="triggerPhotoChange()">📷 Modifier ma photo</button>
+          <button class="btn-main-orange" style="background:#374151;" onclick="modifierMotDePasse()">🔑 Modifier mon mot de passe</button>
+          <button class="btn-main-green" style="background:#EF4444;" onclick="actionLogout()">🚪 Se déconnecter</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 5. TABLEAU D'HONNEUR CERTIFICAT ================= -->
+    <div id="view-certif" class="page-view">
+      <div style="padding:16px; display:flex; justify-content:space-between; align-items:center;">
+        <button style="background:var(--bg-card); border:1px solid var(--border-light); color:#FFF; padding:8px 14px; border-radius:20px; font-size:12px; cursor:pointer;" onclick="switchPage('view-dashboard')">⬅️ Retour</button>
+        <span style="font-size:12px; font-weight:800; color:var(--orange-ztv);">🏆 CERTIFICAT D’EXCELLENCE</span>
+      </div>
+
+      <div class="certif-selector-bar">
+        <button class="certif-tab-btn active" id="cert-tab-t1" onclick="changeCertifPeriod('t1')">1er Trimestre</button>
+        <button class="certif-tab-btn" id="cert-tab-t2" onclick="changeCertifPeriod('t2')">2e Trimestre</button>
+        <button class="certif-tab-btn" id="cert-tab-t3" onclick="changeCertifPeriod('t3')">3e Trimestre</button>
+        <button class="certif-tab-btn" id="cert-tab-annuel" onclick="changeCertifPeriod('annuel')">Annuel</button>
+      </div>
+
+      <div class="landscape-cert-wrapper">
+        <div class="certificate-landscape-frame">
+          <div class="cert-inner-border">
+            
+            <div class="cert-header-flex">
+              <img src="https://i.postimg.cc/fy9QP68q/file-00000000dd5081f48d39ca7eb9ecf91d.png" style="height:32px;" />
+              <div>
+                <div style="font-family:'Playfair Display', serif; font-size:16px; font-weight:900; color:#78350F;">TABLEAU D’HONNEUR</div>
+                <div style="font-size:9px; color:#09A63D; font-weight:800;">EXCELLENCE SCOLAIRE CÔTE D’IVOIRE</div>
+              </div>
+              <div style="font-size:22px;">🏆</div>
+            </div>
+
+            <div class="cert-body-grid">
+              <img src="https://i.postimg.cc/Z5t6ctQQ/file-000000008a6081f9a7552dfe57d5c70d.png" class="cert-student-photo" id="cert-photo-img" />
+              <div>
+                <div style="font-size:9px; color:#D97706; font-weight:800;">DIPLÔME DÉCERNÉ À :</div>
+                <div class="cert-student-fullname" id="cert-fullname">NOM & PRÉNOM</div>
+                <div style="font-size:10px; color:#475569;">Classe: <strong id="cert-classe" style="color:#0F172A;">--</strong> | Établissement: <strong id="cert-school-name" style="color:#0F172A;">--</strong></div>
+              </div>
+            </div>
+
+            <div style="background:#FEF3C7; border:1px solid #F59E0B; border-radius:10px; padding:8px; display:flex; justify-content:space-around; margin:10px 0;">
+              <div>
+                <div style="font-size:8px; font-weight:800; color:#92400E;">MOYENNE</div>
+                <div style="font-size:16px; font-weight:900; color:#78350F;" id="cert-annual-val">-- /20</div>
+              </div>
+              <div>
+                <div style="font-size:8px; font-weight:800; color:#92400E;">MENTION</div>
+                <div style="font-size:14px; font-weight:900; color:#09A63D;" id="cert-mention-lbl">--</div>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:12px; border-top:1px dashed #CBD5E1; padding-top:6px;">
+              <div style="font-size:8px; color:#64748B;">ZTV Excellence Scolaire 🇨🇮</div>
+              <div style="text-align:right;">
+                <div style="font-size:8px; font-weight:800; color:#64748B;">SIGNATURE</div>
+                <div style="font-family:'Great Vibes', cursive; font-size:20px; color:#0F172A;">Zakaria Niampa</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-main-orange btn-print-cert" onclick="window.print()" style="margin:16px auto; width:calc(100% - 32px);">
+        <span>🖨️ IMPRIMER MON TABLEAU D’HONNEUR</span>
+      </button>
+    </div>
+
+    <!-- ================= 6. MOYENNE D'ORIENTATION (UNIQUEMENT 3e) ================= -->
+    <div id="view-orientation" class="page-view">
+      <div style="padding:16px; display:flex; justify-content:space-between; align-items:center;">
+        <button style="background:var(--bg-card); border:1px solid var(--border-light); color:#FFF; padding:8px 14px; border-radius:20px; font-size:12px; cursor:pointer;" onclick="switchPage('view-dashboard')">⬅️ Retour</button>
+        <span style="font-size:12px; font-weight:800; color:#818CF8;">🎯 ORIENTATION BEPC</span>
+      </div>
+
+      <div style="padding:0 16px;">
+        <div style="background:#111827; border:2px solid var(--orange-ztv); border-radius:var(--radius-xl); padding:18px; text-align:center; margin-bottom:16px;">
+          <div style="font-size:11px; font-weight:800; color:var(--text-gray);">🎯 MOYENNE D’ORIENTATION FINALE</div>
+          <div style="font-size:30px; font-weight:900; color:var(--orange-ztv); margin:6px 0;" id="orient-score-val">-- / 20</div>
+        </div>
+
+        <h4 style="font-size:12px; margin-bottom:10px;">Notes de l'épreuve BEPC :</h4>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+          <input type="number" class="form-input" id="bepc-fr" placeholder="Français BEPC /20" oninput="calculerMoyenneOrientation()" />
+          <input type="number" class="form-input" id="bepc-ma" placeholder="Mathématiques BEPC /20" oninput="calculerMoyenneOrientation()" />
+          <input type="number" class="form-input" id="bepc-pc" placeholder="Physique-Chimie BEPC /20" oninput="calculerMoyenneOrientation()" />
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <input type="number" class="form-input" id="bepc-an-ecrit" placeholder="Anglais Écrit /20" oninput="calculerMoyenneOrientation()" />
+            <input type="number" class="form-input" id="bepc-an-oral" placeholder="Anglais Oral /20" oninput="calculerMoyenneOrientation()" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= 7. BARRE DE NAVIGATION EN BAS ================= -->
+    <nav class="bottom-navbar">
+      <div class="nav-item active" onclick="switchPage('view-dashboard')">
+        <span class="nav-icon">🏠</span>
+        <span>Accueil</span>
+      </div>
+      <div class="nav-item" onclick="openModal('🏆 Concours', '<p style=\'font-size:12px; text-align:center;\'>Les concours scolaires ZTV seront bientôt ouverts ! Stay tuned.</p>')">
+        <span class="nav-icon">🏆</span>
+        <span>Concours</span>
+      </div>
+      <div class="nav-item" onclick="openModal('📊 Classements', '<p style=\'font-size:12px; text-align:center;\'>Le classement de votre établissement sera affiché après la validation du T1.</p>')">
+        <span class="nav-icon">📊</span>
+        <span>Classements</span>
+      </div>
+      <div class="nav-item" onclick="switchPage('view-profile')">
+        <span class="nav-icon">👤</span>
+        <span>Profil</span>
+      </div>
+    </nav>
+
+    <!-- ================= MODALE POPUP DYNAMIQUE ================= -->
+    <div class="modal-overlay" id="modal-container">
+      <div class="modal-card">
+        <div class="modal-close-btn" onclick="closeModal()">✕</div>
+        <div style="font-size:15px; font-weight:800; margin-bottom:12px;" id="modal-title-text">Information</div>
+        <div id="modal-body-content"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let activeTrimestre = 1;
+    let selectedCertifPeriod = 't1';
+
+    // DONNÉES ÉLÈVE DYNAMIQUES
+    let currentUser = {
+      nom: "",
+      prenom: "",
+      fullname: "",
+      etablissement: "",
+      classe: "",
+      ville: "",
+      pays: "Côte d'Ivoire",
+      whatsapp: "",
+      photo: "https://i.postimg.cc/Z5t6ctQQ/file-000000008a6081f9a7552dfe57d5c70d.png"
+    };
+
+    // RÉINITIALISATION À ZÉRO PAR DÉFAUT
+    let trimestresData = {
+      1: { points: 0, coefs: 0, moyenne: null, subjects: {} },
+      2: { points: 0, coefs: 0, moyenne: null, subjects: {} },
+      3: { points: 0, coefs: 0, moyenne: null, subjects: {} }
+    };
+
+    function switchPage(pageId) {
+      document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+
+      // Maj barre nav
+      document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+      if(pageId === 'view-dashboard') document.querySelectorAll('.nav-item')[0].classList.add('active');
+      if(pageId === 'view-profile') document.querySelectorAll('.nav-item')[3].classList.add('active');
+    }
+
+    function switchAuthTab(tab) {
+      if(tab === 'login') {
+        document.getElementById('form-login-content').style.display = 'block';
+        document.getElementById('form-register-content').style.display = 'none';
+      } else {
+        document.getElementById('form-login-content').style.display = 'none';
+        document.getElementById('form-register-content').style.display = 'block';
+      }
+    }
+
+    /* GALERIE PHOTO */
+    function handlePhotoSelect(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          currentUser.photo = e.target.result;
+          document.getElementById('photo-preview-msg').innerText = "✓ Photo sélectionnée !";
+          updateAppPhotos();
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function triggerPhotoChange() {
+      document.getElementById('reg-photo-file').click();
+    }
+
+    function updateAppPhotos() {
+      document.getElementById('dash-avatar-img').src = currentUser.photo;
+      document.getElementById('profile-avatar-img').src = currentUser.photo;
+      document.getElementById('cert-photo-img').src = currentUser.photo;
+    }
+
+    function checkClasse3emeUI() {
+      const cl = currentUser.classe || document.getElementById('reg-classe').value;
+      const is3eme = (cl === "3ème" || cl === "3e");
+      document.getElementById('card-orientation-3eme-wrapper').style.display = is3eme ? "block" : "none";
+    }
+
+    function actionLogin() {
+      const name = document.getElementById('login-fullname').value.trim();
+      if(name !== "") {
+        currentUser.fullname = name;
+        currentUser.nom = name.split(" ")[0] || name;
+        currentUser.prenom = name.split(" ").slice(1).join(" ") || "";
+        updateProfileDisplay();
+        switchPage('view-dashboard');
+      } else {
+        alert("Veuillez saisir votre nom complet.");
+      }
+    }
+
+    function actionRegister() {
+      currentUser.nom = document.getElementById('reg-nom').value.trim();
+      currentUser.prenom = document.getElementById('reg-prenom').value.trim();
+      currentUser.fullname = (currentUser.nom + " " + currentUser.prenom).trim();
+      currentUser.etablissement = document.getElementById('reg-etablissement').value.trim();
+      currentUser.ville = document.getElementById('reg-ville').value.trim();
+      currentUser.classe = document.getElementById('reg-classe').value;
+      currentUser.whatsapp = document.getElementById('reg-whatsapp').value.trim();
+
+      updateProfileDisplay();
+      checkClasse3emeUI();
+      switchPage('view-dashboard');
+    }
+
+    function updateProfileDisplay() {
+      document.getElementById('dash-user-name').innerText = (currentUser.fullname || "Niampa Zakaria") + " 👋";
+      document.getElementById('prof-disp-fullname').innerText = currentUser.fullname || "Élève Connecté";
+      document.getElementById('prof-nom').innerText = currentUser.nom || "--";
+      document.getElementById('prof-prenom').innerText = currentUser.prenom || "--";
+      document.getElementById('prof-etablissement').innerText = currentUser.etablissement || "--";
+      document.getElementById('prof-classe').innerText = currentUser.classe || "--";
+      document.getElementById('prof-ville').innerText = currentUser.ville || "--";
+      document.getElementById('prof-whatsapp').innerText = currentUser.whatsapp || "--";
+
+      document.getElementById('cert-fullname').innerText = currentUser.fullname || "NOM & PRÉNOM";
+      document.getElementById('cert-school-name').innerText = currentUser.etablissement || "Établissement Scolaire";
+      document.getElementById('cert-classe').innerText = currentUser.classe || "--";
+    }
+
+    /* MOT DE PASSE OUBLIÉ DYNAMIQUE */
+    function demanderMotDePasseOublie() {
+      const num = prompt("Veuillez saisir votre numéro WhatsApp :");
+      if(num) {
+        const confirmBox = confirm(`Compte trouvé !\n\nNom: ${currentUser.nom || 'Niampa'}\nPrénom: ${currentUser.prenom || 'Zakaria'}\nVille: ${currentUser.ville || 'Bangolo'}\n\nConfirmez-vous qu'il s'agit de votre compte ?`);
+        if(confirmBox) {
+          openModal("🔑 Mot de passe réinitialisé", "<p style='font-size:12px; line-height:1.5;'>Votre demande de réinitialisation a été acceptée. Votre mot de passe a été réinitialisé avec succès. Veuillez utiliser le mot de passe par défaut <strong>5555</strong> pour vous connecter, puis pensez à le modifier dans votre profil.</p>");
+        }
+      }
+    }
+
+    function modifierMotDePasse() {
+      const current = prompt("Saisir votre mot de passe actuel (4 chiffres) :");
+      if(current) {
+        const nextPass = prompt("Saisir votre nouveau mot de passe (4 chiffres) :");
+        if(nextPass && nextPass.length === 4) {
+          alert("Votre nouveau mot de passe est désormais enregistré !");
+        }
+      }
+    }
+
+    /* SAISIE DES RESULTATS */
+    function openTrimPage(tNum) {
+      activeTrimestre = tNum;
+      document.getElementById('trim-entry-title').innerText = tNum + (tNum === 1 ? "er" : "e") + " TRIMESTRE";
+      
+      const rows = document.querySelectorAll('#bulletin tbody tr[data-subject]');
+      rows.forEach(tr => {
+        const sub = tr.getAttribute('data-subject');
+        const inp = tr.querySelector('.inp-note');
+        if(trimestresData[tNum].subjects[sub] !== undefined) {
+          inp.value = trimestresData[tNum].subjects[sub].note;
+        } else {
+          inp.value = "";
+        }
+      });
+
+      calculerBulletin();
+      switchPage('view-trim-entry');
+    }
+
+    function calculerBulletin() {
+      const rows = document.querySelectorAll('#bulletin tbody tr[data-subject]');
+      let totPts = 0, totCoefs = 0;
+
+      rows.forEach(tr => {
+        const coef = parseFloat(tr.querySelector('.inp-coef').value) || 0;
+        const note = parseFloat(tr.querySelector('.inp-note').value);
+        const cell = tr.querySelector('.tot-cell');
+
+        if(!isNaN(note) && note >= 0 && note <= 20) {
+          const pt = note * coef;
+          totPts += pt;
+          totCoefs += coef;
+          cell.innerText = pt.toFixed(2);
+        } else {
+          cell.innerText = "-";
+        }
+      });
+    }
+
+    function enregistrerPageTrimestre() {
+      const rows = document.querySelectorAll('#bulletin tbody tr[data-subject]');
+      let totPts = 0, totCoefs = 0, subs = {};
+
+      rows.forEach(tr => {
+        const sub = tr.getAttribute('data-subject');
+        const coef = parseFloat(tr.querySelector('.inp-coef').value) || 0;
+        const note = parseFloat(tr.querySelector('.inp-note').value);
+
+        if(!isNaN(note) && note >= 0 && note <= 20) {
+          subs[sub] = { note: note, coef: coef };
+          totPts += (note * coef);
+          totCoefs += coef;
+        }
+      });
+
+      if(totCoefs > 0) {
+        trimestresData[activeTrimestre].points = totPts;
+        trimestresData[activeTrimestre].coefs = totCoefs;
+        trimestresData[activeTrimestre].moyenne = totPts / totCoefs;
+        trimestresData[activeTrimestre].subjects = subs;
+      } else {
+        trimestresData[activeTrimestre].moyenne = null;
+      }
+
+      actualiserDashboard();
+      switchPage('view-dashboard');
+    }
+
+    function actualiserDashboard() {
+      const t1 = trimestresData[1].moyenne;
+      const t2 = trimestresData[2].moyenne;
+      const t3 = trimestresData[3].moyenne;
+
+      document.getElementById('val-t1').innerText = (t1 !== null) ? t1.toFixed(2) + " /20" : "-- /20";
+      document.getElementById('val-t2').innerText = (t2 !== null) ? t2.toFixed(2) + " /20" : "-- /20";
+      document.getElementById('val-t3').innerText = (t3 !== null) ? t3.toFixed(2) + " /20" : "-- /20";
+
+      // CALCUL MOYENNE ANNUELLE (TOTAL POINTS / TOTAL COEFS DES 3 TRIMESTRES)
+      let ptsTot = 0, coefsTot = 0, count = 0;
+      [1, 2, 3].forEach(t => {
+        if(trimestresData[t].moyenne !== null) {
+          ptsTot += trimestresData[t].points;
+          coefsTot += trimestresData[t].coefs;
+          count++;
+        }
+      });
+
+      if(coefsTot > 0) {
+        const moyAnnuelle = ptsTot / coefsTot;
+        document.getElementById('val-annual').innerText = moyAnnuelle.toFixed(2) + " /20";
+        document.getElementById('val-mention').innerText = getMentionText(moyAnnuelle);
+        document.getElementById('val-decision').innerText = (moyAnnuelle >= 10) ? "ADMIS(E)" : "AJOURNÉ(E)";
+      } else {
+        document.getElementById('val-annual').innerText = "-- /20";
+        document.getElementById('val-mention').innerText = "--";
+        document.getElementById('val-decision').innerText = "--";
+      }
+
+      const pct = Math.round((count / 3) * 100);
+      document.getElementById('circle-pct').innerText = pct + "%";
+      document.getElementById('bar-fill').style.width = pct + "%";
+    }
+
+    function getMentionText(m) {
+      if(m < 10) return "INSUFFISANT";
+      if(m < 12) return "PASSABLE";
+      if(m < 14) return "ASSEZ BIEN";
+      if(m < 16) return "BIEN";
+      if(m < 18) return "TRÈS BIEN";
+      return "EXCELLENT";
+    }
+
+    /* TABLEAU D'HONNEUR & REGLE SEUIL 13/20 */
+    function ouvrirTableauHonneurAccueil() {
+      const moyT1 = trimestresData[1].moyenne;
+      if(moyT1 !== null && moyT1 >= 13.0) {
+        changeCertifPeriod('t1');
+        switchPage('view-certif');
+      } else {
+        openModal("🏆 Tableau d’honneur indisponible", "<p style='font-size:12px; line-height:1.5; color:#9CA3AF;'>Votre moyenne actuelle est insuffisante pour accéder au tableau d’honneur. Une moyenne minimale de <strong>13/20</strong> est nécessaire pour obtenir cette distinction.<br><br>Continuez vos efforts et donnez le meilleur de vous-même pour atteindre cet objectif ! 💪📚</p>");
+      }
+    }
+
+    function changeCertifPeriod(period) {
+      selectedCertifPeriod = period;
+      document.querySelectorAll('.certif-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('cert-tab-' + period).classList.add('active');
+
+      let moy = null;
+      if(period === 't1') moy = trimestresData[1].moyenne;
+      if(period === 't2') moy = trimestresData[2].moyenne;
+      if(period === 't3') moy = trimestresData[3].moyenne;
+      if(period === 'annuel') {
+        let pts = 0, cfs = 0;
+        [1,2,3].forEach(t => { pts += trimestresData[t].points; cfs += trimestresData[t].coefs; });
+        if(cfs > 0) moy = pts / cfs;
+      }
+
+      if(moy !== null && moy >= 13.0) {
+        document.getElementById('cert-annual-val').innerText = moy.toFixed(2) + " /20";
+        document.getElementById('cert-mention-lbl').innerText = getMentionText(moy);
+      } else {
+        openModal("🏆 Tableau d’honneur indisponible", `<p style='font-size:12px; line-height:1.5; color:#9CA3AF;'>Moyenne insuffisante pour la période sélectionnée (${moy !== null ? moy.toFixed(2) : '--'}/20). Une moyenne d'au moins 13/20 est requise.<br><br>Continuez vos efforts ! 💪📚</p>`);
+      }
+    }
+
+    /* LOGIQUE MOYENNE D'ORIENTATION (3e) */
+    function calculerMoyenneOrientation() {
+      // MA = (T1 + T2*2 + T3*2) / 5
+      const calcMA = (sub) => {
+        const n1 = trimestresData[1].subjects[sub]?.note || 0;
+        const n2 = trimestresData[2].subjects[sub]?.note || 0;
+        const n3 = trimestresData[3].subjects[sub]?.note || 0;
+        return (n1 + (n2 * 2) + (n3 * 2)) / 5;
+      };
+
+      const maFr = calcMA("Français");
+      const maMa = calcMA("Mathématiques");
+      const maPc = calcMA("Physique-Chimie");
+      const maAn = calcMA("Anglais");
+
+      const bepcFr = parseFloat(document.getElementById('bepc-fr').value) || 0;
+      const bepcMa = parseFloat(document.getElementById('bepc-ma').value) || 0;
+      const bepcPc = parseFloat(document.getElementById('bepc-pc').value) || 0;
+
+      const bepcAnE = parseFloat(document.getElementById('bepc-an-ecrit').value) || 0;
+      const bepcAnO = parseFloat(document.getElementById('bepc-an-oral').value) || 0;
+      const bepcAn = (bepcAnE + bepcAnO) / 2;
+
+      // FORMULE FINALE:
+      // MO = {[(MA Fr + BEPC Fr)*2] + [(MA Ma + BEPC Ma)*2] + [(MA PC + BEPC PC)*1] + [(MA An + BEPC An)*1]} / 12
+      const totFr = (maFr + bepcFr) * 2;
+      const totMa = (maMa + bepcMa) * 2;
+      const totPc = (maPc + bepcPc) * 1;
+      const totAn = (maAn + bepcAn) * 1;
+
+      const mo = (totFr + totMa + totPc + totAn) / 12;
+      document.getElementById('orient-score-val').innerText = mo.toFixed(2) + " / 20";
+    }
+
+    /* POPUPS MODALES */
+    function openModal(title, bodyHtml) {
+      document.getElementById('modal-title-text').innerText = title;
+      document.getElementById('modal-body-content').innerHTML = bodyHtml;
+      document.getElementById('modal-container').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal-container').classList.remove('active');
+    }
+
+    function openModalMatieresAvoir() {
+      openModal("🟠 MATIÈRES À REVOIR", "<p style='font-size:12px; color:#FFF;'>Consultez les disciplines nécessitant une révision ciblée :</p><ul style='font-size:12px; margin-top:10px; padding-left:20px; color:var(--orange-ztv);'><li>Entrez vos notes par trimestre pour générer automatiquement cette liste.</li></ul>");
+    }
+
+    function openModalPointsForts() {
+      openModal("🟢 POINTS FORTS", "<p style='font-size:12px; color:#FFF;'>Vos disciplines à fort succès :</p><ul style='font-size:12px; margin-top:10px; padding-left:20px; color:var(--green-ztv);'><li>Vos meilleures performances apparaîtront ici après la saisie des notes.</li></ul>");
+    }
+
+    function openModalObjectif() {
+      openModal("🎯 OBJECTIF PASSAGE", "<p style='font-size:12px; line-height:1.5; color:#FFF;'>Pour assurer votre passage en classe supérieure avec les félicitations du conseil :<br><br>• Maintenez une moyenne générale supérieure ou égale à 12/20.<br>• Ne négligez aucune discipline à fort coefficient.</p>");
+    }
+
+    /* MODALE PRÉSENTATION CRÉATEUR DE L'APPLICATION */
+    function openModalCreator() {
+      const htmlContent = `
+        <img src="https://i.postimg.cc/nLRGRY0z/file-000000009dc8724699d54da957936110.png" class="creator-photo" alt="Niampa Zakaria" />
+        <div style="text-align:center;">
+          <h3 style="font-size:16px; font-weight:900; color:#FFF;">Niampa Zakaria</h3>
+          <p style="font-size:12px; color:var(--orange-ztv); font-weight:700;">Créateur de ZTV</p>
+        </div>
+
+        <div style="background:var(--bg-input); border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:12px; margin-top:14px; font-size:11px; line-height:1.6; color:#E5E7EB;">
+          <div>🎓 <strong>Statut :</strong> Élève en classe de 3e</div>
+          <div>🏫 <strong>Établissement :</strong> Lycée Moderne de Bangolo (CÔTE D’IVOIRE 🇨🇮)</div>
+          <div>🎂 <strong>Âge :</strong> 15 ans</div>
+          <div>🎥 <strong>Activité :</strong> Créateur de contenus sur les phénomènes mystérieux</div>
+          <div>🖥️ <strong>Nom de marque :</strong> ZTV</div>
+          <div>🎵 <strong>Compte TikTok :</strong> zakaria tv</div>
+        </div>
+
+        <blockquote style="font-size:11px; font-style:italic; border-left:3px solid var(--orange-ztv); padding-left:10px; margin-top:14px; color:var(--text-gray);">
+          « Plateforme éducative conçue pour inspirer et faire réussir la jeunesse ivoirienne. »
+        </blockquote>
+      `;
+      openModal("👨‍💻 CRÉATEUR DE L'APPLICATION", htmlContent);
+    }
+
+    function actionLogout() {
+      switchPage('view-auth');
+    }
+  </script>
+</body>
+</html>
